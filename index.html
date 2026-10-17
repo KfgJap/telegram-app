@@ -4,12 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Мой Mini App</title>
+    <title>Рулетка</title>
     <style>
         body { 
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            text-align: center; 
-            padding: 20px; 
             background-color: var(--tg-theme-bg-color, #ffffff); 
             color: var(--tg-theme-text-color, #000000); 
             margin: 0;
@@ -18,11 +16,56 @@
             justify-content: center;
             align-items: center;
             height: 100vh;
+            overflow: hidden;
         }
+        
+        .roulette-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 20px 0;
+            background: rgba(0,0,0,0.05);
+        }
+
+        .roulette-strip {
+            display: flex;
+            transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1);
+            gap: 10px;
+            padding-left: 50vw;
+        }
+
+        .item {
+            min-width: 80px;
+            height: 80px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 10px;
+            font-weight: bold;
+            font-size: 14px;
+            text-align: center;
+            padding: 5px;
+            box-sizing: border-box;
+            word-break: break-all;
+        }
+
+        .pointer {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 50%;
+            width: 2px;
+            background-color: red;
+            z-index: 10;
+            transform: translateX(-50%);
+        }
+
         button { 
             padding: 12px 24px; 
             font-size: 16px; 
-            margin-top: 20px; 
+            margin-top: 30px; 
             cursor: pointer; 
             background-color: var(--tg-theme-button-color, #2481cc);
             color: var(--tg-theme-button-text-color, #ffffff);
@@ -30,15 +73,76 @@
             border-radius: 8px;
             font-weight: bold;
         }
+        
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 <body>
-    <h1>Привет, KfgJap!</h1>
-    <p>Это мое первое Mini App.</p>
-    <button onclick="Telegram.WebApp.showAlert('Ура! Кнопка работает!')">Нажми меня</button>
+    <h2>Рулетка</h2>
+    
+    <div class="roulette-container">
+        <div class="pointer"></div>
+        <div class="roulette-strip" id="strip">
+        </div>
+    </div>
+
+    <button id="spinBtn" onclick="spin()">Крутить</button>
+    
+    <p id="result" style="margin-top: 20px; font-size: 18px; font-weight: bold; height: 25px;"></p>
+
     <script>
         Telegram.WebApp.ready();
-        Telegram.WebApp.expand(); 
+        Telegram.WebApp.expand();
+
+        // ВАШИ СЛОВА (пишите любые в кавычках через запятую)
+        const words = ['Хуй', 'Пизда', 'Залупа', 'Приз', 'Счастье', 'Печенье', 'Фантик', 'Удача'];
+        
+        const strip = document.getElementById('strip');
+        const resultText = document.getElementById('result');
+        const spinBtn = document.getElementById('spinBtn');
+        const ITEM_WIDTH = 90; 
+
+        function renderItems() {
+            strip.innerHTML = '';
+            for (let i = 0; i < 5; i++) {
+                words.forEach(word => {
+                    const div = document.createElement('div');
+                    div.className = 'item';
+                    div.innerText = word;
+                    strip.appendChild(div);
+                });
+            }
+        }
+
+        function spin() {
+            spinBtn.disabled = true;
+            resultText.innerText = '';
+            
+            strip.style.transition = 'none';
+            strip.style.transform = `translateX(0px)`;
+            
+            const randomIndex = Math.floor(Math.random() * (words.length * 4));
+            const offset = -(randomIndex * ITEM_WIDTH) - (ITEM_WIDTH / 2) + (window.innerWidth / 2);
+            
+            setTimeout(() => {
+                strip.style.transition = 'transform 3s cubic-bezier(0.1, 0.7, 0.1, 1)';
+                strip.style.transform = `translateX(${offset}px)`;
+            }, 50);
+
+            setTimeout(() => {
+                const winningWord = words[randomIndex % words.length];
+                resultText.innerText = `Выпало: ${winningWord}`;
+                spinBtn.disabled = false;
+                if (Telegram.WebApp.HapticFeedback) {
+                    Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+                }
+            }, 3100); 
+        }
+
+        renderItems();
     </script>
 </body>
 </html>
