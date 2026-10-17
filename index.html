@@ -18,6 +18,7 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
+        /* Сезоны */
         .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
         .snowflake, .leaf, .sun { position: absolute; top: -20px; animation: fall linear infinite; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
@@ -43,6 +44,7 @@
         body.theme-autumn .icicles, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts, body.theme-autumn .sun { display: none; }
         body.theme-autumn .grass-autumn, body.theme-autumn .leaf { display: block; }
 
+        /* UI */
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .balance-box { display: flex; flex-direction: column; }
         .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -207,11 +209,22 @@
             <div class="user-username" id="tg-username">@username</div>
             <div class="user-title" onclick="openTitles()" id="user-title">Титул: Новичок ✏️</div>
         </div>
+        
         <div class="pass-card" onclick="openPass()">
             <div class="pass-title">Боевой Пропуск</div>
             <div class="pass-info" style="display:flex; justify-content:space-between; font-size:12px; margin-top:8px;"><span>Уровень: <span id="bp-level">1</span>/40</span><span>XP: <span id="bp-xp">0</span>/100</span></div>
             <div class="pass-progress"><div class="pass-bar" id="pass-bar"></div></div>
         </div>
+
+        <!-- БЛОК СМЕНЫ ТЕМ (ДОБАВЛЕН) -->
+        <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--hint); text-align: center;">Темы оформления</h3>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 0 auto;">
+            <div class="btn" style="background:var(--surface); border:1px solid #fff; color:#fff; padding:10px; font-size:12px;" onclick="changeTheme('theme-winter')">❄️ Зима</div>
+            <div class="btn" style="background:var(--surface); border:1px solid #22c55e; color:#22c55e; padding:10px; font-size:12px;" onclick="changeTheme('theme-summer')">☀️ Лето</div>
+            <div class="btn" style="background:var(--surface); border:1px solid #f97316; color:#f97316; padding:10px; font-size:12px;" onclick="changeTheme('theme-autumn')">🍂 Осень</div>
+            <div class="btn" style="background:var(--surface); border:1px solid #34d399; color:#34d399; padding:10px; font-size:12px;" onclick="changeTheme('theme-spring')">🌸 Весна</div>
+        </div>
+
         <div class="promo-container">
             <input type="text" class="promo-input" id="promo-input" placeholder="ВВЕДИ КОД">
             <button class="btn" onclick="checkPromo()">Активировать</button>
@@ -369,7 +382,6 @@
             return betAmount;
         }
 
-        // ИСПРАВЛЕННАЯ РУЛЕТКА
         const strip = document.getElementById('strip');
         const items = [{name:'Хлам', class:'r-common', mult: 1, chance: 50},{name:'Монета', class:'r-uncommon', mult: 2, chance: 25},{name:'Кристалл', class:'r-rare', mult: 3, chance: 15},{name:'Артефакт', class:'r-epic', mult: 5, chance: 8},{name:'ДЖЕКПОТ', class:'r-legendary', mult: 10, chance: 2}];
         function renderItems() { strip.innerHTML = ''; for(let i=0; i<30; i++) items.forEach(item => { const div = document.createElement('div'); div.className = `r-item ${item.class}`; div.innerText = item.name; strip.appendChild(div); }); }
