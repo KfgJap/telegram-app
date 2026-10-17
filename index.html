@@ -18,33 +18,38 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
-        /* Сезоны */
+        /* --- ФОНЫ --- */
         .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        .snowflake, .leaf, .sun { position: absolute; top: -20px; animation: fall linear infinite; }
+        .snowflake, .leaf, .sun { position: absolute; top: -30px; animation: fall linear infinite; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
         
-        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 60px; display: flex; justify-content: space-around; }
-        .icicle { width: 10px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.5), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); }
-        .icicle-melting { width: 10px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.5), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
-        .icicle-melting::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: rgba(52,211,153,0.8); border-radius: 50%; animation: drip 1s infinite; }
-        @keyframes drip { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(20px) scale(0.5); opacity: 0; } }
+        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: space-around; }
+        .icicle { width: 12px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); }
+        .icicle-melting { width: 12px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
+        .icicle-melting::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 6px; height: 12px; background: rgba(52,211,153,0.9); border-radius: 50%; animation: drip 1s infinite; }
+        @keyframes drip { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(30px) scale(0.5); opacity: 0; } }
 
-        .grass { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; }
-        .grass-summer { background: linear-gradient(to top, #14532d, transparent); }
-        .grass-spring { background: linear-gradient(to top, #166534, transparent); }
-        .grass-autumn { background: linear-gradient(to top, #4a1c09, transparent); }
-        .snowdrifts { background: linear-gradient(to top, #e2e8f0, transparent); height: 60px; position: absolute; bottom: 0; width: 100%; }
+        .grass-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; display: none; border-radius: 50% 50% 0 0 / 20px 20px 0 0; }
+        .grass-summer { background: linear-gradient(to top, #15803d, transparent); display: block; }
+        .grass-spring { background: linear-gradient(to top, #22c55e, transparent); display: block; }
+        .grass-autumn { background: linear-gradient(to top, #7c2d12, transparent); display: block; }
+        .snowdrifts { background: linear-gradient(to top, #fff, transparent); height: 80px; position: absolute; bottom: 0; width: 100%; display: none; border-radius: 50% 50% 0 0 / 30px 30px 0 0; }
 
-        body.theme-winter .icicles, body.theme-winter .snowflake, body.theme-winter .snowdrifts { display: block; }
-        body.theme-winter .icicle-melting, body.theme-winter .grass, body.theme-winter .leaf, body.theme-winter .sun { display: none; }
-        body.theme-summer .icicles, body.theme-summer .icicle-melting, body.theme-summer .snowflake, body.theme-summer .snowdrifts, body.theme-summer .leaf { display: none; }
-        body.theme-summer .grass-summer, body.theme-summer .sun { display: block; }
-        body.theme-spring .icicles, body.theme-spring .snowflake, body.theme-spring .snowdrifts, body.theme-spring .leaf { display: none; }
-        body.theme-spring .icicle-melting, body.theme-spring .grass-spring, body.theme-spring .sun { display: block; }
-        body.theme-autumn .icicles, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts, body.theme-autumn .sun { display: none; }
-        body.theme-autumn .grass-autumn, body.theme-autumn .leaf { display: block; }
+        body.theme-winter .icicle { display: block; } body.theme-winter .icicle-melting { display: none; }
+        body.theme-winter .snowflake { display: block; } body.theme-winter .snowdrifts { display: block; }
+        body.theme-winter .grass-layer, body.theme-winter .leaf, body.theme-winter .sun { display: none; }
 
-        /* UI */
+        body.theme-spring .icicle { display: none; } body.theme-spring .icicle-melting { display: block; }
+        body.theme-spring .grass-spring { display: block; } body.theme-spring .sun { display: block; }
+        body.theme-spring .snowflake, body.theme-spring .snowdrifts, body.theme-spring .leaf, body.theme-spring .grass-summer, body.theme-spring .grass-autumn { display: none; }
+
+        body.theme-summer .icicle, body.theme-summer .icicle-melting, body.theme-summer .snowflake, body.theme-summer .snowdrifts, body.theme-summer .leaf { display: none; }
+        body.theme-summer .grass-summer { display: block; } body.theme-summer .sun { display: block; }
+
+        body.theme-autumn .icicle, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts, body.theme-autumn .sun { display: none; }
+        body.theme-autumn .grass-autumn { display: block; } body.theme-autumn .leaf { display: block; }
+
+        /* --- ИНТЕРФЕЙС --- */
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .balance-box { display: flex; flex-direction: column; }
         .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -122,9 +127,9 @@
     <div class="season-bg">
         <div class="icicles" id="icicles"></div>
         <div class="snowdrifts"></div>
-        <div class="grass grass-summer" style="display:none;"></div>
-        <div class="grass grass-spring" style="display:none;"></div>
-        <div class="grass grass-autumn" style="display:none;"></div>
+        <div class="grass-layer grass-summer" style="display:none;"></div>
+        <div class="grass-layer grass-spring" style="display:none;"></div>
+        <div class="grass-layer grass-autumn" style="display:none;"></div>
         <div id="snow-container"></div>
         <div id="falling-container"></div>
     </div>
@@ -216,7 +221,7 @@
             <div class="pass-progress"><div class="pass-bar" id="pass-bar"></div></div>
         </div>
 
-        <!-- БЛОК СМЕНЫ ТЕМ (ДОБАВЛЕН) -->
+        <!-- БЛОК СМЕНЫ ТЕМ -->
         <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--hint); text-align: center;">Темы оформления</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 0 auto;">
             <div class="btn" style="background:var(--surface); border:1px solid #fff; color:#fff; padding:10px; font-size:12px;" onclick="changeTheme('theme-winter')">❄️ Зима</div>
@@ -272,7 +277,8 @@
         let currentTitle = localStorage.getItem('user_title') || 'Новичок';
         let selectedCoinSide = 'heads';
         let isFlipping = false;
-        
+        let ownedThemes = JSON.parse(localStorage.getItem('owned_themes')) || ['theme-winter', 'theme-summer'];
+
         const allTitles = ['Новичок', 'Игрок', 'Профи', 'Хайроллер', 'Король', 'ВЛАДЫКА ЛЬДА', 'Снежный Барон', 'Ледяной Вихрь', 'Император Зимы', 'Бог Казино'];
         const savedTheme = localStorage.getItem('theme') || 'theme-winter';
         document.getElementById('body-theme').className = savedTheme;
@@ -285,27 +291,27 @@
             for (let i = 0; i < 20; i++) {
                 const ic = document.createElement('div');
                 ic.className = (savedTheme === 'theme-spring') ? 'icicle-melting' : 'icicle';
-                ic.style.height = (Math.random() * 30 + 10) + 'px';
+                ic.style.height = (Math.random() * 40 + 20) + 'px';
                 document.getElementById('icicles').appendChild(ic);
             }
             
             const snowContainer = document.getElementById('snow-container');
             const fallingContainer = document.getElementById('falling-container');
             
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < 50; i++) {
                 const el = document.createElement('div');
                 el.className = 'snowflake';
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.animationDuration = (Math.random() * 5 + 4) + 's';
-                el.style.width = (Math.random() * 12 + 8) + 'px'; el.style.height = el.style.width;
+                el.style.width = (Math.random() * 15 + 10) + 'px'; el.style.height = el.style.width;
                 if (savedTheme === 'theme-winter') {
                     el.innerHTML = `<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2L13 9L20 8L16 14L22 18L14 18L12 22L10 18L2 18L8 14L4 8L11 9L12 2Z"/></svg>`;
                     snowContainer.appendChild(el);
                 } else if (savedTheme === 'theme-autumn') {
-                    el.className = 'leaf'; el.style.background = '#ea580c'; el.style.borderRadius = '50% 0 50% 50%'; el.style.width = '15px'; el.style.height = '15px';
+                    el.className = 'leaf'; el.style.background = '#ea580c'; el.style.borderRadius = '50% 0 50% 50%'; el.style.width = '20px'; el.style.height = '20px';
                     fallingContainer.appendChild(el);
                 } else if (savedTheme === 'theme-summer' || savedTheme === 'theme-spring') {
-                    el.className = 'sun'; el.style.background = (savedTheme === 'theme-summer' ? '#fde047' : '#fff'); el.style.borderRadius = '50%'; el.style.width = '20px'; el.style.height = '20px'; el.style.opacity = '0.5';
+                    el.className = 'sun'; el.style.background = (savedTheme === 'theme-summer' ? '#fde047' : '#fff'); el.style.borderRadius = '50%'; el.style.width = '25px'; el.style.height = '25px'; el.style.opacity = '0.6';
                     fallingContainer.appendChild(el);
                 }
             }
@@ -487,7 +493,7 @@
         }
 
         function changeTheme(themeClass) {
-            if (!isAdmin && !['theme-winter', 'theme-summer'].includes(themeClass)) {
+            if (!isAdmin && !ownedThemes.includes(themeClass)) {
                 Telegram.WebApp.showAlert('Сначала купите эту тему в магазине!'); return;
             }
             document.getElementById('body-theme').className = themeClass; localStorage.setItem('theme', themeClass);
@@ -497,6 +503,7 @@
         function buyItem(item, price) {
             if (!isAdmin && balance < price) { Telegram.WebApp.showAlert('Недостаточно средств!'); return; }
             if (!isAdmin) updateBalance(-price);
+            if (!ownedThemes.includes(item)) { ownedThemes.push(item); localStorage.setItem('owned_themes', JSON.stringify(ownedThemes)); }
             document.getElementById('body-theme').className = item; localStorage.setItem('theme', item); renderSeasonBg();
             Telegram.WebApp.showAlert('Тема куплена!'); closeShop();
         }
