@@ -6,109 +6,270 @@
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <title>Рулетка</title>
     <style>
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@600;800;900&display=swap');
+
+        :root {
+            --primary: #ff0055;
+            --secondary: #7000ff;
+        }
+
         body { 
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background-color: var(--tg-theme-bg-color, #ffffff); 
-            color: var(--tg-theme-text-color, #000000); 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--tg-theme-bg-color, #0f0f0f); 
+            color: var(--tg-theme-text-color, #ffffff); 
             margin: 0;
+            padding: 0;
             display: flex;
             flex-direction: column;
-            justify-content: center;
             align-items: center;
             height: 100vh;
             overflow: hidden;
+            user-select: none;
+            transition: background 0.3s;
         }
         
+        /* Вкладки (Режимы) */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+            background: rgba(255,255,255,0.05);
+            padding: 5px;
+            border-radius: 12px;
+            z-index: 10;
+        }
+        
+        .tab {
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-size: 14px;
+            cursor: pointer;
+            color: #888;
+            transition: all 0.3s;
+        }
+        
+        .tab.active {
+            background: rgba(255,255,255,0.1);
+            color: #fff;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Контейнер рулетки */
+        .roulette-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            position: relative;
+        }
+
         .roulette-container {
             width: 100%;
             overflow: hidden;
             position: relative;
-            padding: 20px 0;
-            background: rgba(0,0,0,0.05);
+            padding: 40px 0;
+            background: linear-gradient(90deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 15%, rgba(0,0,0,0) 85%, rgba(0,0,0,0.8) 100%);
+            box-shadow: inset 0 0 30px rgba(0,0,0,0.5);
+            border-top: 2px solid rgba(255,255,255,0.05);
+            border-bottom: 2px solid rgba(255,255,255,0.05);
         }
 
         .roulette-strip {
             display: flex;
-            transition: transform 3s cubic-bezier(0.1, 0.7, 0.1, 1);
-            gap: 10px;
+            transition: transform 4s cubic-bezier(0.1, 0.9, 0.2, 1);
+            gap: 15px;
             padding-left: 50vw;
         }
 
         .item {
-            min-width: 80px;
-            height: 80px;
-            background-color: var(--tg-theme-button-color, #2481cc);
+            min-width: 100px;
+            height: 110px;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
             color: white;
             display: flex;
             justify-content: center;
             align-items: center;
-            border-radius: 10px;
-            font-weight: bold;
-            font-size: 14px;
+            border-radius: 16px;
+            font-weight: 900;
+            font-size: 18px;
             text-align: center;
-            padding: 5px;
+            padding: 10px;
             box-sizing: border-box;
-            word-break: break-all;
+            word-break: break-word;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255,255,255,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .item::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, transparent 50%);
+            pointer-events: none;
         }
 
+        /* Указатель */
         .pointer {
             position: absolute;
-            top: 0;
-            bottom: 0;
+            top: -5px;
+            bottom: -5px;
             left: 50%;
-            width: 2px;
-            background-color: red;
+            width: 6px;
+            background: var(--primary);
             z-index: 10;
             transform: translateX(-50%);
+            box-shadow: 0 0 20px var(--primary), 0 0 10px var(--primary);
+            border-radius: 3px;
+        }
+        
+        .pointer::before, .pointer::after {
+            content: '';
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0; height: 0;
+            border-left: 10px solid transparent;
+            border-right: 10px solid transparent;
+        }
+        
+        .pointer::before {
+            top: -10px;
+            border-top: 10px solid var(--primary);
+        }
+        
+        .pointer::after {
+            bottom: -10px;
+            border-bottom: 10px solid var(--primary);
+        }
+
+        /* Кнопка и Результат */
+        .controls {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-bottom: 40px;
+            min-height: 150px;
+        }
+
+        #result {
+            font-size: 32px; 
+            font-weight: 900; 
+            height: 45px;
+            margin-bottom: 15px;
+            color: #fff;
+            text-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary);
+            transition: transform 0.2s;
+        }
+        
+        #result.pop {
+            transform: scale(1.2);
         }
 
         button { 
-            padding: 12px 24px; 
-            font-size: 16px; 
-            margin-top: 30px; 
+            padding: 18px 50px; 
+            font-size: 20px; 
             cursor: pointer; 
-            background-color: var(--tg-theme-button-color, #2481cc);
-            color: var(--tg-theme-button-text-color, #ffffff);
+            background: linear-gradient(45deg, var(--primary), var(--secondary));
+            color: white;
             border: none;
-            border-radius: 8px;
-            font-weight: bold;
+            border-radius: 50px;
+            font-weight: 900;
+            font-family: 'Montserrat', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.4);
+            transition: transform 0.1s, box-shadow 0.2s;
         }
         
+        button:active {
+            transform: scale(0.95);
+            box-shadow: 0 5px 15px rgba(255, 0, 85, 0.6);
+        }
+
         button:disabled {
             opacity: 0.5;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+            filter: grayscale(1);
+        }
+
+        /* Конфетти */
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 100;
         }
     </style>
 </head>
 <body>
-    <h2>Рулетка</h2>
-    
-    <div class="roulette-container">
-        <div class="pointer"></div>
-        <div class="roulette-strip" id="strip">
+
+    <!-- Вкладки -->
+    <div class="tabs">
+        <div class="tab active" onclick="setMode('hard')">Хардкор</div>
+        <div class="tab" onclick="setMode('soft')">Полегче</div>
+    </div>
+
+    <div class="roulette-wrapper">
+        <div class="roulette-container">
+            <div class="pointer"></div>
+            <div class="roulette-strip" id="strip"></div>
         </div>
     </div>
 
-    <button id="spinBtn" onclick="spin()">Крутить</button>
-    
-    <p id="result" style="margin-top: 20px; font-size: 18px; font-weight: bold; height: 25px;"></p>
+    <div class="controls">
+        <p id="result"></p>
+        <button id="spinBtn" onclick="spin()">Крутить</button>
+    </div>
+
+    <canvas id="confettiCanvas"></canvas>
 
     <script>
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
 
-        // ВАШИ СЛОВА (пишите любые в кавычках через запятую)
-        const words = ['Хуй', 'Пизда', 'Залупа', 'Приз', 'Счастье', 'Печенье', 'Фантик', 'Удача'];
+        // НАБОРЫ СЛОВ
+        const modes = {
+            hard: ['Хуй', 'Пизда', 'Залупа', 'Ебать', 'Гандон', 'Мудак', 'Пидор', 'Шлюха'],
+            soft: ['Дурак', 'Идиот', 'Козел', 'Дебил', 'Лох', 'Чмо', 'Баран']
+        };
+
+        let currentWords = modes.hard;
         
         const strip = document.getElementById('strip');
         const resultText = document.getElementById('result');
         const spinBtn = document.getElementById('spinBtn');
-        const ITEM_WIDTH = 90; 
+        const ITEM_WIDTH = 115; // 100px + 15px gap
 
+        // Переключение режимов
+        function setMode(mode) {
+            if(spinBtn.disabled) return; // Не даем менять во время игры
+            
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            currentWords = modes[mode];
+            resultText.innerText = '';
+            renderItems();
+        }
+
+        // Отрисовка ленты
         function renderItems() {
+            strip.style.transition = 'none';
+            strip.style.transform = `translateX(0px)`;
             strip.innerHTML = '';
-            for (let i = 0; i < 5; i++) {
-                words.forEach(word => {
+            
+            // Делаем ленту длинной (6 повторов)
+            for (let i = 0; i < 6; i++) {
+                currentWords.forEach(word => {
                     const div = document.createElement('div');
                     div.className = 'item';
                     div.innerText = word;
@@ -117,31 +278,104 @@
             }
         }
 
+        // Вращение
         function spin() {
             spinBtn.disabled = true;
             resultText.innerText = '';
+            resultText.classList.remove('pop');
             
             strip.style.transition = 'none';
             strip.style.transform = `translateX(0px)`;
             
-            const randomIndex = Math.floor(Math.random() * (words.length * 4));
-            const offset = -(randomIndex * ITEM_WIDTH) - (ITEM_WIDTH / 2) + (window.innerWidth / 2);
+            // Выбираем случайное слово
+            const randomIndex = Math.floor(Math.random() * currentWords.length);
+            
+            const totalItems = currentWords.length;
+            const loops = 5 + Math.floor(Math.random() * 2); // 5-6 кругов
+            const targetIndex = (loops * totalItems) + randomIndex;
+            
+            // Точный расчет остановки
+            const offset = -(targetIndex * ITEM_WIDTH) - (100 / 2) + (window.innerWidth / 2);
             
             setTimeout(() => {
-                strip.style.transition = 'transform 3s cubic-bezier(0.1, 0.7, 0.1, 1)';
+                strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.2, 1)';
                 strip.style.transform = `translateX(${offset}px)`;
             }, 50);
 
+            // Через 4 секунды показываем результат
             setTimeout(() => {
-                const winningWord = words[randomIndex % words.length];
-                resultText.innerText = `Выпало: ${winningWord}`;
+                const winningWord = currentWords[randomIndex];
+                resultText.innerText = winningWord;
+                resultText.classList.add('pop');
                 spinBtn.disabled = false;
+                
+                // Виброотклик
                 if (Telegram.WebApp.HapticFeedback) {
                     Telegram.WebApp.HapticFeedback.notificationOccurred('success');
                 }
-            }, 3100); 
+
+                // Запуск конфетти
+                fireConfetti();
+                
+            }, 4100); 
         }
 
+        // --- ЛОГИКА КОНФЕТТИ ---
+        const canvas = document.getElementById('confettiCanvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        function fireConfetti() {
+            particles = [];
+            const colors = ['#ff0055', '#7000ff', '#00ffcc', '#ffcc00'];
+            
+            for (let i = 0; i < 100; i++) {
+                particles.push({
+                    x: window.innerWidth / 2,
+                    y: window.innerHeight / 2 + 100,
+                    vx: (Math.random() - 0.5) * 20,
+                    vy: (Math.random() - 1) * 15,
+                    size: Math.random() * 8 + 4,
+                    color: colors[Math.floor(Math.random() * colors.length)],
+                    life: 1
+                });
+            }
+            requestAnimationFrame(updateConfetti);
+        }
+
+        function updateConfetti() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            let active = false;
+
+            particles.forEach(p => {
+                p.x += p.vx;
+                p.y += p.vy;
+                p.vy += 0.5; // Гравитация
+                p.vx *= 0.98; // Трение
+                p.life -= 0.015;
+
+                if (p.life > 0) {
+                    active = true;
+                    ctx.fillStyle = p.color;
+                    ctx.globalAlpha = p.life;
+                    ctx.fillRect(p.x, p.y, p.size, p.size);
+                }
+            });
+            ctx.globalAlpha = 1;
+
+            if (active) {
+                requestAnimationFrame(updateConfetti);
+            }
+        }
+
+        // Инициализация
         renderItems();
     </script>
 </body>
