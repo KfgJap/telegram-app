@@ -1,297 +1,158 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Skeleton</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
-        
-        :root {
-            --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b;
-            --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444;
-            --radius: 16px;
-        }
+        // --- 5. РУЛЕТКА (Честная математика) ---
 
-        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-            user-select: none; 
-        }
+        // Конфиг призов: шанс в %, выплата множителем от ставки (0 = проигрыш)
+        const PRIZES = [
+            { name: 'Хлам',     chance: 50, mult: 0,    color: '#64748b' },
+            { name: 'Монета',   chance: 30, mult: 2,    color: '#10b981' },
+            { name: 'Кристалл', chance: 12, mult: 5,    color: '#0ea5e9' },
+            { name: 'Артефакт', chance: 6,  mult: 15,   color: '#a855f7' },
+            { name: 'ДЖЕКПОТ',  chance: 2,  mult: 100,  color: '#f59e0b' },
+        ];
 
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        const ITEM_W = 100;          // ширина одного квадрата в px
+        const STRIP_LEN = 40;        // длина ленты (кратно 5 для ровного цикла)
+        const WIN_ZONE_START = 25;   // с какого индекса может выпасть приз (для длинной анимации)
 
-        .header { 
-            padding: 15px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: var(--surface); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
-            z-index: 10;
-        }
-        
-        .balance-box { display: flex; flex-direction: column; }
-        .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; font-weight: 800; }
-        .balance { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 900; color: var(--money); }
-
-        .main-content { flex: 1; position: relative; overflow-y: auto; padding-bottom: 90px; }
-        
-        .screen { display: none; flex-direction: column; padding: 20px; }
-        .screen.active { display: flex; }
-
-        h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin-bottom: 20px; }
-
-        .btn { 
-            padding: 16px; font-size: 16px; cursor: pointer; width: 100%; 
-            background: linear-gradient(90deg, var(--primary), #3b82f6); color: #fff; 
-            border: none; border-radius: var(--radius); font-weight: 900; 
-            text-transform: uppercase; margin-top: 10px; 
-            display: flex; justify-content: center; align-items: center; 
-            transition: 0.1s;
-        }
-        .btn:active { transform: scale(0.96); }
-        .btn-gold { background: linear-gradient(90deg, var(--gold), #d97706); color: #000; }
-        .btn-sm { padding: 10px; font-size: 12px; }
-
-        .bet-box { 
-            background: var(--surface); padding: 15px; border-radius: var(--radius); 
-            display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;
-            border: 1px solid rgba(255,255,255,0.05);
-        }
-        .bet-box input { 
-            background: transparent; border: none; color: #fff; font-size: 20px; 
-            font-weight: 900; text-align: right; width: 100px; outline: none;
-        }
-
-        .roulette-container { 
-            width: 100%; height: 120px; background: #000; border-radius: var(--radius); 
-            position: relative; overflow: hidden; border: 1px solid rgba(255,255,255,0.1); 
-        }
-        .roulette-strip { display: flex; height: 100%; align-items: center; }
-        .pointer { 
-            position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; 
-            background: #fff; transform: translateX(-50%); z-index: 10; box-shadow: 0 0 10px #fff;
-        }
-
-        .empty-state { text-align: center; color: var(--hint); margin-top: 50px; display: flex; flex-direction: column; align-items: center; gap: 20px;}
-        .profile-card { display: flex; flex-direction: column; align-items: center; background: var(--surface); padding: 20px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.05);}
-        .avatar { width: 80px; height: 80px; border-radius: 50%; background: var(--primary); display: flex; justify-content: center; align-items: center; font-size: 30px; font-weight: 900; margin-bottom: 10px; }
-        .user-name { font-size: 20px; font-weight: 900; }
-        .user-username { font-size: 12px; color: var(--hint); margin-bottom: 15px; }
-        .auth-buttons { display: flex; gap: 10px; width: 100%; }
-
-        .bottom-nav { 
-            position: fixed; bottom: 0; left: 0; width: 100%; 
-            background: var(--surface); display: flex; justify-content: space-around; 
-            padding: 10px; padding-bottom: max(10px, env(safe-area-inset-bottom)); 
-            border-top: 1px solid rgba(255,255,255,0.1); z-index: 100;
-        }
-        .nav-btn { 
-            background: transparent; border: none; color: var(--hint); font-weight: 800; 
-            font-size: 10px; display: flex; flex-direction: column; align-items: center; gap: 5px; 
-            cursor: pointer; padding: 10px; border-radius: 10px; width: 80px; transition: 0.2s;
-        }
-        .nav-btn.active { color: var(--primary); background: rgba(14,165,233,0.1); }
-
-        /* Модальное окно Тест-Станции */
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85); z-index: 2000; justify-content: center; align-items: center;
-            backdrop-filter: blur(5px);
-        }
-        .modal-content {
-            background: var(--surface); width: 90%; max-width: 400px; padding: 20px;
-            border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); text-align: center;
-        }
-        .modal-title { font-family: 'Oswald', sans-serif; font-size: 20px; color: var(--primary); margin-bottom: 10px; }
-    </style>
-</head>
-<body id="body-theme" class="theme-dark">
-
-    <!-- 1. ЭКРАН ЗАГРУЗКИ -->
-    <div id="splash-screen" style="position: fixed; inset: 0; background: #030712; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999;">
-        <h1 style="color: #0ea5e9; font-family: 'Oswald', sans-serif; font-size: 42px; font-weight: 900; margin-bottom: 20px; letter-spacing: 2px;">GEARFE</h1>
-        <div class="spinner" style="width: 40px; height: 40px; border: 4px solid rgba(14,165,233,0.3); border-top-color: #0ea5e9; border-radius: 50%; animation: spin 1s linear infinite;"></div>
-    </div>
-
-    <!-- 2. ШАПКА -->
-    <header class="header">
-        <div class="balance-box">
-            <span class="balance-label">Баланс</span>
-            <span class="balance" id="balance">0</span>
-        </div>
-        <button id="admin-btn" style="display: none; background: transparent; border: none; font-size: 24px; cursor: pointer; color: var(--gold);">▶️</button>
-    </header>
-
-    <!-- 3. ЭКРАНЫ -->
-    <main class="main-content">
-        <!-- Экран: Рулетка -->
-        <section id="screen-play" class="screen active">
-            <h2>Рулетка</h2>
-            
-            <div class="bet-box">
-                <span>Ставка</span>
-                <input type="number" id="bet-input" value="10" min="10">
-            </div>
-
-            <div class="roulette-container">
-                <div class="pointer"></div>
-                <div class="roulette-strip" id="strip"></div>
-            </div>
-            
-            <p id="result-text" style="text-align: center; font-weight: 900; height: 30px; margin-top: 15px; color: var(--primary);"></p>
-            <button class="btn" id="spin-btn">Крутить</button>
-        </section>
-
-        <!-- Экран: Игры -->
-        <section id="screen-games" class="screen">
-            <h2>Каталог игр</h2>
-            <div class="empty-state">
-                <span style="font-size: 50px;">🎲</span>
-                <p>Скоро здесь появятся новые игры!</p>
-                <button class="btn" onclick="switchTab('play')">Пока сыграть в Рулетку</button>
-            </div>
-        </section>
-
-        <!-- Экран: Профиль -->
-        <section id="screen-profile" class="screen">
-            <h2>Профиль</h2>
-            <div class="profile-card">
-                <div class="avatar" id="user-avatar">U</div>
-                <h3 class="user-name" id="user-name">Игрок</h3>
-                <p class="user-username" id="user-username">@username</p>
-                
-                <div class="auth-buttons">
-                    <button class="btn btn-sm">Войти</button>
-                    <button class="btn btn-sm btn-gold">Зарегистрироваться</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <!-- 4. НИЖНЕЕ МЕНЮ -->
-    <nav class="bottom-nav">
-        <button class="nav-btn active" onclick="switchTab('play', this)">🎮 Играть</button>
-        <button class="nav-btn" onclick="switchTab('games', this)">🎲 Игры</button>
-        <button class="nav-btn" onclick="switchTab('profile', this)">👤 Профиль</button>
-    </nav>
-
-    <!-- 5. МОДАЛЬНОЕ ОКНО (ТЕСТ-СТАНЦИЯ) -->
-    <div id="admin-modal" class="modal-overlay">
-        <div class="modal-content">
-            <h3 class="modal-title">Тест-Станция</h3>
-            <p style="color: var(--hint); font-size: 12px; margin-bottom: 20px;">Доступ только для Администратора</p>
-            <button class="btn" onclick="document.getElementById('admin-modal').style.display='none'">Закрыть</button>
-        </div>
-    </div>
-
-    <script>
-        // --- 1. ИНИЦИАЛИЗАЦИЯ TELEGRAM ---
-        Telegram.WebApp.ready();
-        Telegram.WebApp.expand();
-        Telegram.WebApp.disableVerticalSwipes();
-        Telegram.WebApp.setHeaderColor('#030712');
-
-        // Убираем экран загрузки
-        setTimeout(() => {
-            document.getElementById('splash-screen').style.display = 'none';
-        }, 1500);
-
-        // --- 2. БАЗОВАЯ ЛОГИКА БАЛАНСА ---
-        let balance = parseInt(localStorage.getItem('casino_balance')) || 1000;
-        const balanceEl = document.getElementById('balance');
-        balanceEl.innerText = balance;
-
-        function updateBalance(amount) {
-            balance += amount;
-            if (balance < 0) balance = 0;
-            localStorage.setItem('casino_balance', balance);
-            balanceEl.innerText = balance;
-            
-            // Эффект пульсации
-            balanceEl.style.color = amount > 0 ? 'var(--money)' : 'var(--error)';
-            setTimeout(() => { balanceEl.style.color = 'var(--money)'; }, 300);
-        }
-
-        // --- 3. НАВИГАЦИЯ ---
-        function switchTab(screenId, btn = null) {
-            document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-            document.getElementById('screen-' + screenId).classList.add('active');
-            
-            document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-            if (btn) {
-                btn.classList.add('active');
-            } else {
-                const index = screenId === 'play' ? 0 : screenId === 'games' ? 1 : 2;
-                document.querySelectorAll('.nav-btn')[index].classList.add('active');
-            }
-        }
-
-        // --- 4. ПРОФИЛЬ (Заглушка, позже вытянем из Telegram) ---
-        const tgUser = Telegram.WebApp.initDataUnsafe?.user;
-        if (tgUser) {
-            document.getElementById('user-name').innerText = tgUser.first_name;
-            document.getElementById('user-avatar').innerText = tgUser.first_name.charAt(0).toUpperCase();
-            if (tgUser.username) {
-                document.getElementById('user-username').innerText = '@' + tgUser.username;
-            }
-        }
-
-        // --- 5. РУЛЕТКА (Базовая, без математики пока) ---
         const strip = document.getElementById('strip');
-        const items = ['Хлам', 'Монета', 'Кристалл', 'Артефакт', 'ДЖЕКПОТ'];
-        function renderItems() {
+        const spinBtn = document.getElementById('spin-btn');
+        const resultText = document.getElementById('result-text');
+        const betInput = document.getElementById('bet-input');
+        const rouletteContainer = document.querySelector('.roulette-container');
+
+        // Взвешенный выбор приза
+        function pickPrize() {
+            const roll = Math.random() * 100;
+            let acc = 0;
+            for (const p of PRIZES) {
+                acc += p.chance;
+                if (roll < acc) return p;
+            }
+            return PRIZES[0];
+        }
+
+        // Рендер ленты. Если задан winIndex — в этой позиции будет выигрышный приз
+        function renderItems(winPrize = null, winIndex = -1) {
             strip.innerHTML = '';
-            for (let i = 0; i < 30; i++) {
-                const item = items[i % items.length];
+            for (let i = 0; i < STRIP_LEN; i++) {
+                let prize;
+                if (i === winIndex && winPrize) {
+                    prize = winPrize;
+                } else {
+                    // Заполняем «фон» случайными призами, но не джекпотом
+                    const bgPool = PRIZES.filter(p => p.name !== 'ДЖЕКПОТ');
+                    prize = bgPool[Math.floor(Math.random() * bgPool.length)];
+                }
                 const div = document.createElement('div');
                 div.className = 'roulette-item';
-                div.style.minWidth = '100px';
+                div.style.minWidth = ITEM_W + 'px';
                 div.style.height = '100%';
                 div.style.display = 'flex';
                 div.style.justifyContent = 'center';
                 div.style.alignItems = 'center';
-                div.style.borderRight = '1px solid rgba(255,255,255,0.1)';
+                div.style.borderRight = '1px solid rgba(255,255,255,0.08)';
                 div.style.fontWeight = '900';
                 div.style.fontSize = '12px';
-                div.style.color = 'var(--text)';
-                div.innerText = item;
+                div.style.color = prize.color;
+                div.innerText = prize.name;
                 strip.appendChild(div);
             }
         }
-        renderItems();
 
-        const spinBtn = document.getElementById('spin-btn');
-        const resultText = document.getElementById('result-text');
+        // Сброс ленты в исходное состояние без анимации
+        function resetStrip() {
+            strip.style.transition = 'none';
+            strip.style.transform = 'translateX(0)';
+        }
+
+        renderItems();
+        resetStrip();
+
+        let isSpinning = false;
 
         spinBtn.addEventListener('click', () => {
-            spinBtn.disabled = true; // ЗАЩИТА ОТ ДВОЙНОГО КЛИКА
-            
-            // Временная анимация (просто сдвиг)
-            strip.style.transition = 'transform 3s ease-out';
-            strip.style.transform = 'translateX(-2500px)';
-            
-            setTimeout(() => {
-                spinBtn.disabled = false;
-                resultText.innerText = 'Выиграл: Монета (+20 ₽)'; // Тестовый текст
-                updateBalance(20);
-                
-                // Возврат в начало
-                strip.style.transition = 'none';
-                strip.style.transform = 'translateX(0)';
-            }, 3100);
+            if (isSpinning) return;
+
+            const bet = parseInt(betInput.value) || 0;
+
+            // Валидация ставки
+            if (bet < 10) {
+                showResult('Минимальная ставка — 10 ₽', 'var(--error)');
+                return;
+            }
+            if (bet > balance) {
+                showResult('Недостаточно средств', 'var(--error)');
+                return;
+            }
+
+            isSpinning = true;
+            spinBtn.disabled = true;
+            resultText.innerText = '';
+
+            // Хаптик: начало спина
+            try { Telegram.WebApp.HapticFeedback.impactOccurred('medium'); } catch(e) {}
+
+            // 1. Списываем ставку сразу
+            updateBalance(-bet);
+
+            // 2. Выбираем приз и позицию
+            const winPrize = pickPrize();
+            const winIndex = WIN_ZONE_START + Math.floor(Math.random() * 10); // 25..34
+
+            // 3. Перерисовываем ленту, чтобы выигрышный приз стоял на winIndex
+            renderItems(winPrize, winIndex);
+            resetStrip();
+
+            // 4. Считаем offset, чтобы центр winIndex-элемента был под стрелкой
+            const containerW = rouletteContainer.offsetWidth;
+            const offset = winIndex * ITEM_W + ITEM_W / 2 - containerW / 2;
+            // Небольшой случайный сдвиг внутри элемента — чтобы не всегда «в яблочко»
+            const jitter = (Math.random() - 0.5) * (ITEM_W * 0.6);
+            const finalOffset = offset + jitter;
+
+            // 5. Запускаем анимацию на следующем кадре
+            requestAnimationFrame(() => {
+                strip.style.transition = 'transform 3.8s cubic-bezier(0.15, 0.85, 0.25, 1)';
+                strip.style.transform = `translateX(-${finalOffset}px)`;
+            });
+
+            // 6. По окончании — начисляем и показываем результат
+            const onEnd = () => {
+                strip.removeEventListener('transitionend', onEnd);
+
+                const payout = bet * winPrize.mult;
+                const net = payout - bet;
+
+                if (winPrize.mult > 0) {
+                    updateBalance(payout);
+                    if (winPrize.name === 'ДЖЕКПОТ') {
+                        showResult(`🎉 ДЖЕКПОТ! +${payout} ₽`, winPrize.color);
+                        try { Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch(e) {}
+                    } else {
+                        showResult(`${winPrize.name}: +${payout} ₽ (x${winPrize.mult})`, winPrize.color);
+                        try { Telegram.WebApp.HapticFeedback.notificationOccurred('success'); } catch(e) {}
+                    }
+                } else {
+                    showResult(`${winPrize.name}. Проигрыш −${bet} ₽`, 'var(--error)');
+                    try { Telegram.WebApp.HapticFeedback.notificationOccurred('error'); } catch(e) {}
+                }
+
+                // 7. Плавно возвращаем ленту (без transition), чтобы следующий спин был чистым
+                setTimeout(() => {
+                    resetStrip();
+                    renderItems();
+                    isSpinning = false;
+                    spinBtn.disabled = false;
+                }, 400);
+            };
+            strip.addEventListener('transitionend', onEnd, { once: true });
         });
 
-        // --- 6. ТЕСТ-СТАНЦИЯ (Пока просто открывается) ---
+        function showResult(text, color) {
+            resultText.innerText = text;
+            resultText.style.color = color;
+        }
+
+        // --- 6. ТЕСТ-СТАНЦИЯ (пока открывается) ---
         const adminBtn = document.getElementById('admin-btn');
         const adminModal = document.getElementById('admin-modal');
 
@@ -299,10 +160,4 @@
             adminModal.style.display = 'flex';
         });
 
-        // Временно показываем кнопку Админа, чтобы ты видел, как это выглядит
         adminBtn.style.display = 'block';
-    </script>
-</body>
-</html>
-
-        
