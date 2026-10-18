@@ -8,7 +8,17 @@
 <style>
 *{box-sizing:border-box;-webkit-tap-highlight-color:transparent;margin:0;padding:0}
 html,body{height:100%;overflow:hidden}
-body{font-family:-apple-system,system-ui,'Segoe UI',sans-serif;background:#030712;color:#f8fafc;display:flex;flex-direction:column;height:100vh;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
+body{font-family:-apple-system,system-ui,'Segoe UI',sans-serif;background:#030712;color:#f8fafc;display:flex;flex-direction:column;height:100vh;user-select:none;-webkit-user-select:none;overscroll-behavior:none;position:relative}
+
+/* SNOW */
+#snow{position:fixed;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.snowflake{position:absolute;top:-10px;color:#fff;opacity:.7;font-size:12px;animation:snowfall linear infinite;will-change:transform}
+@keyframes snowfall{0%{transform:translateY(-10px) translateX(0) rotate(0)}100%{transform:translateY(110vh) translateX(20px) rotate(360deg)}}
+
+/* ICICLES */
+#icicles{position:fixed;top:0;left:0;right:0;height:60px;pointer-events:none;z-index:2;overflow:hidden}
+.icicle{position:absolute;top:0;width:14px;background:linear-gradient(180deg,rgba(200,230,255,.9),rgba(150,200,255,.4),transparent);clip-path:polygon(0 0,100% 0,50% 100%);animation:icicleShine 3s ease infinite}
+@keyframes icicleShine{0%,100%{opacity:.7}50%{opacity:1}}
 
 /* LOADER */
 #loader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#0a1628 0%,#030712 70%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .5s,visibility .5s}
@@ -24,7 +34,7 @@ body{font-family:-apple-system,system-ui,'Segoe UI',sans-serif;background:#03071
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* HEADER */
-.header{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#0f172a,#0a1220);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.header{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(10,18,32,.95));border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.3);position:relative;z-index:5}
 .bal-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px}
 .bal{font-size:24px;font-weight:900;color:#10b981;line-height:1.2;font-family:'Courier New',monospace;transition:color .3s;text-shadow:0 0 10px rgba(16,185,129,.3)}
 .bal.up{animation:balUp .5s ease;color:#10b981}
@@ -39,14 +49,14 @@ body{font-family:-apple-system,system-ui,'Segoe UI',sans-serif;background:#03071
 @keyframes adminGlow{0%,100%{box-shadow:0 0 12px rgba(245,158,11,.25)}50%{box-shadow:0 0 20px rgba(245,158,11,.5)}}
 
 /* MAIN */
-.main{flex:1;overflow-y:auto;padding:12px;padding-bottom:80px;-webkit-overflow-scrolling:touch}
+.main{flex:1;overflow-y:auto;padding:12px;padding-bottom:80px;-webkit-overflow-scrolling:touch;position:relative;z-index:3}
 .screen{display:none;flex-direction:column;animation:fadeIn .2s ease}
 .screen.active{display:flex}
 @keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:12px;font-weight:900}
 
 /* CARD */
-.card{background:linear-gradient(180deg,#0f172a,#0a1220);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.card{background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(10,18,32,.95));border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05);box-shadow:0 2px 8px rgba(0,0,0,.2);backdrop-filter:blur(4px)}
 .card-title{font-size:10px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
 
 /* GAMES */
@@ -62,7 +72,7 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 .game-card .badge.hot{background:#ef4444;color:#fff}
 
 /* BET */
-.bet-section{background:linear-gradient(180deg,#0f172a,#0a1220);border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
+.bet-section{background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(10,18,32,.95));border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
 .bet-title{font-size:10px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1px;margin-bottom:6px;display:flex;justify-content:space-between}
 .bet-controls{display:flex;align-items:center;gap:4px;background:#000;border-radius:10px;padding:3px;border:1px solid rgba(255,255,255,.08)}
 .bet-btn{width:36px;height:36px;background:rgba(255,255,255,.08);border:none;border-radius:7px;color:#fff;font-size:18px;font-weight:900;cursor:pointer;transition:.1s}
@@ -79,7 +89,7 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 
 /* BUTTONS */
 .btn{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-weight:900;font-size:15px;text-transform:uppercase;cursor:pointer;transition:transform .1s,box-shadow .2s;font-family:inherit;letter-spacing:.5px;box-shadow:0 4px 12px rgba(14,165,233,.3)}
-.btn:active{transform:scale(.97);box-shadow:0 2px 6px rgba(14,165,233,.2)}
+.btn:active{transform:scale(.97)}
 .btn:disabled{opacity:.5;pointer-events:none}
 .btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;box-shadow:0 4px 12px rgba(245,158,11,.3)}
 .btn-error{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 4px 12px rgba(239,68,68,.3)}
@@ -123,7 +133,7 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 .result-card.jackpot .result-label,.result-card.jackpot .result-amount{color:#f59e0b}
 
 /* PROFILE */
-.profile-card{background:linear-gradient(160deg,#0f172a,#0a1220);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
+.profile-card{background:linear-gradient(160deg,rgba(15,23,42,.95),rgba(10,18,32,.95));border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05);backdrop-filter:blur(4px)}
 .avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;background-size:cover;background-position:center;margin-bottom:4px;box-shadow:0 0 20px rgba(14,165,233,.4)}
 .user-name{font-size:17px;font-weight:900}
 .user-username{font-size:11px;color:#64748b}
@@ -180,9 +190,29 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 .rule-icon{font-size:16px;flex-shrink:0}
 .rule-text{font-size:11px;line-height:1.5;color:#cbd5e1}
 
+/* QUESTS */
+.quest-row{display:flex;justify-content:space-between;align-items:center;padding:8px;background:#1a2332;border-radius:8px;margin-bottom:5px}
+.quest-info{flex:1}
+.quest-name{font-size:12px;font-weight:800;margin-bottom:1px}
+.quest-reward{font-size:10px;color:#10b981;font-weight:800}
+.quest-progress{font-size:10px;color:#64748b;margin-top:2px}
+.quest-claim{padding:6px 12px;background:#10b981;color:#fff;border:none;border-radius:6px;font-weight:900;font-size:11px;cursor:pointer}
+.quest-claim:disabled{background:#243044;color:#64748b;cursor:default}
+.quest-bar{height:4px;background:#243044;border-radius:2px;margin-top:4px;overflow:hidden}
+.quest-fill{height:100%;background:linear-gradient(90deg,#10b981,#059669);border-radius:2px;transition:width .3s}
+
+/* SHOP */
+.shop-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.shop-item{background:#1a2332;border-radius:10px;padding:10px;text-align:center;border:1px solid rgba(255,255,255,.06)}
+.shop-icon{font-size:28px;margin-bottom:4px}
+.shop-name{font-size:11px;font-weight:800;margin-bottom:2px}
+.shop-price{font-size:10px;color:#f59e0b;font-weight:900;margin-bottom:6px}
+.shop-buy{width:100%;padding:6px;background:#0ea5e9;color:#fff;border:none;border-radius:6px;font-weight:900;font-size:10px;cursor:pointer}
+.shop-buy:disabled{background:#243044;color:#64748b;cursor:default}
+
 /* NAV */
-.nav{position:fixed;bottom:0;left:0;width:100%;background:linear-gradient(180deg,#0f172a,#0a1220);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.06);z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.3)}
-.nav-btn{background:transparent;border:none;color:#64748b;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:8px;cursor:pointer;font-weight:800;font-size:8px;text-transform:uppercase;width:60px;transition:color .15s,background .15s}
+.nav{position:fixed;bottom:0;left:0;width:100%;background:linear-gradient(180deg,rgba(15,23,42,.95),rgba(10,18,32,.95));display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.06);z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.3);backdrop-filter:blur(8px)}
+.nav-btn{background:transparent;border:none;color:#64748b;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:8px;cursor:pointer;font-weight:800;font-size:8px;text-transform:uppercase;width:55px;transition:color .15s,background .15s}
 .nav-btn .icon{font-size:18px}
 .nav-btn.active{color:#0ea5e9;background:rgba(14,165,233,.1)}
 
@@ -214,7 +244,6 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 .admin-section{margin-bottom:14px}
 .admin-section-title{font-size:10px;color:#f59e0b;text-transform:uppercase;font-weight:900;letter-spacing:1.5px;margin-bottom:8px;opacity:.8}
 
-/* Admin balance */
 .admin-balance-box{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(245,158,11,.3);box-shadow:0 0 20px rgba(245,158,11,.15);margin-bottom:12px;position:relative}
 .admin-balance-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px;margin-bottom:2px}
 .admin-balance-input{background:transparent;border:none;outline:none;color:#10b981;font-size:32px;font-weight:900;font-family:'Courier New',monospace;text-align:center;width:100%;cursor:pointer;text-shadow:0 0 10px rgba(16,185,129,.3)}
@@ -223,22 +252,43 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 .admin-balance-btns button{flex:1;padding:7px;border-radius:8px;border:none;font-weight:900;font-size:11px;cursor:pointer;background:rgba(255,255,255,.06);color:#fff}
 .admin-balance-btns button:active{transform:scale(.95)}
 
-/* Admin promos list */
 .admin-promos{display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto;background:#000;border-radius:10px;padding:6px;border:1px solid rgba(255,255,255,.05)}
 .admin-promo-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#0f172a;border-radius:6px;font-size:11px}
 .admin-promo-code{font-family:'Courier New',monospace;font-weight:900;color:#f59e0b;letter-spacing:1px}
 .admin-promo-reward{color:#10b981;font-weight:900;font-family:'Courier New',monospace;font-size:11px}
 
-/* Admin toggles */
 .admin-toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#1a2332;border-radius:10px;margin-bottom:6px}
 .admin-toggle-label{display:flex;flex-direction:column;gap:1px}
 .admin-toggle-name{font-size:12px;font-weight:800}
 .admin-toggle-desc{font-size:9px;color:#64748b}
 
+.admin-players{display:flex;flex-direction:column;gap:4px;max-height:250px;overflow-y:auto}
+.admin-player-row{display:flex;align-items:center;gap:8px;padding:8px;background:#1a2332;border-radius:8px;font-size:11px}
+.admin-player-avatar{width:28px;height:28px;border-radius:50%;background:#0ea5e9;color:#000;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;background-size:cover;flex-shrink:0}
+.admin-player-info{flex:1;min-width:0}
+.admin-player-name{font-weight:800;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.admin-player-meta{font-size:9px;color:#64748b}
+.admin-player-balance{font-family:'Courier New',monospace;font-weight:900;color:#10b981;font-size:11px}
+.admin-player-actions{display:flex;gap:3px}
+.admin-mini-btn{padding:4px 6px;background:rgba(255,255,255,.08);color:#fff;border:none;border-radius:5px;font-size:10px;font-weight:900;cursor:pointer}
+.admin-mini-btn:active{transform:scale(.9)}
+
+/* ADMIN LOG */
+.admin-logs{display:flex;flex-direction:column;gap:3px;max-height:150px;overflow-y:auto;background:#000;border-radius:8px;padding:6px;font-family:'Courier New',monospace;font-size:10px;color:#64748b}
+.admin-log-line{padding:2px 0;border-bottom:1px solid rgba(255,255,255,.03)}
+.admin-log-line.warn{color:#f59e0b}
+.admin-log-line.error{color:#ef4444}
+.admin-log-line.success{color:#10b981}
+
 @media(min-width:600px){.main{max-width:480px;margin:0 auto;width:100%}.header{max-width:480px;margin:0 auto;width:100%}.nav{max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
+
+<!-- SNOW -->
+<div id="snow"></div>
+<!-- ICICLES -->
+<div id="icicles"></div>
 
 <div id="loader">
   <div class="loader-spinner"></div>
@@ -267,7 +317,6 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 
   <section class="screen active" id="screen-play">
     <h2><span id="play-icon">🎰</span> <span id="play-title">Рулетка</span></h2>
-
     <div class="bet-section">
       <div class="bet-title"><span>Ставка</span><span id="bet-max">макс 1000</span></div>
       <div class="bet-controls">
@@ -280,16 +329,11 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
         <div class="quick-grid" id="quick-grid"></div>
       </div>
     </div>
-
     <div id="game-view"></div>
-
     <button class="btn" id="play-btn">Крутить</button>
-
     <div class="card history">
       <div class="card-title">История</div>
-      <div class="history-list" id="history-list">
-        <div class="history-empty">Пока пусто</div>
-      </div>
+      <div class="history-list" id="history-list"><div class="history-empty">Пока пусто</div></div>
     </div>
   </section>
 
@@ -298,28 +342,32 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
     <div class="games-grid" id="games-grid"></div>
   </section>
 
+  <section class="screen" id="screen-quests">
+    <h2>📋 Задания</h2>
+    <div class="card">
+      <div class="card-title">Ежедневные</div>
+      <div id="quests-list"></div>
+    </div>
+    <div class="card">
+      <div class="card-title">Магазин</div>
+      <div class="shop-grid" id="shop-grid"></div>
+    </div>
+  </section>
+
   <section class="screen" id="screen-leaderboard">
     <h2>🏆 Топ игроков</h2>
-    <div class="card">
-      <div class="card-title">Лучшие по балансу</div>
-      <div id="leader-list"></div>
-    </div>
-    <div class="card">
-      <div class="card-title">Лучшие по выигрышу</div>
-      <div id="leader-won-list"></div>
-    </div>
+    <div class="card"><div class="card-title">Лучшие по балансу</div><div id="leader-list"></div></div>
+    <div class="card"><div class="card-title">Лучшие по выигрышу</div><div id="leader-won-list"></div></div>
   </section>
 
   <section class="screen" id="screen-profile">
     <h2>👤 Профиль</h2>
-
     <div class="profile-card">
       <div class="avatar" id="avatar">?</div>
       <div class="user-name" id="user-name">Игрок</div>
       <div class="user-username" id="user-username">@</div>
       <div class="user-title" id="user-title">🌱 Новичок</div>
     </div>
-
     <div class="card">
       <div class="card-title">Статистика</div>
       <div class="stats-grid">
@@ -329,38 +377,22 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
         <div class="stat"><div class="stat-label">Профит</div><div class="stat-value" id="stat-profit">0</div></div>
       </div>
     </div>
-
     <div class="card">
       <div class="card-title">Настройки</div>
       <div class="setting-row"><div class="label">🔊 Звук</div><button class="toggle on" id="toggle-sound"></button></div>
       <div class="setting-row"><div class="label">📳 Вибрация</div><button class="toggle on" id="toggle-haptic"></button></div>
       <div class="setting-row"><div class="label">⚡ Турбо режим</div><button class="toggle" id="toggle-turbo"></button></div>
+      <div class="setting-row"><div class="label">❄️ Снег</div><button class="toggle on" id="toggle-snow"></button></div>
     </div>
-
-    <div class="card">
-      <div class="card-title">Темы оформления</div>
-      <div class="themes-grid" id="themes-grid"></div>
-    </div>
-
+    <div class="card"><div class="card-title">Темы оформления</div><div class="themes-grid" id="themes-grid"></div></div>
     <div class="card">
       <div class="card-title">Промокод</div>
       <input type="text" class="promo-input" id="promo-input" placeholder="ВВЕДИ КОД">
       <button class="btn btn-sm" id="promo-btn">Активировать</button>
     </div>
-
-    <div class="card">
-      <div class="card-title">Достижения</div>
-      <div class="ach-grid" id="ach-grid"></div>
-    </div>
-
-    <div class="card">
-      <div class="card-title">Правила</div>
-      <div class="rules-list" id="rules-list"></div>
-    </div>
-
-    <div class="card">
-      <button class="btn btn-sm btn-error" id="reset-btn">Сбросить прогресс</button>
-    </div>
+    <div class="card"><div class="card-title">Достижения</div><div class="ach-grid" id="ach-grid"></div></div>
+    <div class="card"><div class="card-title">Правила</div><div class="rules-list" id="rules-list"></div></div>
+    <div class="card"><button class="btn btn-sm btn-error" id="reset-btn">Сбросить прогресс</button></div>
   </section>
 
 </main>
@@ -368,6 +400,7 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 <nav class="nav">
   <button class="nav-btn active" data-screen="play"><span class="icon">🎮</span><span>Играть</span></button>
   <button class="nav-btn" data-screen="games"><span class="icon">🎲</span><span>Игры</span></button>
+  <button class="nav-btn" data-screen="quests"><span class="icon">📋</span><span>Задания</span></button>
   <button class="nav-btn" data-screen="leaderboard"><span class="icon">🏆</span><span>Топ</span></button>
   <button class="nav-btn" data-screen="profile"><span class="icon">👤</span><span>Профиль</span></button>
 </nav>
@@ -404,6 +437,11 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
     </div>
 
     <div class="admin-section">
+      <div class="admin-section-title">👥 Игроки (только вы)</div>
+      <div class="admin-players" id="admin-players"></div>
+    </div>
+
+    <div class="admin-section">
       <div class="admin-section-title">📜 Промокоды и награды</div>
       <div class="admin-promos" id="admin-promos"></div>
     </div>
@@ -411,6 +449,11 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
     <div class="admin-section">
       <div class="admin-section-title">🎛️ Функции админа</div>
       <div id="admin-toggles"></div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">📋 Логи</div>
+      <div class="admin-logs" id="admin-logs"></div>
     </div>
   </div>
 </div>
@@ -420,17 +463,76 @@ h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;
 'use strict';
 try{Telegram.WebApp.ready();Telegram.WebApp.expand();Telegram.WebApp.disableVerticalSwipes();}catch(e){}
 
+/* SNOW */
+(function(){
+  var snow=document.getElementById('snow');
+  var count=window.innerWidth<400?25:40;
+  for(var i=0;i<count;i++){
+    var f=document.createElement('div');
+    f.className='snowflake';
+    f.textContent='❄';
+    f.style.left=Math.random()*100+'%';
+    f.style.fontSize=(8+Math.random()*10)+'px';
+    f.style.animationDuration=(5+Math.random()*8)+'s';
+    f.style.animationDelay=(-Math.random()*10)+'s';
+    f.style.opacity=0.3+Math.random()*0.5;
+    snow.appendChild(f);
+  }
+})();
+
+/* ICICLES */
+(function(){
+  var ic=document.getElementById('icicles');
+  var count=Math.floor(window.innerWidth/40);
+  for(var i=0;i<count;i++){
+    var d=document.createElement('div');
+    d.className='icicle';
+    d.style.left=(i*(100/count)+Math.random()*2)+'%';
+    d.style.height=(20+Math.random()*40)+'px';
+    d.style.width=(10+Math.random()*8)+'px';
+    d.style.animationDelay=(Math.random()*3)+'s';
+    ic.appendChild(d);
+  }
+})();
+
 /* SETTINGS */
 var Settings=(function(){
-  var KEY='casino_set_v2';
-  var d={sound:true,haptic:true,turbo:false};
-  try{var s=JSON.parse(localStorage.getItem(KEY));if(s)d=s;}catch(e){}
+  var KEY='casino_set_v3';
+  var d={sound:true,haptic:true,turbo:false,snow:true};
+  try{var s=JSON.parse(localStorage.getItem(KEY));if(s)d=Object.assign(d,s);}catch(e){}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
-  return{get sound(){return d.sound;},get haptic(){return d.haptic;},get turbo(){return d.turbo;},set sound(v){d.sound=v;save();},set haptic(v){d.haptic=v;save();},set turbo(v){d.turbo=v;save();}};
+  return{get sound(){return d.sound;},get haptic(){return d.haptic;},get turbo(){return d.turbo;},get snow(){return d.snow;},set sound(v){d.sound=v;save();},set haptic(v){d.haptic=v;save();},set turbo(v){d.turbo=v;save();},set snow(v){d.snow=v;save();}};
 })();
 
 function haptic(t){if(!Settings.haptic)return;try{Telegram.WebApp.HapticFeedback.impactOccurred(t||'light');}catch(e){}}
 function hapticNotify(t){if(!Settings.haptic)return;try{Telegram.WebApp.HapticFeedback.notificationOccurred(t);}catch(e){}}
+
+/* ADMIN LOGS */
+var AdminLogs=(function(){
+  var KEY='casino_admin_logs_v1';
+  var logs=[];
+  try{logs=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(logs.slice(0,50)));}catch(e){}}
+  function render(){
+    var el=document.getElementById('admin-logs');if(!el)return;
+    el.innerHTML='';
+    if(!logs.length){el.innerHTML='<div class="admin-log-line">Нет логов</div>';return;}
+    for(var i=0;i<logs.length;i++){
+      var l=logs[i];var line=document.createElement('div');
+      line.className='admin-log-line '+(l.type||'');
+      line.textContent='['+l.time+'] '+l.text;
+      el.appendChild(line);
+    }
+  }
+  return{
+    add:function(text,type){
+      var t=new Date().toLocaleTimeString('ru-RU',{hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      logs.unshift({text:text,type:type||'',time:t});
+      save();render();
+    },
+    render:render
+  };
+})();
 
 /* ADMIN SETTINGS */
 var AdminSettings=(function(){
@@ -569,6 +671,102 @@ var PROMO_CODES={
   KING:20000,QUEEN:12000,ACE:8000,PRO:6000,NOOB:300,XMAS:5000,NEWYEAR:4000,LOVE:777,
   RICH:40000,DIAMOND:35000,GOLD:18000,SILVER:9000,BRONZE:4500,PLUS:2500,MAX:50000
 };
+
+/* QUESTS */
+var Quests=(function(){
+  var KEY='casino_quests_v1';
+  var data={};
+  try{data=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){}
+  var today=new Date().toDateString();
+  if(data.date!==today){data={date:today,list:{}};}
+  var LIST=[
+    {id:'spins_5',name:'Сделай 5 спинов',reward:500,target:5,type:'spins'},
+    {id:'spins_20',name:'Сделай 20 спинов',reward:2000,target:20,type:'spins'},
+    {id:'win_3',name:'Выиграй 3 раза',reward:800,target:3,type:'wins'},
+    {id:'bet_1000',name:'Поставь на 1000 ₽',reward:1000,target:1000,type:'bet'},
+    {id:'jackpot',name:'Сорви джекпот',reward:5000,target:1,type:'jackpot'}
+  ];
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){}}
+  function getProgress(id){
+    if(!data.list[id])data.list[id]={progress:0,claimed:false};
+    return data.list[id];
+  }
+  function render(){
+    var el=document.getElementById('quests-list');if(!el)return;
+    el.innerHTML='';
+    for(var i=0;i<LIST.length;i++){
+      var q=LIST[i];var p=getProgress(q.id);
+      var row=document.createElement('div');
+      row.className='quest-row';
+      var done=p.progress>=q.target;
+      var claimed=p.claimed;
+      row.innerHTML='<div class="quest-info"><div class="quest-name">'+q.name+'</div><div class="quest-reward">+'+q.reward+' ₽</div><div class="quest-progress">'+Math.min(p.progress,q.target)+'/'+q.target+'</div><div class="quest-bar"><div class="quest-fill" style="width:'+Math.min(100,p.progress/q.target*100)+'%"></div></div></div><button class="quest-claim" '+(done&&!claimed?'':'disabled')+'>'+(claimed?'✓':done?'Забрать':'...')+'</button>';
+      (function(q,p,btn){
+        btn.onclick=function(){
+          if(p.progress>=q.target&&!p.claimed){
+            p.claimed=true;save();
+            Wallet.applyDelta(q.reward);
+            Toast.show('+'+q.reward+' ₽','success');
+            render();
+          }
+        };
+      })(q,p,row.querySelector('.quest-claim'));
+      el.appendChild(row);
+    }
+  }
+  return{
+    render:render,
+    progress:function(type,amount){
+      for(var i=0;i<LIST.length;i++){
+        var q=LIST[i];
+        if(q.type===type){
+          var p=getProgress(q.id);
+          p.progress+=amount;
+          save();
+        }
+      }
+      render();
+    }
+  };
+})();
+
+/* SHOP */
+var Shop=(function(){
+  var KEY='casino_shop_v1';
+  var owned=[];
+  try{owned=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){}
+  var ITEMS=[
+    {id:'title_king',name:'Титул: Король',icon:'👑',price:5000},
+    {id:'title_lucky',name:'Титул: Везунчик',icon:'🍀',price:3000},
+    {id:'title_rich',name:'Титул: Богач',icon:'💰',price:10000},
+    {id:'theme_summer',name:'Тема: Лето',icon:'☀️',price:5000},
+    {id:'theme_autumn',name:'Тема: Осень',icon:'🍂',price:5000},
+    {id:'theme_spring',name:'Тема: Весна',icon:'🌸',price:5000}
+  ];
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(owned));}catch(e){}}
+  function render(){
+    var el=document.getElementById('shop-grid');if(!el)return;
+    el.innerHTML='';
+    for(var i=0;i<ITEMS.length;i++){
+      (function(item){
+        var isOwned=owned.indexOf(item.id)>=0;
+        var div=document.createElement('div');
+        div.className='shop-item';
+        div.innerHTML='<div class="shop-icon">'+item.icon+'</div><div class="shop-name">'+item.name+'</div><div class="shop-price">'+item.price+' ₽</div><button class="shop-buy" '+(isOwned?'disabled':'')+'>'+(isOwned?'Куплено':'Купить')+'</button>';
+        div.querySelector('.shop-buy').onclick=function(){
+          if(isOwned)return;
+          if(Wallet.balance<item.price){Toast.show('Не хватает '+item.price+' ₽','error');return;}
+          Wallet.applyDelta(-item.price);
+          owned.push(item.id);save();
+          Toast.show('Куплено: '+item.name,'success');
+          render();
+        };
+        el.appendChild(div);
+      })(ITEMS[i]);
+    }
+  }
+  return{render:render};
+})();
 
 /* GAMES */
 var GAMES=[];
@@ -800,15 +998,16 @@ var Promo=(function(){
     activate:function(code){
       code=(code||'').trim().toUpperCase();
       if(code==='ADMIN_KFG ON'||code==='ADMIN_KFG'){
-        AdminSettings.setActive(true);renderAdminUI();Toast.show('👑 Режим администратора включен','gold');hapticNotify('success');return;
+        AdminSettings.setActive(true);renderAdminUI();AdminLogs.add('Админ включен','success');Toast.show('👑 Режим администратора включен','gold');hapticNotify('success');return;
       }
       if(code==='ADMIN_KFG OFF'){
-        AdminSettings.setActive(false);renderAdminUI();Toast.show('Режим администратора выключен','error');return;
+        AdminSettings.setActive(false);renderAdminUI();AdminLogs.add('Админ выключен','warn');Toast.show('Режим администратора выключен','error');return;
       }
       if(!code){Toast.show('Введи код','error');return;}
       if(used.indexOf(code)>=0){Toast.show('Код уже использован','error');return;}
       if(!PROMO_CODES[code]){Toast.show('Неверный код','error');return;}
       used.push(code);save();Wallet.applyDelta(PROMO_CODES[code]);Toast.show('+'+PROMO_CODES[code]+' ₽','success');hapticNotify('success');
+      AdminLogs.add('Промокод: '+code+' +'+PROMO_CODES[code],'success');
     }
   };
 })();
@@ -921,6 +1120,10 @@ var Engine=(function(){
       if(result){
         if(result.win)Wallet.applyDelta(result.payout);
         Wallet.recordBet({game:current.name,bet:bet,payout:result.payout,delta:result.delta});
+        Quests.progress('spins',1);
+        if(result.win)Quests.progress('wins',1);
+        Quests.progress('bet',bet);
+        if(result.jackpot)Quests.progress('jackpot',1);
         var type=result.jackpot?'jackpot':(result.win?'win':'lose');
         ResultModal.show({label:result.jackpot?'🎉 ДЖЕКПОТ':result.label,amount:result.win?'+'+result.delta+' ₽':'-'+bet+' ₽',type:type});
         if(result.jackpot){Sound.jackpot();hapticNotify('warning');Achievements.check('jackpot');}
@@ -957,6 +1160,7 @@ var Nav=(function(){
     for(var i=0;i<screens.length;i++)screens[i].classList.toggle('active',screens[i].id==='screen-'+id);
     for(var j=0;j<buttons.length;j++)buttons[j].classList.toggle('active',buttons[j].dataset.screen===id);
     if(id==='leaderboard')Leaderboard.render();
+    if(id==='quests'){Quests.render();Shop.render();}
   }
   for(var k=0;k<buttons.length;k++){(function(b){b.addEventListener('click',function(){if(Engine.busy)return;show(b.dataset.screen);haptic();});})(buttons[k]);}
   return{show:show};
@@ -975,11 +1179,12 @@ var Nav=(function(){
 (function(){
   var ts=document.getElementById('toggle-sound');var th=document.getElementById('toggle-haptic');
   var tt=document.getElementById('toggle-turbo');var bs=document.getElementById('btn-sound');
-  var tInd=document.getElementById('turbo-ind');
-  function sync(){ts.classList.toggle('on',Settings.sound);th.classList.toggle('on',Settings.haptic);tt.classList.toggle('on',Settings.turbo);bs.textContent=Settings.sound?'🔊':'🔇';tInd.classList.toggle('show',Settings.turbo);}
+  var tInd=document.getElementById('turbo-ind');var tsn=document.getElementById('toggle-snow');
+  function sync(){ts.classList.toggle('on',Settings.sound);th.classList.toggle('on',Settings.haptic);tt.classList.toggle('on',Settings.turbo);tsn.classList.toggle('on',Settings.snow);bs.textContent=Settings.sound?'🔊':'🔇';tInd.classList.toggle('show',Settings.turbo);document.getElementById('snow').style.display=Settings.snow?'block':'none';}
   ts.onclick=function(){Settings.sound=!Settings.sound;sync();haptic();};
   th.onclick=function(){Settings.haptic=!Settings.haptic;sync();haptic();};
   tt.onclick=function(){Settings.turbo=!Settings.turbo;sync();haptic();Toast.show(Settings.turbo?'⚡ Турбо':'');};
+  tsn.onclick=function(){Settings.snow=!Settings.snow;sync();haptic();Toast.show(Settings.snow?'❄️ Снег':'');};
   bs.onclick=function(){Settings.sound=!Settings.sound;sync();haptic();};
   sync();
 })();
@@ -993,21 +1198,18 @@ function renderAdminUI(){
 }
 
 function renderAdminPromos(){
-  var el=document.getElementById('admin-promos');
-  el.innerHTML='';
+  var el=document.getElementById('admin-promos');el.innerHTML='';
   var keys=Object.keys(PROMO_CODES);
   for(var i=0;i<keys.length;i++){
     var k=keys[i];
-    var row=document.createElement('div');
-    row.className='admin-promo-row';
+    var row=document.createElement('div');row.className='admin-promo-row';
     row.innerHTML='<span class="admin-promo-code">'+k+'</span><span class="admin-promo-reward">+'+PROMO_CODES[k].toLocaleString('ru-RU')+' ₽</span>';
     el.appendChild(row);
   }
 }
 
 function renderAdminToggles(){
-  var el=document.getElementById('admin-toggles');
-  el.innerHTML='';
+  var el=document.getElementById('admin-toggles');el.innerHTML='';
   var features=[
     {key:'godmode',name:'🛡️ Godmode',desc:'Не проигрывать'},
     {key:'noloss',name:'💰 No-Loss',desc:'Ставки не списываются'},
@@ -1020,17 +1222,15 @@ function renderAdminToggles(){
   ];
   for(var i=0;i<features.length;i++){
     (function(f){
-      var row=document.createElement('div');
-      row.className='admin-toggle-row';
-      var label=document.createElement('div');
-      label.className='admin-toggle-label';
+      var row=document.createElement('div');row.className='admin-toggle-row';
+      var label=document.createElement('div');label.className='admin-toggle-label';
       label.innerHTML='<div class="admin-toggle-name">'+f.name+'</div><div class="admin-toggle-desc">'+f.desc+'</div>';
-      var toggle=document.createElement('button');
-      toggle.className='toggle'+(AdminSettings.get(f.key)?' on':'');
+      var toggle=document.createElement('button');toggle.className='toggle'+(AdminSettings.get(f.key)?' on':'');
       toggle.onclick=function(){
         var newVal=AdminSettings.toggle(f.key);
         toggle.classList.toggle('on',newVal);
         Toast.show(f.name+': '+(newVal?'ВКЛ':'ВЫКЛ'),newVal?'success':'error');
+        AdminLogs.add(f.name+': '+(newVal?'ВКЛ':'ВЫКЛ'),newVal?'success':'warn');
         haptic();
         if(f.key==='infinite'&&newVal){Wallet.setBalance(999999999);}
       };
@@ -1040,38 +1240,45 @@ function renderAdminToggles(){
   }
 }
 
-/* ADMIN OPEN/CLOSE */
+function renderAdminPlayers(){
+  var el=document.getElementById('admin-players');el.innerHTML='';
+  var u=null;try{u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;}catch(e){}
+  if(!u){el.innerHTML='<div class="admin-log-line">Нет данных (не в Telegram)</div>';return;}
+  var name=[u.first_name,u.last_name].filter(Boolean).join(' ')||'Игрок';
+  var row=document.createElement('div');row.className='admin-player-row';
+  var av=u.photo_url?'background-image:url('+u.photo_url+')':'';
+  var avText=u.photo_url?'':(u.first_name||'?').charAt(0).toUpperCase();
+  row.innerHTML='<div class="admin-player-avatar" style="'+av+'">'+avText+'</div><div class="admin-player-info"><div class="admin-player-name">'+name+'</div><div class="admin-player-meta">ID: '+u.id+(u.username?' • @'+u.username:'')+'</div></div><div class="admin-player-balance">'+Wallet.balance.toLocaleString('ru-RU')+' ₽</div>';
+  el.appendChild(row);
+  var meta=document.createElement('div');meta.className='admin-log-line';
+  meta.textContent='Спинов: '+Wallet.stats.spins+' • Выиграно: '+Wallet.stats.won+' ₽ • Проиграно: '+Wallet.stats.lost+' ₽';
+  el.appendChild(meta);
+}
+
 document.getElementById('admin-open').onclick=function(){
   document.getElementById('admin-modal').classList.add('show');
   document.getElementById('admin-balance-input').value=Wallet.balance;
-  renderAdminPromos();
-  renderAdminToggles();
+  renderAdminPromos();renderAdminToggles();renderAdminPlayers();AdminLogs.render();
   haptic();
 };
-document.getElementById('admin-close').onclick=function(){
-  document.getElementById('admin-modal').classList.remove('show');
-};
+document.getElementById('admin-close').onclick=function(){document.getElementById('admin-modal').classList.remove('show');};
 
-/* ADMIN BALANCE INPUT */
 (function(){
   var inp=document.getElementById('admin-balance-input');
   inp.addEventListener('change',function(){
     var v=parseInt(inp.value);
     if(isNaN(v)||v<0){inp.value=Wallet.balance;return;}
-    Wallet.setBalance(v);Toast.show('Баланс: '+v+' ₽','success');
+    Wallet.setBalance(v);Toast.show('Баланс: '+v+' ₽','success');AdminLogs.add('Баланс изменён: '+v,'success');
   });
   inp.addEventListener('blur',function(){inp.value=Wallet.balance;});
   var btns=document.querySelectorAll('[data-set]');
-  for(var i=0;i<btns.length;i++){
-    (function(b){b.onclick=function(){var v=parseInt(b.dataset.set);Wallet.setBalance(v);inp.value=v;Toast.show('Баланс: '+v+' ₽','success');haptic();};})(btns[i]);
-  }
+  for(var i=0;i<btns.length;i++){(function(b){b.onclick=function(){var v=parseInt(b.dataset.set);Wallet.setBalance(v);inp.value=v;Toast.show('Баланс: '+v+' ₽','success');haptic();};})(btns[i]);}
 })();
 
-/* RESET */
 document.getElementById('reset-btn').onclick=function(){
   if(!confirm('Сбросить весь прогресс?'))return;
   Wallet.reset();
-  try{localStorage.removeItem('casino_ach_v3');localStorage.removeItem('casino_promo_v5');localStorage.removeItem('casino_theme_v2');localStorage.removeItem('casino_theme_unlocked_v2');localStorage.removeItem('casino_bonus_v3');localStorage.removeItem('casino_leaders_v2');localStorage.removeItem('casino_admin_v1');localStorage.removeItem('casino_admin_on');}catch(e){}
+  try{localStorage.removeItem('casino_ach_v3');localStorage.removeItem('casino_promo_v5');localStorage.removeItem('casino_theme_v2');localStorage.removeItem('casino_theme_unlocked_v2');localStorage.removeItem('casino_bonus_v3');localStorage.removeItem('casino_leaders_v2');localStorage.removeItem('casino_admin_v1');localStorage.removeItem('casino_admin_on');localStorage.removeItem('casino_admin_logs_v1');localStorage.removeItem('casino_quests_v1');localStorage.removeItem('casino_shop_v1');}catch(e){}
   Toast.show('Прогресс сброшен','success');
   setTimeout(function(){location.reload();},500);
 };
