@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Monolith</title>
+    <title>Gearfe Casino: Patterns</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
         :root { --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b; --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444; --radius: 20px; }
@@ -18,48 +18,66 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
-        /* --- РЕАЛИСТИЧНЫЙ ФОН --- */
-        .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        
-        .falling-obj { position: absolute; top: -100px; animation: fall linear infinite; z-index: 2; background-size: contain; background-repeat: no-repeat; background-position: center; }
+        /* --- УЗОРЫ НА КНОПКАХ --- */
+        .btn { 
+            padding: 16px; font-size: 16px; cursor: pointer; width: 100%; 
+            background: linear-gradient(90deg, var(--primary), #3b82f6); color: #fff; 
+            border: none; border-radius: var(--radius); font-weight: 900; text-transform: uppercase; 
+            margin-top: 10px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); 
+            position: relative; overflow: hidden;
+        }
+        .btn:active { transform: scale(0.96); }
+
+        /* Зима: Морозный узор */
+        body.theme-winter .btn::after {
+            content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(255,255,255,0.4) 1px, transparent 1px),
+                radial-gradient(circle at 90% 80%, rgba(255,255,255,0.4) 1px, transparent 1px),
+                linear-gradient(45deg, transparent 48%, rgba(255,255,255,0.2) 49%, rgba(255,255,255,0.2) 51%, transparent 52%);
+            background-size: 20px 20px, 20px 20px, 10px 10px;
+            opacity: 0.3; pointer-events: none;
+        }
+
+        /* Осень: Паутина */
+        body.theme-autumn .btn {
+            background: linear-gradient(90deg, #7c2d12, #ea580c);
+            border: 1px solid #ea580c;
+        }
+        body.theme-autumn .btn::after {
+            content: ''; position: absolute; top: 0; right: 0; width: 100%; height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M100,0 L100,100 M100,0 L0,100 M100,0 L0,30 M100,0 L0,60 M100,0 L30,100 M100,0 L60,100 M100,50 Q50,50 0,50 M100,100 Q50,50 0,0' stroke='rgba(255,255,255,0.3)' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+            background-size: 150px 150px; background-position: top right; background-repeat: no-repeat;
+            opacity: 0.5; pointer-events: none;
+        }
+
+        /* Весна: Блики воды */
+        body.theme-spring .btn {
+            background: linear-gradient(90deg, #10b981, #34d399);
+        }
+        body.theme-spring .btn::after {
+            content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transform: skewX(-20deg); animation: shine 3s infinite; pointer-events: none;
+        }
+        @keyframes shine { 0% { left: -100%; } 100% { left: 200%; } }
+
+        /* Лето: Лучи солнца */
+        body.theme-summer .btn {
+            background: linear-gradient(90deg, #15803d, #22c55e);
+        }
+        body.theme-summer .btn::after {
+            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+            background-image: repeating-linear-gradient(45deg, transparent, transparent 10px, rgba(255,255,255,0.1) 10px, rgba(255,255,255,0.1) 20px);
+            animation: rotateRays 10s linear infinite; pointer-events: none;
+        }
+        @keyframes rotateRays { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* --- ПАДАЮЩИЕ ОБЪЕКТЫ --- */
+        .falling-obj { position: absolute; top: -20px; animation: fall linear infinite; z-index: 2; opacity: 0.8; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 50% { transform: translateY(50vh) rotate(180deg) translateX(20px); } 100% { transform: translateY(110vh) rotate(360deg) translateX(0); } }
 
-        /* Сосульки */
-        .icicles-container { position: absolute; top: 60px; left: 0; width: 100%; height: 150px; display: flex; justify-content: space-around; z-index: 3; }
-        .icicle-img { width: 30px; height: 100%; background-size: contain; background-repeat: no-repeat; background-position: top center; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
-
-        /* Земля */
-        .ground-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; z-index: 2; background-size: cover; background-position: bottom; background-repeat: no-repeat; }
-
-        /* ПРАВИЛЬНЫЕ ССЫЛКИ НА ТВОИ КАРТИНКИ */
-        .img-grass { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
-        .img-leaves { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaves.jpg'); }
-        .img-icicle { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/icicle.png'); }
-        .img-snowflake { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); }
-
-        /* Видимость */
-        body.theme-winter .icicle-img { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/icicle.png'); }
-        body.theme-winter .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); width: 25px; height: 25px; opacity: 0.8; }
-        body.theme-winter .snowdrifts { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowdrifts.jpg'); height: 80px; position: absolute; bottom: 0; width: 100%; background-size: cover; background-position: bottom; z-index: 2; }
-        body.theme-winter .ground-layer { display: none; }
-
-        body.theme-autumn .icicle-img { display: none; } 
-        body.theme-autumn .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaf.png'); width: 30px; height: 30px; opacity: 0.9; }
-        body.theme-autumn .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaves.jpg'); }
-
-        body.theme-summer .icicle-img { display: none; } 
-        body.theme-summer .falling-obj { display: none; }
-        body.theme-summer .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
-
-        body.theme-spring .icicle-img { display: block; filter: hue-rotate(90deg) drop-shadow(0 5px 5px rgba(0,0,0,0.3)); } 
-        body.theme-spring .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); width: 20px; height: 20px; opacity: 0.5; }
-        body.theme-spring .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
-
-
         /* --- ИНТЕРФЕЙС --- */
-        /* Сдвинул кнопку "Крутить" выше, чтобы не перекрывала меню */
-        #view-roulette { padding-bottom: 20px; }
-
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: #0f172a; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .balance-box { display: flex; flex-direction: column; }
         .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -70,10 +88,6 @@
         .screen { display: none; flex: 1; flex-direction: column; overflow-y: auto; padding: 0 15px 100px 15px; z-index: 5; }
         .screen.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        
-        .btn { padding: 16px; font-size: 16px; cursor: pointer; width: 100%; background: linear-gradient(90deg, var(--primary), #3b82f6); color: #fff; border: none; border-radius: var(--radius); font-weight: 900; text-transform: uppercase; margin-top: 10px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .btn:active { transform: scale(0.96); }
-        .btn-gold { background: linear-gradient(90deg, var(--gold), #d97706); color: #000; }
 
         .game-card { background: var(--surface); border-radius: var(--radius); height: 130px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 900; font-size: 13px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
         .game-card:active { transform: scale(0.95); border-color: var(--primary); }
@@ -134,12 +148,7 @@
     </style>
 </head>
 <body id="body-theme" class="theme-winter">
-    <div class="season-bg">
-        <div class="icicles-container" id="icicles"></div>
-        <div class="ground-layer" id="ground"></div>
-        <div class="snowdrifts"></div>
-        <div id="falling-container"></div>
-    </div>
+    <div class="season-bg" id="season-bg"></div>
 
     <div class="header">
         <div class="balance-box"><span class="balance-label">Баланс</span><span class="balance" id="balance">0</span></div>
@@ -289,29 +298,33 @@
         const savedTheme = localStorage.getItem('theme') || 'theme-winter';
         document.getElementById('body-theme').className = savedTheme;
 
-        // --- ГЕНЕРАЦИЯ КРАСИВОГО ФОНА ---
+        // --- ГЕНЕРАЦИЯ ФОНА (ЧИСТЫЙ CSS) ---
         function renderSeasonBg() {
             const currentTheme = localStorage.getItem('theme') || 'theme-winter';
+            const bgContainer = document.getElementById('season-bg');
+            bgContainer.innerHTML = '';
             
-            document.getElementById('icicles').innerHTML = '';
-            document.getElementById('falling-container').innerHTML = '';
-            
-            for (let i = 0; i < 20; i++) {
-                const ic = document.createElement('div');
-                ic.className = 'icicle-img';
-                ic.style.height = (Math.random() * 60 + 40) + 'px';
-                document.getElementById('icicles').appendChild(ic);
-            }
-            
-            const fallingContainer = document.getElementById('falling-container');
-            
-            for (let i = 0; i < 30; i++) {
+            let numObjects = 30;
+            for (let i = 0; i < numObjects; i++) {
                 const el = document.createElement('div');
                 el.className = 'falling-obj';
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.animationDuration = (Math.random() * 5 + 4) + 's';
                 el.style.animationDelay = Math.random() * 5 + 's';
-                fallingContainer.appendChild(el);
+                
+                if (currentTheme === 'theme-winter') {
+                    el.innerHTML = `<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07"/></svg>`;
+                    el.style.opacity = 0.7;
+                } else if (currentTheme === 'theme-autumn') {
+                    el.innerHTML = `<svg width="25" height="25" viewBox="0 0 24 24" fill="#ea580c"><path d="M12 2L14 9H21L16 13L19 20L12 17L5 20L8 13L3 9H10L12 2Z"/></svg>`;
+                    el.style.opacity = 0.8;
+                } else if (currentTheme === 'theme-spring') {
+                    el.innerHTML = `<svg width="15" height="15" viewBox="0 0 24 24" fill="#fff"><circle cx="12" cy="12" r="5"/></svg>`;
+                    el.style.opacity = 0.5;
+                } else {
+                    el.style.display = 'none';
+                }
+                bgContainer.appendChild(el);
             }
         }
         renderSeasonBg();
