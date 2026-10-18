@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Final Fix</title>
+    <title>Gearfe Casino: Monolith</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
         :root { --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b; --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444; --radius: 20px; }
@@ -18,35 +18,41 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
-        /* --- ФОНЫ --- */
+        /* --- СЕЗОННЫЙ ФОН --- */
         .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        .snowflake, .leaf { position: absolute; top: -30px; animation: fall linear infinite; }
-        @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
         
-        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: space-around; }
-        .icicle { width: 12px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); }
-        .icicle-melting { width: 12px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
-        .icicle-melting::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 6px; height: 12px; background: rgba(52,211,153,0.9); border-radius: 50%; animation: drip 1s infinite; }
+        /* Анимация падения */
+        .falling-obj { position: absolute; top: -50px; animation: fall linear infinite; z-index: 2; }
+        @keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 50% { transform: translateY(50vh) rotate(180deg) translateX(20px); } 100% { transform: translateY(110vh) rotate(360deg) translateX(0); } }
+
+        /* Сосульки */
+        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: space-around; z-index: 3; }
+        .icicle { width: 14px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.8) 50%, transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); filter: drop-shadow(0 5px 5px rgba(0,0,0,0.5)); }
+        .icicle-melting { width: 14px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.8) 50%, transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
+        .icicle-melting::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 4px; height: 8px; background: #34d399; border-radius: 50%; animation: drip 1.5s infinite; }
         @keyframes drip { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(30px) scale(0.5); opacity: 0; } }
 
-        .grass-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; display: none; border-radius: 50% 50% 0 0 / 20px 20px 0 0; }
-        .grass-summer { background: linear-gradient(to top, #15803d, transparent); display: block; }
-        .grass-spring { background: linear-gradient(to top, #22c55e, transparent); display: block; }
-        .grass-autumn { background: linear-gradient(to top, #7c2d12, transparent); display: block; }
-        .snowdrifts { background: linear-gradient(to top, #fff, transparent); height: 80px; position: absolute; bottom: 0; width: 100%; display: none; border-radius: 50% 50% 0 0 / 30px 30px 0 0; }
+        /* Земля (Сугробы и Трава) */
+        .ground-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; z-index: 2; }
+        
+        .snowdrift { position: absolute; bottom: 0; width: 100%; height: 100%; background: linear-gradient(to top, #e2e8f0 40%, transparent); border-radius: 50% 50% 0 0 / 40px 40px 0 0; box-shadow: inset 0 20px 20px rgba(255,255,255,0.5); }
+        .snowdrift:nth-child(2) { bottom: -20px; height: 110%; background: linear-gradient(to top, #cbd5e1 40%, transparent); border-radius: 40% 60% 0 0 / 50px 50px 0 0; opacity: 0.7; }
 
+        .grass-svg { position: absolute; bottom: 0; width: 100%; height: 100%; }
+
+        /* Видимость элементов */
         body.theme-winter .icicle { display: block; } body.theme-winter .icicle-melting { display: none; }
-        body.theme-winter .snowflake { display: block; } body.theme-winter .snowdrifts { display: block; }
-        body.theme-winter .grass-layer, body.theme-winter .leaf { display: none; }
+        body.theme-winter .snowflake { display: block; } body.theme-winter .snowdrift { display: block; }
+        body.theme-winter .grass-svg, body.theme-winter .leaf { display: none; }
 
         body.theme-spring .icicle { display: none; } body.theme-spring .icicle-melting { display: block; }
         body.theme-spring .grass-spring { display: block; } 
-        body.theme-spring .snowflake, body.theme-spring .snowdrifts, body.theme-spring .leaf, body.theme-spring .grass-summer, body.theme-spring .grass-autumn { display: none; }
+        body.theme-spring .snowflake, body.theme-spring .snowdrift, body.theme-spring .leaf, body.theme-spring .grass-summer, body.theme-spring .grass-autumn { display: none; }
 
-        body.theme-summer .icicle, body.theme-summer .icicle-melting, body.theme-summer .snowflake, body.theme-summer .snowdrifts, body.theme-summer .leaf { display: none; }
+        body.theme-summer .icicle, body.theme-summer .icicle-melting, body.theme-summer .snowflake, body.theme-summer .snowdrift, body.theme-summer .leaf { display: none; }
         body.theme-summer .grass-summer { display: block; }
 
-        body.theme-autumn .icicle, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts { display: none; }
+        body.theme-autumn .icicle, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrift { display: none; }
         body.theme-autumn .grass-autumn { display: block; } body.theme-autumn .leaf { display: block; }
 
         /* --- ИНТЕРФЕЙС --- */
@@ -92,7 +98,6 @@
         .pass-progress { height: 14px; background: #222; border-radius: 10px; margin-top: 15px; overflow: hidden; }
         .pass-bar { height: 100%; background: var(--gold); width: 0%; }
 
-        /* Рулетка */
         .roulette-container { width: 100%; overflow: hidden; position: relative; padding: 25px 0; background: #000; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
         .roulette-strip { display: flex; gap: 8px; }
         .r-item { min-width: 85px; height: 85px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px; font-weight: 900; font-size: 12px; border: 2px solid; background: var(--surface); flex-shrink: 0; }
@@ -127,10 +132,23 @@
 <body id="body-theme" class="theme-winter">
     <div class="season-bg">
         <div class="icicles" id="icicles"></div>
-        <div class="snowdrifts"></div>
-        <div class="grass-layer grass-summer" style="display:none;"></div>
-        <div class="grass-layer grass-spring" style="display:none;"></div>
-        <div class="grass-layer grass-autumn" style="display:none;"></div>
+        <div class="ground-layer">
+            <div class="snowdrift"></div>
+            <div class="snowdrift"></div>
+            
+            <!-- Трава Лето (SVG) -->
+            <svg class="grass-svg grass-summer" viewBox="0 0 100 20" preserveAspectRatio="none">
+                <path d="M0,20 Q5,10 10,20 Q15,5 20,20 Q25,12 30,20 Q35,8 40,20 Q45,15 50,20 Q55,5 60,20 Q65,10 70,20 Q75,15 80,20 Q85,8 90,20 Q95,12 100,20 Z" fill="#15803d"/>
+            </svg>
+            <!-- Трава Весна (SVG) -->
+            <svg class="grass-svg grass-spring" viewBox="0 0 100 20" preserveAspectRatio="none">
+                <path d="M0,20 Q5,10 10,20 Q15,5 20,20 Q25,12 30,20 Q35,8 40,20 Q45,15 50,20 Q55,5 60,20 Q65,10 70,20 Q75,15 80,20 Q85,8 90,20 Q95,12 100,20 Z" fill="#22c55e"/>
+            </svg>
+            <!-- Трава Осень (SVG) -->
+            <svg class="grass-svg grass-autumn" viewBox="0 0 100 20" preserveAspectRatio="none">
+                <path d="M0,20 Q5,10 10,20 Q15,5 20,20 Q25,12 30,20 Q35,8 40,20 Q45,15 50,20 Q55,5 60,20 Q65,10 70,20 Q75,15 80,20 Q85,8 90,20 Q95,12 100,20 Z" fill="#7c2d12"/>
+            </svg>
+        </div>
         <div id="snow-container"></div>
         <div id="falling-container"></div>
     </div>
@@ -284,15 +302,16 @@
         const savedTheme = localStorage.getItem('theme') || 'theme-winter';
         document.getElementById('body-theme').className = savedTheme;
 
-        // ФУНКЦИЯ ГЕНЕРАЦИИ ФОНА (ПЕРЕРИСОВЫВАЕТ ВСЁ ЗАНОВО)
+        // --- ГЕНЕРАЦИЯ КРАСИВОГО ФОНА ---
         function renderSeasonBg() {
             const currentTheme = localStorage.getItem('theme') || 'theme-winter';
             
+            // Очистка контейнеров
             document.getElementById('icicles').innerHTML = '';
             document.getElementById('snow-container').innerHTML = '';
             document.getElementById('falling-container').innerHTML = '';
             
-            // Сосульки
+            // 1. Сосульки (для зимы и весны)
             for (let i = 0; i < 20; i++) {
                 const ic = document.createElement('div');
                 ic.className = (currentTheme === 'theme-spring') ? 'icicle-melting' : 'icicle';
@@ -303,22 +322,23 @@
             const snowContainer = document.getElementById('snow-container');
             const fallingContainer = document.getElementById('falling-container');
             
-            // Падающие объекты (Снежинки/Листья/Солнышки)
+            // 2. Падающие объекты (Снежинки / Листья)
             for (let i = 0; i < 50; i++) {
                 const el = document.createElement('div');
-                el.className = 'snowflake';
+                el.className = 'falling-obj';
                 el.style.left = Math.random() * 100 + 'vw';
                 el.style.animationDuration = (Math.random() * 5 + 4) + 's';
-                el.style.width = (Math.random() * 15 + 10) + 'px'; el.style.height = el.style.width;
+                el.style.animationDelay = Math.random() * 5 + 's';
                 
                 if (currentTheme === 'theme-winter') {
-                    el.innerHTML = `<svg viewBox="0 0 24 24" fill="#fff"><path d="M12 2L13 9L20 8L16 14L22 18L14 18L12 22L10 18L2 18L8 14L4 8L11 9L12 2Z"/></svg>`;
+                    // Настоящая снежинка (SVG)
+                    el.innerHTML = `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.5"><path d="M12 2v20M2 12h20M4.93 4.93l14.14 14.14M19.07 4.93L4.93 19.07M12 5l3 3M12 5l-3 3M12 19l3-3M12 19l-3-3M5 12l3 3M5 12l3-3M19 12l-3 3M19 12l-3-3"/></svg>`;
+                    el.style.opacity = 0.8;
                     snowContainer.appendChild(el);
                 } else if (currentTheme === 'theme-autumn') {
-                    el.className = 'leaf'; el.style.background = '#ea580c'; el.style.borderRadius = '50% 0 50% 50%'; el.style.width = '20px'; el.style.height = '20px';
-                    fallingContainer.appendChild(el);
-                } else if (currentTheme === 'theme-summer' || currentTheme === 'theme-spring') {
-                    el.className = 'sun'; el.style.background = (currentTheme === 'theme-summer' ? '#fde047' : '#fff'); el.style.borderRadius = '50%'; el.style.width = '25px'; el.style.height = '25px'; el.style.opacity = '0.6';
+                    // Кленовый лист (SVG)
+                    el.innerHTML = `<svg width="28" height="28" viewBox="0 0 24 24" fill="#ea580c"><path d="M12 2L14 9H21L16 13L19 20L12 17L5 20L8 13L3 9H10L12 2Z"/></svg>`;
+                    el.style.opacity = 0.9;
                     fallingContainer.appendChild(el);
                 }
             }
@@ -505,7 +525,7 @@
             }
             document.getElementById('body-theme').className = themeClass; 
             localStorage.setItem('theme', themeClass);
-            renderSeasonBg(); // Перерисовываем фон
+            renderSeasonBg(); // ПЕРЕРИСОВЫВАЕТ ВСЁ ЗАНОВО
         }
 
         function buyItem(item, price) {
