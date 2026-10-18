@@ -10,46 +10,50 @@
 html,body{height:100%;overflow:hidden}
 body{font-family:-apple-system,system-ui,'Segoe UI',sans-serif;background:#030712;color:#f8fafc;display:flex;flex-direction:column;height:100vh;user-select:none;-webkit-user-select:none;overscroll-behavior:none}
 
-/* ============ LOADER ============ */
-#loader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#0a1628 0%,#030712 70%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;transition:opacity .5s,visibility .5s}
+/* LOADER */
+#loader{position:fixed;inset:0;background:radial-gradient(ellipse at center,#0a1628 0%,#030712 70%);z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;transition:opacity .5s,visibility .5s}
 #loader.hidden{opacity:0;visibility:hidden;pointer-events:none}
 .loader-logo{font-size:44px;font-weight:900;background:linear-gradient(135deg,#0ea5e9,#f59e0b,#10b981);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:3px;animation:logoPulse 1.5s ease infinite;font-family:'Courier New',monospace}
-@keyframes logoPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.06);opacity:.85}}
-.loader-tag{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:4px;font-weight:800;margin-top:-16px}
-.loader-bar{width:220px;height:5px;background:#1a2332;border-radius:5px;overflow:hidden;position:relative}
+@keyframes logoPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.loader-tag{font-size:11px;color:#64748b;text-transform:uppercase;letter-spacing:4px;font-weight:800;margin-top:-14px}
+.loader-bar{width:220px;height:5px;background:#1a2332;border-radius:5px;overflow:hidden}
 .loader-fill{height:100%;width:0%;background:linear-gradient(90deg,#0ea5e9,#f59e0b,#10b981);border-radius:5px;transition:width .3s;box-shadow:0 0 15px rgba(14,165,233,.5)}
 .loader-pct{font-size:12px;color:#0ea5e9;font-weight:900;font-family:'Courier New',monospace;letter-spacing:2px}
 .loader-msg{font-size:10px;color:#64748b;text-transform:uppercase;letter-spacing:2px;font-weight:700;height:14px}
-.loader-spinner{width:60px;height:60px;border:3px solid #1a2332;border-top-color:#f59e0b;border-radius:50%;animation:spin 1s linear infinite}
+.loader-spinner{width:56px;height:56px;border:3px solid #1a2332;border-top-color:#f59e0b;border-radius:50%;animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* ============ HEADER ============ */
-.header{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:#0f172a;border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0}
-.bal-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1px}
-.bal{font-size:24px;font-weight:900;color:#10b981;line-height:1.2;font-family:'Courier New',monospace;transition:color .3s}
-.bal.up{color:#10b981;animation:balUp .5s ease}
-.bal.down{color:#ef4444;animation:balDown .5s ease}
-@keyframes balUp{0%{transform:translateY(0);opacity:1}40%{transform:translateY(-8px);opacity:.5}60%{transform:translateY(8px);opacity:.5}100%{transform:translateY(0);opacity:1}}
-@keyframes balDown{0%{transform:translateY(0);opacity:1}40%{transform:translateY(-8px);opacity:.5}60%{transform:translateY(8px);opacity:.5}100%{transform:translateY(0);opacity:1}}
-.header-right{display:flex;gap:6px}
-.icon-btn{width:34px;height:34px;border-radius:10px;background:#1a2332;border:1px solid rgba(255,255,255,.06);color:#fff;font-size:15px;cursor:pointer}
+/* HEADER */
+.header{padding:10px 14px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(180deg,#0f172a,#0a1220);border-bottom:1px solid rgba(255,255,255,.06);flex-shrink:0;box-shadow:0 2px 10px rgba(0,0,0,.3)}
+.bal-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px}
+.bal{font-size:24px;font-weight:900;color:#10b981;line-height:1.2;font-family:'Courier New',monospace;transition:color .3s;text-shadow:0 0 10px rgba(16,185,129,.3)}
+.bal.up{animation:balUp .5s ease;color:#10b981}
+.bal.down{animation:balDown .5s ease;color:#ef4444}
+@keyframes balUp{0%{transform:translateY(0)}40%{transform:translateY(-6px);opacity:.5}60%{transform:translateY(6px);opacity:.5}100%{transform:translateY(0)}}
+@keyframes balDown{0%{transform:translateY(0)}40%{transform:translateY(-6px);opacity:.5}60%{transform:translateY(6px);opacity:.5}100%{transform:translateY(0)}}
+.header-right{display:flex;gap:6px;align-items:center}
+.icon-btn{width:34px;height:34px;border-radius:10px;background:#1a2332;border:1px solid rgba(255,255,255,.06);color:#fff;font-size:15px;cursor:pointer;transition:.15s}
+.icon-btn:active{transform:scale(.92)}
+.icon-btn.admin{background:linear-gradient(135deg,#1e293b,#0f172a);color:#f59e0b;border:1px solid rgba(245,158,11,.4);box-shadow:0 0 12px rgba(245,158,11,.25);display:none}
+.icon-btn.admin.show{display:flex;align-items:center;justify-content:center;animation:adminGlow 2s ease infinite}
+@keyframes adminGlow{0%,100%{box-shadow:0 0 12px rgba(245,158,11,.25)}50%{box-shadow:0 0 20px rgba(245,158,11,.5)}}
 
-/* ============ MAIN ============ */
+/* MAIN */
 .main{flex:1;overflow-y:auto;padding:12px;padding-bottom:80px;-webkit-overflow-scrolling:touch}
 .screen{display:none;flex-direction:column;animation:fadeIn .2s ease}
 .screen.active{display:flex}
-@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+@keyframes fadeIn{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
 h2{font-size:18px;text-transform:uppercase;letter-spacing:1px;text-align:center;margin-bottom:12px;font-weight:900}
-h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px}
 
-/* ============ CARD ============ */
-.card{background:#0f172a;border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
-.card-title{font-size:10px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1px;margin-bottom:8px}
+/* CARD */
+.card{background:linear-gradient(180deg,#0f172a,#0a1220);border-radius:12px;padding:12px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05);box-shadow:0 2px 8px rgba(0,0,0,.2)}
+.card-title{font-size:10px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px;margin-bottom:8px}
 
-/* ============ GAMES GRID ============ */
+/* GAMES */
 .games-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-.game-card{background:#0f172a;border-radius:12px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;border:1px solid rgba(255,255,255,.06);position:relative;min-height:88px;transition:transform .1s,border-color .2s}
-.game-card:active{transform:scale(.95);border-color:#0ea5e9}
+.game-card{background:linear-gradient(160deg,#0f172a,#0a1220);border-radius:12px;padding:14px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;border:1px solid rgba(255,255,255,.06);position:relative;min-height:88px;transition:transform .1s,border-color .2s,box-shadow .2s;overflow:hidden}
+.game-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,transparent,rgba(14,165,233,.05));pointer-events:none}
+.game-card:active{transform:scale(.95);border-color:#0ea5e9;box-shadow:0 0 15px rgba(14,165,233,.2)}
 .game-card .icon{font-size:28px;line-height:1}
 .game-card .name{font-size:10px;font-weight:800;text-transform:uppercase;text-align:center}
 .game-card.disabled{opacity:.35;pointer-events:none}
@@ -57,11 +61,12 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .game-card .badge.new{background:#10b981;color:#fff}
 .game-card .badge.hot{background:#ef4444;color:#fff}
 
-/* ============ BET ============ */
-.bet-section{background:#0f172a;border-radius:12px;padding:10px;margin-bottom:10px}
+/* BET */
+.bet-section{background:linear-gradient(180deg,#0f172a,#0a1220);border-radius:12px;padding:10px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
 .bet-title{font-size:10px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1px;margin-bottom:6px;display:flex;justify-content:space-between}
 .bet-controls{display:flex;align-items:center;gap:4px;background:#000;border-radius:10px;padding:3px;border:1px solid rgba(255,255,255,.08)}
-.bet-btn{width:36px;height:36px;background:rgba(255,255,255,.08);border:none;border-radius:7px;color:#fff;font-size:18px;font-weight:900;cursor:pointer}
+.bet-btn{width:36px;height:36px;background:rgba(255,255,255,.08);border:none;border-radius:7px;color:#fff;font-size:18px;font-weight:900;cursor:pointer;transition:.1s}
+.bet-btn:active{background:rgba(255,255,255,.2);transform:scale(.92)}
 .bet-input{flex:1;background:transparent;border:none;outline:none;color:#fff;font-size:20px;font-weight:900;text-align:center;width:100%;-moz-appearance:textfield;font-family:'Courier New',monospace}
 .bet-input::-webkit-outer-spin-button,.bet-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
 .bet-input:read-only{color:#64748b}
@@ -72,40 +77,40 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .quick-btn{background:#1a2332;border:1px solid rgba(255,255,255,.08);color:#fff;padding:7px 3px;border-radius:6px;font-weight:900;font-size:11px;cursor:pointer}
 .quick-btn:active{background:#0ea5e9;color:#000}
 
-/* ============ BUTTONS ============ */
-.btn{width:100%;padding:15px;border:none;border-radius:12px;background:#0ea5e9;color:#fff;font-weight:900;font-size:15px;text-transform:uppercase;cursor:pointer;transition:transform .1s;font-family:inherit;letter-spacing:.5px}
-.btn:active{transform:scale(.98)}
+/* BUTTONS */
+.btn{width:100%;padding:15px;border:none;border-radius:12px;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#fff;font-weight:900;font-size:15px;text-transform:uppercase;cursor:pointer;transition:transform .1s,box-shadow .2s;font-family:inherit;letter-spacing:.5px;box-shadow:0 4px 12px rgba(14,165,233,.3)}
+.btn:active{transform:scale(.97);box-shadow:0 2px 6px rgba(14,165,233,.2)}
 .btn:disabled{opacity:.5;pointer-events:none}
-.btn-gold{background:#f59e0b;color:#000}
-.btn-error{background:#ef4444}
-.btn-success{background:#10b981}
-.btn-purple{background:#8b5cf6}
+.btn-gold{background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;box-shadow:0 4px 12px rgba(245,158,11,.3)}
+.btn-error{background:linear-gradient(135deg,#ef4444,#dc2626);box-shadow:0 4px 12px rgba(239,68,68,.3)}
+.btn-success{background:linear-gradient(135deg,#10b981,#059669);box-shadow:0 4px 12px rgba(16,185,129,.3)}
+.btn-purple{background:linear-gradient(135deg,#8b5cf6,#7c3aed);box-shadow:0 4px 12px rgba(139,92,246,.3)}
 .btn-sm{padding:9px;font-size:12px}
-.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fff}
+.btn-ghost{background:transparent;border:1px solid rgba(255,255,255,.15);color:#fff;box-shadow:none}
 
-/* ============ ROULETTE ============ */
+/* ROULETTE */
 .roulette-wrap{position:relative;width:100%;height:100px;background:#000;border-radius:12px;overflow:hidden;margin-bottom:10px;border:1px solid rgba(255,255,255,.06)}
 .roulette-pointer{position:absolute;top:0;bottom:0;left:50%;width:3px;background:#fff;transform:translateX(-50%);z-index:10;box-shadow:0 0 10px #fff;border-radius:2px}
 .roulette-strip{display:flex;align-items:center;height:100%;gap:6px;padding:0 10px;will-change:transform}
 .roulette-cell{flex-shrink:0;width:80px;height:80px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:16px;border:2px solid currentColor;background:rgba(255,255,255,.03)}
 .roulette-cell.jackpot{font-size:11px;letter-spacing:.5px;text-align:center;padding:4px}
 
-/* ============ HISTORY ============ */
+/* HISTORY */
 .history{margin-top:10px}
 .history-list{display:flex;flex-direction:column;gap:3px;max-height:150px;overflow-y:auto}
 .history-row{display:flex;justify-content:space-between;padding:6px 8px;border-radius:8px;background:rgba(255,255,255,.03);font-size:11px;font-weight:700}
-.history-row.win{background:rgba(16,185,129,.1)}
-.history-row.lose{background:rgba(239,68,68,.06)}
+.history-row.win{background:rgba(16,185,129,.1);border-left:2px solid #10b981}
+.history-row.lose{background:rgba(239,68,68,.06);border-left:2px solid #ef4444}
 .history-row .game-name{color:#64748b;font-size:10px}
 .history-row .delta{font-weight:900;font-family:'Courier New',monospace}
 .history-row.win .delta{color:#10b981}
 .history-row.lose .delta{color:#ef4444}
 .history-empty{color:#64748b;font-size:11px;text-align:center;padding:12px}
 
-/* ============ RESULT MODAL ============ */
+/* RESULT MODAL */
 .result-modal{position:fixed;inset:0;z-index:2000;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.75);opacity:0;pointer-events:none;transition:opacity .2s}
 .result-modal.show{opacity:1;pointer-events:auto}
-.result-card{background:#0f172a;border-radius:20px;padding:24px 30px;text-align:center;border:2px solid #0ea5e9;min-width:200px;transform:scale(.9);transition:transform .2s}
+.result-card{background:linear-gradient(160deg,#0f172a,#0a1220);border-radius:20px;padding:24px 30px;text-align:center;border:2px solid #0ea5e9;min-width:200px;transform:scale(.9);transition:transform .2s}
 .result-modal.show .result-card{transform:scale(1)}
 .result-card.win{border-color:#10b981;box-shadow:0 0 30px rgba(16,185,129,.3)}
 .result-card.lose{border-color:#ef4444}
@@ -117,29 +122,30 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .result-card.lose .result-amount{color:#ef4444}
 .result-card.jackpot .result-label,.result-card.jackpot .result-amount{color:#f59e0b}
 
-/* ============ PROFILE ============ */
-.profile-card{background:#0f172a;border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px}
-.avatar{width:64px;height:64px;border-radius:50%;background:#0ea5e9;color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;background-size:cover;background-position:center;margin-bottom:4px;box-shadow:0 0 20px rgba(14,165,233,.3)}
+/* PROFILE */
+.profile-card{background:linear-gradient(160deg,#0f172a,#0a1220);border-radius:12px;padding:18px;display:flex;flex-direction:column;align-items:center;gap:4px;margin-bottom:10px;border:1px solid rgba(255,255,255,.05)}
+.avatar{width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#0ea5e9,#0284c7);color:#000;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;background-size:cover;background-position:center;margin-bottom:4px;box-shadow:0 0 20px rgba(14,165,233,.4)}
 .user-name{font-size:17px;font-weight:900}
 .user-username{font-size:11px;color:#64748b}
 .user-title{font-size:10px;color:#f59e0b;font-weight:800;text-transform:uppercase;letter-spacing:1px;margin-top:2px}
+.user-title.admin{color:#ef4444;text-shadow:0 0 10px rgba(239,68,68,.5)}
 
-/* ============ STATS ============ */
+/* STATS */
 .stats-grid{display:grid;grid-template-columns:1fr 1fr;gap:6px}
 .stat{background:#1a2332;border-radius:8px;padding:8px}
 .stat-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800}
 .stat-value{font-size:15px;font-weight:900;font-family:'Courier New',monospace}
 
-/* ============ SETTINGS ============ */
+/* SETTINGS */
 .setting-row{display:flex;justify-content:space-between;align-items:center;padding:9px 0;border-bottom:1px solid rgba(255,255,255,.05)}
 .setting-row:last-child{border-bottom:none}
 .setting-row .label{font-size:12px;font-weight:700;display:flex;gap:8px;align-items:center}
-.toggle{width:42px;height:24px;border-radius:12px;background:#243044;position:relative;cursor:pointer;border:none;flex-shrink:0}
-.toggle.on{background:#10b981}
-.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s}
+.toggle{width:42px;height:24px;border-radius:12px;background:#243044;position:relative;cursor:pointer;border:none;flex-shrink:0;transition:background .2s}
+.toggle.on{background:#10b981;box-shadow:0 0 10px rgba(16,185,129,.4)}
+.toggle::after{content:'';position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;transition:transform .2s;box-shadow:0 1px 3px rgba(0,0,0,.3)}
 .toggle.on::after{transform:translateX(18px)}
 
-/* ============ ACHIEVEMENTS ============ */
+/* ACHIEVEMENTS */
 .ach-grid{display:flex;flex-direction:column;gap:5px}
 .ach{display:flex;gap:8px;align-items:center;padding:8px;border-radius:8px;background:#1a2332;border:1px solid transparent}
 .ach.locked{opacity:.4}
@@ -149,7 +155,7 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .ach-name{font-size:11px;font-weight:800}
 .ach-desc{font-size:9px;color:#64748b}
 
-/* ============ THEMES ============ */
+/* THEMES */
 .themes-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:6px}
 .theme-card{padding:10px;border-radius:8px;text-align:center;cursor:pointer;border:2px solid transparent;font-weight:800;font-size:11px;transition:.2s}
 .theme-card.locked{opacity:.5}
@@ -159,7 +165,7 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .theme-autumn{background:linear-gradient(135deg,#431407,#d97706)}
 .theme-spring{background:linear-gradient(135deg,#14532d,#ec4899)}
 
-/* ============ LEADERBOARD ============ */
+/* LEADERBOARD */
 .leader-row{display:flex;align-items:center;padding:8px;gap:8px;border-bottom:1px solid rgba(255,255,255,.05)}
 .leader-row:last-child{border-bottom:none}
 .leader-row.you{background:rgba(14,165,233,.1);border-radius:6px}
@@ -168,41 +174,72 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 .leader-name{flex:1;font-size:12px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .leader-score{font-size:13px;font-weight:900;color:#10b981;font-family:'Courier New',monospace}
 
-/* ============ RULES ============ */
+/* RULES */
 .rules-list{display:flex;flex-direction:column;gap:6px}
 .rule-item{background:#1a2332;border-radius:8px;padding:8px;display:flex;gap:8px;align-items:flex-start}
 .rule-icon{font-size:16px;flex-shrink:0}
 .rule-text{font-size:11px;line-height:1.5;color:#cbd5e1}
 
-/* ============ NAV ============ */
-.nav{position:fixed;bottom:0;left:0;width:100%;background:#0f172a;display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.06);z-index:100}
+/* NAV */
+.nav{position:fixed;bottom:0;left:0;width:100%;background:linear-gradient(180deg,#0f172a,#0a1220);display:flex;justify-content:space-around;padding:6px 4px calc(6px + env(safe-area-inset-bottom));border-top:1px solid rgba(255,255,255,.06);z-index:100;box-shadow:0 -2px 10px rgba(0,0,0,.3)}
 .nav-btn{background:transparent;border:none;color:#64748b;display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 4px;border-radius:8px;cursor:pointer;font-weight:800;font-size:8px;text-transform:uppercase;width:60px;transition:color .15s,background .15s}
 .nav-btn .icon{font-size:18px}
 .nav-btn.active{color:#0ea5e9;background:rgba(14,165,233,.1)}
 
-/* ============ TOAST ============ */
-.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 16px;border-radius:30px;font-weight:800;font-size:12px;z-index:3000;opacity:0;transition:.2s;pointer-events:none;border:1px solid #0ea5e9;white-space:nowrap;max-width:90%}
-.toast.show{opacity:1}
+/* TOAST */
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:linear-gradient(160deg,#0f172a,#0a1220);color:#fff;padding:10px 16px;border-radius:30px;font-weight:800;font-size:12px;z-index:3000;opacity:0;transition:.2s;pointer-events:none;border:1px solid #0ea5e9;white-space:nowrap;max-width:90%;box-shadow:0 4px 20px rgba(0,0,0,.5)}
+.toast.show{opacity:1;top:28px}
 .toast.success{border-color:#10b981}
 .toast.error{border-color:#ef4444}
 .toast.gold{border-color:#f59e0b}
 
-/* ============ TURBO ============ */
-.turbo-ind{position:fixed;top:60px;right:12px;background:#f59e0b;color:#000;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;letter-spacing:1px;z-index:500;display:none}
+/* TURBO */
+.turbo-ind{position:fixed;top:60px;right:12px;background:linear-gradient(135deg,#f59e0b,#d97706);color:#000;padding:4px 10px;border-radius:20px;font-size:10px;font-weight:900;letter-spacing:1px;z-index:500;display:none;box-shadow:0 0 15px rgba(245,158,11,.5)}
 .turbo-ind.show{display:block;animation:turboPulse .8s ease infinite}
 @keyframes turboPulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
 
-/* ============ PROMO ============ */
+/* PROMO */
 .promo-input{width:100%;background:#000;border:1px solid rgba(255,255,255,.1);padding:10px;border-radius:8px;color:#fff;text-align:center;font-weight:800;outline:none;font-size:13px;text-transform:uppercase;letter-spacing:2px;margin-bottom:8px;font-family:inherit}
 .promo-input::placeholder{color:#64748b}
 
-/* ============ RESPONSIVE ============ */
+/* ADMIN MODAL */
+.admin-modal{position:fixed;inset:0;z-index:4000;background:rgba(0,0,0,.85);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;animation:modalIn .25s ease}
+.admin-modal.show{display:flex}
+@keyframes modalIn{from{opacity:0}to{opacity:1}}
+.admin-panel{background:linear-gradient(180deg,#0f172a,#030712);width:100%;max-width:500px;border-radius:24px 24px 0 0;padding:16px 14px calc(20px + env(safe-area-inset-bottom));max-height:90vh;overflow-y:auto;border:1px solid rgba(245,158,11,.3);border-bottom:none;animation:slideUp .3s ease}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.admin-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid rgba(245,158,11,.2)}
+.admin-title{font-size:16px;font-weight:900;color:#f59e0b;text-transform:uppercase;letter-spacing:1px;display:flex;gap:6px;align-items:center}
+.admin-close{background:transparent;border:none;color:#64748b;font-size:22px;cursor:pointer;padding:0 6px}
+.admin-section{margin-bottom:14px}
+.admin-section-title{font-size:10px;color:#f59e0b;text-transform:uppercase;font-weight:900;letter-spacing:1.5px;margin-bottom:8px;opacity:.8}
+
+/* Admin balance */
+.admin-balance-box{background:linear-gradient(135deg,#1e293b,#0f172a);border-radius:14px;padding:16px;text-align:center;border:1px solid rgba(245,158,11,.3);box-shadow:0 0 20px rgba(245,158,11,.15);margin-bottom:12px;position:relative}
+.admin-balance-label{font-size:9px;color:#64748b;text-transform:uppercase;font-weight:800;letter-spacing:1.5px;margin-bottom:2px}
+.admin-balance-input{background:transparent;border:none;outline:none;color:#10b981;font-size:32px;font-weight:900;font-family:'Courier New',monospace;text-align:center;width:100%;cursor:pointer;text-shadow:0 0 10px rgba(16,185,129,.3)}
+.admin-balance-hint{font-size:9px;color:#64748b;margin-top:4px;letter-spacing:1px}
+.admin-balance-btns{display:flex;gap:4px;margin-top:8px}
+.admin-balance-btns button{flex:1;padding:7px;border-radius:8px;border:none;font-weight:900;font-size:11px;cursor:pointer;background:rgba(255,255,255,.06);color:#fff}
+.admin-balance-btns button:active{transform:scale(.95)}
+
+/* Admin promos list */
+.admin-promos{display:flex;flex-direction:column;gap:4px;max-height:220px;overflow-y:auto;background:#000;border-radius:10px;padding:6px;border:1px solid rgba(255,255,255,.05)}
+.admin-promo-row{display:flex;justify-content:space-between;align-items:center;padding:6px 8px;background:#0f172a;border-radius:6px;font-size:11px}
+.admin-promo-code{font-family:'Courier New',monospace;font-weight:900;color:#f59e0b;letter-spacing:1px}
+.admin-promo-reward{color:#10b981;font-weight:900;font-family:'Courier New',monospace;font-size:11px}
+
+/* Admin toggles */
+.admin-toggle-row{display:flex;justify-content:space-between;align-items:center;padding:10px;background:#1a2332;border-radius:10px;margin-bottom:6px}
+.admin-toggle-label{display:flex;flex-direction:column;gap:1px}
+.admin-toggle-name{font-size:12px;font-weight:800}
+.admin-toggle-desc{font-size:9px;color:#64748b}
+
 @media(min-width:600px){.main{max-width:480px;margin:0 auto;width:100%}.header{max-width:480px;margin:0 auto;width:100%}.nav{max-width:480px;margin:0 auto;left:50%;transform:translateX(-50%)}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-spinner"></div>
   <div class="loader-logo">GEARFE</div>
@@ -214,19 +251,18 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 
 <div class="turbo-ind" id="turbo-ind">⚡ ТУРБО</div>
 
-<!-- HEADER -->
 <header class="header">
   <div>
     <div class="bal-label">Баланс</div>
     <div class="bal" id="balance">1000</div>
   </div>
   <div class="header-right">
+    <button class="icon-btn admin" id="admin-open" title="Админ">⚙️</button>
     <button class="icon-btn" id="btn-bonus">🎁</button>
     <button class="icon-btn" id="btn-sound">🔊</button>
   </div>
 </header>
 
-<!-- MAIN -->
 <main class="main">
 
   <section class="screen active" id="screen-play">
@@ -329,7 +365,6 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
 
 </main>
 
-<!-- NAV -->
 <nav class="nav">
   <button class="nav-btn active" data-screen="play"><span class="icon">🎮</span><span>Играть</span></button>
   <button class="nav-btn" data-screen="games"><span class="icon">🎲</span><span>Игры</span></button>
@@ -346,55 +381,87 @@ h3{font-size:13px;color:#64748b;text-transform:uppercase;letter-spacing:.5px;mar
   </div>
 </div>
 
+<!-- ADMIN MODAL -->
+<div class="admin-modal" id="admin-modal">
+  <div class="admin-panel">
+    <div class="admin-header">
+      <div class="admin-title">⚙️ Админ-панель</div>
+      <button class="admin-close" id="admin-close">✕</button>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-balance-box">
+        <div class="admin-balance-label">Баланс</div>
+        <input class="admin-balance-input" id="admin-balance-input" type="number" value="1000" min="0">
+        <div class="admin-balance-hint">Нажми чтобы изменить</div>
+        <div class="admin-balance-btns">
+          <button data-set="1000">1000</button>
+          <button data-set="10000">10K</button>
+          <button data-set="100000">100K</button>
+          <button data-set="1000000">1M</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">📜 Промокоды и награды</div>
+      <div class="admin-promos" id="admin-promos"></div>
+    </div>
+
+    <div class="admin-section">
+      <div class="admin-section-title">🎛️ Функции админа</div>
+      <div id="admin-toggles"></div>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
 'use strict';
-
 try{Telegram.WebApp.ready();Telegram.WebApp.expand();Telegram.WebApp.disableVerticalSwipes();}catch(e){}
 
-/* ============ SETTINGS ============ */
+/* SETTINGS */
 var Settings=(function(){
   var KEY='casino_set_v2';
   var d={sound:true,haptic:true,turbo:false};
   try{var s=JSON.parse(localStorage.getItem(KEY));if(s)d=s;}catch(e){}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
-  return{
-    get sound(){return d.sound;},get haptic(){return d.haptic;},get turbo(){return d.turbo;},
-    set sound(v){d.sound=v;save();},set haptic(v){d.haptic=v;save();},set turbo(v){d.turbo=v;save();}
-  };
+  return{get sound(){return d.sound;},get haptic(){return d.haptic;},get turbo(){return d.turbo;},set sound(v){d.sound=v;save();},set haptic(v){d.haptic=v;save();},set turbo(v){d.turbo=v;save();}};
 })();
 
 function haptic(t){if(!Settings.haptic)return;try{Telegram.WebApp.HapticFeedback.impactOccurred(t||'light');}catch(e){}}
 function hapticNotify(t){if(!Settings.haptic)return;try{Telegram.WebApp.HapticFeedback.notificationOccurred(t);}catch(e){}}
 
-/* ============ SOUND (Web Audio synth) ============ */
+/* ADMIN SETTINGS */
+var AdminSettings=(function(){
+  var KEY='casino_admin_v1';
+  var d={godmode:false,noloss:false,infinite:false,doublexp:false,autowin:false,showrates:false,novibration:false,bigwin:false};
+  try{var s=JSON.parse(localStorage.getItem(KEY));if(s)d=Object.assign(d,s);}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(d));}catch(e){}}
+  return{
+    get:function(k){return d[k];},
+    toggle:function(k){d[k]=!d[k];save();return d[k];},
+    isActive:function(){return localStorage.getItem('casino_admin_on')==='1';},
+    setActive:function(v){try{localStorage.setItem('casino_admin_on',v?'1':'0');}catch(e){}},
+    all:function(){return d;}
+  };
+})();
+
+/* SOUND */
 var Sound=(function(){
   var ctx=null;
   function getCtx(){if(!ctx){try{ctx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}return ctx;}
   function tone(freq,dur,type,vol,delay){
-    if(!Settings.sound)return;
-    var c=getCtx();if(!c)return;
-    try{
-      var osc=c.createOscillator(),gain=c.createGain();
-      osc.type=type||'sine';osc.frequency.value=freq;
-      osc.connect(gain);gain.connect(c.destination);
-      var t=c.currentTime+(delay||0);
-      gain.gain.setValueAtTime(0,t);
-      gain.gain.linearRampToValueAtTime(vol||0.08,t+0.02);
-      gain.gain.exponentialRampToValueAtTime(0.001,t+dur);
-      osc.start(t);osc.stop(t+dur);
-    }catch(e){}
+    if(!Settings.sound)return;var c=getCtx();if(!c)return;
+    try{var osc=c.createOscillator(),gain=c.createGain();osc.type=type||'sine';osc.frequency.value=freq;
+    osc.connect(gain);gain.connect(c.destination);var t=c.currentTime+(delay||0);
+    gain.gain.setValueAtTime(0,t);gain.gain.linearRampToValueAtTime(vol||0.08,t+0.02);gain.gain.exponentialRampToValueAtTime(0.001,t+dur);
+    osc.start(t);osc.stop(t+dur);}catch(e){}
   }
-  return{
-    click:function(){tone(600,0.04,'square',0.04);},
-    spin:function(){for(var i=0;i<6;i++)tone(400+i*60,0.06,'triangle',0.03,i*0.12);},
-    win:function(){tone(523,0.08);tone(659,0.08,'sine',0.08,0.08);tone(784,0.15,'sine',0.08,0.16);},
-    lose:function(){tone(200,0.25,'sawtooth',0.06);},
-    jackpot:function(){for(var i=0;i<10;i++)tone(400+i*70,0.08,'sine',0.06,i*0.06);}
-  };
+  return{click:function(){tone(600,0.04,'square',0.04);},spin:function(){for(var i=0;i<6;i++)tone(400+i*60,0.06,'triangle',0.03,i*0.12);},win:function(){tone(523,0.08);tone(659,0.08,'sine',0.08,0.08);tone(784,0.15,'sine',0.08,0.16);},lose:function(){tone(200,0.25,'sawtooth',0.06);},jackpot:function(){for(var i=0;i<10;i++)tone(400+i*70,0.08,'sine',0.06,i*0.06);}};
 })();
 
-/* ============ WALLET ============ */
+/* WALLET */
 var Wallet=(function(){
   var KEY='casino_bal_v8',HKEY='casino_hist_v5',SKEY='casino_stat_v5',START=1000,TOPUP=100;
   var v=parseInt(localStorage.getItem(KEY));if(isNaN(v)||v<0)v=START;
@@ -411,6 +478,7 @@ var Wallet=(function(){
   var userTitle=document.getElementById('user-title');
 
   function getTitle(){
+    if(AdminSettings.isActive())return'👑 Администратор';
     if(v>=100000)return'💎 Легенда';
     if(v>=50000)return'👑 Магнат';
     if(v>=20000)return'🔥 Хайроллер';
@@ -419,16 +487,10 @@ var Wallet=(function(){
     if(v>=2000)return'🎲 Игрок';
     return'🌱 Новичок';
   }
-
   function renderBal(anim){
-    el.textContent=v;
-    betMax.textContent='макс '+v;
-    if(userTitle)userTitle.textContent=getTitle();
-    if(anim){
-      el.classList.remove('up','down');
-      void el.offsetWidth;
-      el.classList.add(anim==='up'?'up':'down');
-    }
+    el.textContent=v;betMax.textContent='макс '+v;
+    if(userTitle){userTitle.textContent=getTitle();userTitle.classList.toggle('admin',AdminSettings.isActive());}
+    if(anim){el.classList.remove('up','down');void el.offsetWidth;el.classList.add(anim==='up'?'up':'down');}
   }
   function renderHist(){
     if(!h.length){histEl.innerHTML='<div class="history-empty">Пока пусто</div>';return;}
@@ -440,66 +502,40 @@ var Wallet=(function(){
     histEl.innerHTML=html;
   }
   function renderStat(){
-    statSpins.textContent=s.spins;
-    statWon.textContent=s.won+' ₽';
-    statLost.textContent=s.lost+' ₽';
-    var p=s.won-s.lost;
-    statProfit.textContent=(p>=0?'+':'')+p+' ₽';
-    statProfit.style.color=p>=0?'#10b981':'#ef4444';
+    statSpins.textContent=s.spins;statWon.textContent=s.won+' ₽';statLost.textContent=s.lost+' ₽';
+    var p=s.won-s.lost;statProfit.textContent=(p>=0?'+':'')+p+' ₽';statProfit.style.color=p>=0?'#10b981':'#ef4444';
   }
-  function save(){
-    try{
-      localStorage.setItem(KEY,v);
-      localStorage.setItem(HKEY,JSON.stringify(h.slice(0,100)));
-      localStorage.setItem(SKEY,JSON.stringify(s));
-    }catch(e){}
-  }
+  function save(){try{localStorage.setItem(KEY,v);localStorage.setItem(HKEY,JSON.stringify(h.slice(0,100)));localStorage.setItem(SKEY,JSON.stringify(s));}catch(e){}}
   return{
-    get balance(){return v;},
-    get stats(){return Object.assign({},s);},
-    get history(){return h.slice();},
+    get balance(){return v;},get stats(){return Object.assign({},s);},get history(){return h.slice();},
     render:function(){renderBal();renderHist();renderStat();},
+    setBalance:function(n){v=Math.max(0,Math.floor(n));save();renderBal('up');renderStat();},
     applyDelta:function(d){
-      v=Math.max(0,v+Math.floor(d));
-      if(v===0)v=TOPUP;
+      if(AdminSettings.get('noloss')&&d<0)d=0;
+      v=Math.max(0,v+Math.floor(d));if(v===0)v=TOPUP;
       if(d>0){s.won+=d;if(d>s.biggest)s.biggest=d;}
       if(d<0)s.lost+=Math.abs(d);
       save();renderBal(d>0?'up':d<0?'down':null);renderStat();
     },
-    recordBet:function(b){
-      s.spins++;
-      h.unshift({game:b.game,bet:b.bet,payout:b.payout,delta:b.delta,ts:Date.now()});
-      save();renderHist();renderStat();
-    },
+    recordBet:function(b){s.spins++;h.unshift({game:b.game,bet:b.bet,payout:b.payout,delta:b.delta,ts:Date.now()});save();renderHist();renderStat();},
     reset:function(){v=START;h=[];s={spins:0,won:0,lost:0,biggest:0};save();this.render();}
   };
 })();
 
-/* ============ TOAST ============ */
+/* TOAST */
 var Toast=(function(){
   var el=document.getElementById('toast');var tm=null;
-  return{show:function(text,kind){
-    el.textContent=text;el.className='toast show'+(kind?' '+kind:'');
-    clearTimeout(tm);tm=setTimeout(function(){el.className='toast';},2000);
-    haptic();
-  }};
+  return{show:function(text,kind){el.textContent=text;el.className='toast show'+(kind?' '+kind:'');clearTimeout(tm);tm=setTimeout(function(){el.className='toast';},2000);haptic();}};
 })();
 
-/* ============ RESULT MODAL ============ */
+/* RESULT MODAL */
 var ResultModal=(function(){
-  var m=document.getElementById('result-modal');
-  var c=document.getElementById('result-card');
-  var l=document.getElementById('result-label');
-  var a=document.getElementById('result-amount');
-  var tm=null;
-  return{show:function(o){
-    l.textContent=o.label;a.textContent=o.amount;c.className='result-card '+o.type;
-    m.classList.add('show');clearTimeout(tm);
-    tm=setTimeout(function(){m.classList.remove('show');},o.type==='jackpot'?2000:1300);
-  }};
+  var m=document.getElementById('result-modal');var c=document.getElementById('result-card');
+  var l=document.getElementById('result-label');var a=document.getElementById('result-amount');var tm=null;
+  return{show:function(o){l.textContent=o.label;a.textContent=o.amount;c.className='result-card '+o.type;m.classList.add('show');clearTimeout(tm);tm=setTimeout(function(){m.classList.remove('show');},o.type==='jackpot'?2000:1300);}};
 })();
 
-/* ============ BET ============ */
+/* BET */
 var MIN_BET=10;
 var Bet=(function(){
   var inp=document.getElementById('bet-input');
@@ -511,59 +547,44 @@ var Bet=(function(){
   function renderQuick(){
     grid.innerHTML='';
     var vals=[step,step*2,step*5,step*10,step*50,step*100];
-    for(var i=0;i<vals.length;i++){(function(v){
-      var b=document.createElement('button');b.className='quick-btn';b.textContent=v;
-      b.onclick=function(){set(v>Wallet.balance?Wallet.balance:v);haptic();};
-      grid.appendChild(b);
-    })(vals[i]);}
+    for(var i=0;i<vals.length;i++){(function(v){var b=document.createElement('button');b.className='quick-btn';b.textContent=v;b.onclick=function(){set(v>Wallet.balance?Wallet.balance:v);haptic();};grid.appendChild(b);})(vals[i]);}
   }
   document.getElementById('bet-minus').onclick=function(){set(parseInt(inp.value)-50);haptic();};
   document.getElementById('bet-plus').onclick=function(){set(parseInt(inp.value)+50);haptic();};
   document.getElementById('quick-toggle').onclick=function(){panel.classList.toggle('open');haptic();};
-  inp.addEventListener('input',function(){
-    var x=parseInt(inp.value);if(isNaN(x))return;
-    if(x>Wallet.balance){inp.value=Wallet.balance;Toast.show('Максимум: '+Wallet.balance);}
-  });
+  inp.addEventListener('input',function(){var x=parseInt(inp.value);if(isNaN(x))return;if(x>Wallet.balance){inp.value=Wallet.balance;Toast.show('Максимум: '+Wallet.balance);}});
   inp.addEventListener('blur',function(){set(inp.value);});
   renderQuick();
   return{
     get value(){return clamp(inp.value);},
-    validate:function(){
-      var x=parseInt(inp.value);
-      if(isNaN(x)||x<MIN_BET){Toast.show('Мин. ставка '+MIN_BET+' ₽','error');return false;}
-      if(x>Wallet.balance){Toast.show('Недостаточно средств','error');return false;}
-      return true;
-    },
-    lock:function(){inp.readOnly=true;},
-    unlock:function(){inp.readOnly=false;}
+    validate:function(){var x=parseInt(inp.value);if(isNaN(x)||x<MIN_BET){Toast.show('Мин. ставка '+MIN_BET+' ₽','error');return false;}if(x>Wallet.balance){Toast.show('Недостаточно средств','error');return false;}return true;},
+    lock:function(){inp.readOnly=true;},unlock:function(){inp.readOnly=false;}
   };
 })();
 
-/* ============ GAMES ============ */
+/* PROMO CODES */
+var PROMO_CODES={
+  WELCOME:500,LUCKY:1000,GEARFE:2000,BOOST:10000,JACKPOT:5000,CASINO:3000,TURBO:1500,VIP:50000,
+  START:100,HELLO:250,GIFT:750,MEGA:15000,ULTRA:25000,SUPER:7500,NICE:888,BOSS:30000,
+  KING:20000,QUEEN:12000,ACE:8000,PRO:6000,NOOB:300,XMAS:5000,NEWYEAR:4000,LOVE:777,
+  RICH:40000,DIAMOND:35000,GOLD:18000,SILVER:9000,BRONZE:4500,PLUS:2500,MAX:50000
+};
+
+/* GAMES */
 var GAMES=[];
 function registerGame(g){GAMES.push(g);}
 
 registerGame({
   id:'roulette',name:'Рулетка',icon:'🎰',enabled:true,
-  cells:[
-    {label:'x0',mult:0,chance:42,color:'#64748b'},
-    {label:'x1.25',mult:1.25,chance:27,color:'#3b82f6'},
-    {label:'x1.5',mult:1.5,chance:16,color:'#8b5cf6'},
-    {label:'x2',mult:2,chance:9,color:'#10b981'},
-    {label:'x3',mult:3,chance:5,color:'#f97316'},
-    {label:'ДЖЕКПОТ',mult:10,chance:1,color:'#f59e0b',jackpot:true}
-  ],
+  cells:[{label:'x0',mult:0,chance:42,color:'#64748b'},{label:'x1.25',mult:1.25,chance:27,color:'#3b82f6'},{label:'x1.5',mult:1.5,chance:16,color:'#8b5cf6'},{label:'x2',mult:2,chance:9,color:'#10b981'},{label:'x3',mult:3,chance:5,color:'#f97316'},{label:'ДЖЕКПОТ',mult:10,chance:1,color:'#f59e0b',jackpot:true}],
   totalCells:36,itemW:80,gap:6,
   renderView:function(c){
     var html='<div class="roulette-wrap" id="rw"><div class="roulette-pointer"></div><div class="roulette-strip" id="rs">';
-    for(var i=0;i<this.totalCells;i++){
-      var cell=this.cells[i%this.cells.length];
-      html+='<div class="roulette-cell'+(cell.jackpot?' jackpot':'')+'" style="color:'+cell.color+'">'+cell.label+'</div>';
-    }
-    html+='</div></div>';
-    c.innerHTML=html;
+    for(var i=0;i<this.totalCells;i++){var cell=this.cells[i%this.cells.length];html+='<div class="roulette-cell'+(cell.jackpot?' jackpot':'')+'" style="color:'+cell.color+'">'+cell.label+'</div>';}
+    html+='</div></div>';c.innerHTML=html;
   },
   pickWinner:function(){
+    if(AdminSettings.get('autowin'))return 5;
     var r=Math.random()*100,acc=0;
     for(var i=0;i<this.cells.length;i++){acc+=this.cells[i].chance;if(r<acc)return i;}
     return this.cells.length-1;
@@ -571,24 +592,19 @@ registerGame({
   play:function(bet){
     var self=this;
     return new Promise(function(resolve){
-      var wrap=document.getElementById('rw');
-      var strip=document.getElementById('rs');
+      var wrap=document.getElementById('rw'),strip=document.getElementById('rs');
       if(!wrap||!strip){resolve(null);return;}
-      var winIndex=self.pickWinner();
-      var loops=Settings.turbo?2:4;
-      var target=loops*self.cells.length+winIndex;
-      if(target>=self.totalCells)target=(self.totalCells-self.cells.length)+winIndex;
-      var stride=self.itemW+self.gap;
-      var centerOffset=(wrap.clientWidth/2)-(self.itemW/2)-10;
+      var winIndex=self.pickWinner();var loops=Settings.turbo?2:4;
+      var target=loops*self.cells.length+winIndex;if(target>=self.totalCells)target=(self.totalCells-self.cells.length)+winIndex;
+      var stride=self.itemW+self.gap;var centerOffset=(wrap.clientWidth/2)-(self.itemW/2)-10;
       var shift=target*stride-centerOffset;
       strip.style.transition='none';strip.style.transform='translateX(0)';void strip.offsetWidth;
       var dur=Settings.turbo?1.2:2.5;
       strip.style.transition='transform '+dur+'s cubic-bezier(0.1,0.9,0.2,1)';
-      strip.style.transform='translateX(-'+shift+'px)';
-      Sound.spin();
+      strip.style.transform='translateX(-'+shift+'px)';Sound.spin();
       setTimeout(function(){
-        var won=self.cells[winIndex];
-        var payout=Math.floor(bet*won.mult);
+        var won=self.cells[winIndex];var payout=Math.floor(bet*won.mult);
+        if(AdminSettings.get('bigwin')&&won.mult>0)payout*=2;
         setTimeout(function(){strip.style.transition='none';strip.style.transform='translateX(0)';},600);
         resolve({label:won.label,mult:won.mult,payout:payout,delta:payout-bet,win:won.mult>0,jackpot:!!won.jackpot});
       },dur*1000+100);
@@ -598,24 +614,19 @@ registerGame({
 
 registerGame({
   id:'dice',name:'Кости',icon:'🎲',badge:'hot',enabled:true,
-  renderView:function(c){
-    c.innerHTML='<div style="display:flex;justify-content:center;gap:16px;margin-bottom:10px;"><div class="roulette-cell" style="color:#fff;background:#0f172a;border-color:#0ea5e9;font-size:40px;width:80px;height:80px;border-radius:12px;" id="d1">🎲</div><div class="roulette-cell" style="color:#fff;background:#0f172a;border-color:#0ea5e9;font-size:40px;width:80px;height:80px;border-radius:12px;" id="d2">🎲</div></div><div style="text-align:center;font-size:11px;color:#64748b;margin-bottom:10px;">Сумма 7 или 11 → x2</div>';
-  },
+  renderView:function(c){c.innerHTML='<div style="display:flex;justify-content:center;gap:16px;margin-bottom:10px;"><div class="roulette-cell" style="color:#fff;background:#0f172a;border-color:#0ea5e9;font-size:40px;width:80px;height:80px;border-radius:12px;" id="d1">🎲</div><div class="roulette-cell" style="color:#fff;background:#0f172a;border-color:#0ea5e9;font-size:40px;width:80px;height:80px;border-radius:12px;" id="d2">🎲</div></div><div style="text-align:center;font-size:11px;color:#64748b;margin-bottom:10px;">Сумма 7 или 11 → x2</div>';},
   play:function(bet){
     return new Promise(function(resolve){
-      var d1=document.getElementById('d1'),d2=document.getElementById('d2');
-      if(!d1||!d2){resolve(null);return;}
-      Sound.spin();
-      var i=0;
+      var d1=document.getElementById('d1'),d2=document.getElementById('d2');if(!d1||!d2){resolve(null);return;}
+      Sound.spin();var i=0;
       var iv=setInterval(function(){
-        d1.textContent=Math.floor(Math.random()*6)+1;
-        d2.textContent=Math.floor(Math.random()*6)+1;
-        if(++i>=8){
-          clearInterval(iv);
+        d1.textContent=Math.floor(Math.random()*6)+1;d2.textContent=Math.floor(Math.random()*6)+1;
+        if(++i>=8){clearInterval(iv);
           var v1=Math.floor(Math.random()*6)+1,v2=Math.floor(Math.random()*6)+1;
+          if(AdminSettings.get('autowin')){v1=3;v2=4;}
           d1.textContent=v1;d2.textContent=v2;
-          var sum=v1+v2;var win=sum===7||sum===11;
-          var payout=win?Math.floor(bet*2):0;
+          var sum=v1+v2;var win=sum===7||sum===11||AdminSettings.get('autowin');
+          var payout=win?Math.floor(bet*2):0;if(win&&AdminSettings.get('bigwin'))payout*=2;
           resolve({label:'Сумма '+sum,mult:win?2:0,payout:payout,delta:payout-bet,win:win,jackpot:false});
         }
       },Settings.turbo?40:70);
@@ -627,30 +638,26 @@ registerGame({
   id:'slots',name:'Слоты',icon:'🍒',badge:'hot',enabled:true,
   symbols:['🍒','🍋','🍉','💎','7️⃣','⭐','🔔'],
   tripleMult:{'🍒':3,'🍋':4,'🍉':5,'💎':8,'7️⃣':12,'⭐':20,'🔔':6},
-  renderView:function(c){
-    c.innerHTML='<div style="display:flex;justify-content:center;gap:8px;margin-bottom:10px;background:#0f172a;padding:14px;border-radius:12px;"><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s1">🍒</div><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s2">🍒</div><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s3">🍒</div></div><div style="text-align:center;font-size:11px;color:#64748b;margin-bottom:10px;">3 в ряд → x3-x20</div>';
-  },
+  renderView:function(c){c.innerHTML='<div style="display:flex;justify-content:center;gap:8px;margin-bottom:10px;background:#0f172a;padding:14px;border-radius:12px;"><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s1">🍒</div><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s2">🍒</div><div class="roulette-cell" style="color:#fff;border-color:#0ea5e9;font-size:32px;width:64px;height:84px;" id="s3">🍒</div></div><div style="text-align:center;font-size:11px;color:#64748b;margin-bottom:10px;">3 в ряд → x3-x20</div>';},
   play:function(bet){
     var self=this;
     return new Promise(function(resolve){
       var s1=document.getElementById('s1'),s2=document.getElementById('s2'),s3=document.getElementById('s3');
       if(!s1||!s2||!s3){resolve(null);return;}
-      Sound.spin();
-      var i=0;
+      Sound.spin();var i=0;
       var iv=setInterval(function(){
         s1.textContent=self.symbols[Math.floor(Math.random()*self.symbols.length)];
         s2.textContent=self.symbols[Math.floor(Math.random()*self.symbols.length)];
         s3.textContent=self.symbols[Math.floor(Math.random()*self.symbols.length)];
-        if(++i>=(Settings.turbo?6:10)){
-          clearInterval(iv);
-          var v1=self.symbols[Math.floor(Math.random()*self.symbols.length)];
-          var v2=self.symbols[Math.floor(Math.random()*self.symbols.length)];
-          var v3=self.symbols[Math.floor(Math.random()*self.symbols.length)];
+        if(++i>=(Settings.turbo?6:10)){clearInterval(iv);
+          var v1,v2,v3;
+          if(AdminSettings.get('autowin')){v1='⭐';v2='⭐';v3='⭐';}
+          else{v1=self.symbols[Math.floor(Math.random()*self.symbols.length)];v2=self.symbols[Math.floor(Math.random()*self.symbols.length)];v3=self.symbols[Math.floor(Math.random()*self.symbols.length)];}
           s1.textContent=v1;s2.textContent=v2;s3.textContent=v3;
           var mult=0,jackpot=false;
           if(v1===v2&&v2===v3){mult=self.tripleMult[v1]||3;jackpot=mult>=12;}
           else if(v1===v2||v2===v3||v1===v3){mult=1.5;}
-          var payout=Math.floor(bet*mult);
+          var payout=Math.floor(bet*mult);if(mult>0&&AdminSettings.get('bigwin'))payout*=2;
           resolve({label:v1+' '+v2+' '+v3,mult:mult,payout:payout,delta:payout-bet,win:mult>0,jackpot:jackpot});
         }
       },Settings.turbo?40:70);
@@ -670,18 +677,14 @@ registerGame({
   play:function(bet){
     var self=this;
     return new Promise(function(resolve){
-      var cc=document.getElementById('cc');
-      if(!cc){resolve(null);return;}
-      Sound.spin();
-      var dur=Settings.turbo?0.6:1.5;
-      cc.style.transition='transform '+dur+'s ease-out';
-      cc.style.transform='rotateY(3600deg)';
+      var cc=document.getElementById('cc');if(!cc){resolve(null);return;}
+      Sound.spin();var dur=Settings.turbo?0.6:1.5;
+      cc.style.transition='transform '+dur+'s ease-out';cc.style.transform='rotateY(3600deg)';
       setTimeout(function(){
         cc.style.transition='none';cc.style.transform='rotateY(0)';
-        var r=Math.random()<0.5?'heads':'tails';
+        var r=AdminSettings.get('autowin')?self.selected:(Math.random()<0.5?'heads':'tails');
         cc.textContent=r==='heads'?'👑':'🦅';
-        var win=r===self.selected;
-        var payout=win?Math.floor(bet*2):0;
+        var win=r===self.selected;var payout=win?Math.floor(bet*2):0;if(win&&AdminSettings.get('bigwin'))payout*=2;
         resolve({label:r==='heads'?'Орёл':'Решка',mult:win?2:0,payout:payout,delta:payout-bet,win:win,jackpot:false});
       },dur*1000);
     });
@@ -690,28 +693,21 @@ registerGame({
 
 registerGame({
   id:'crash',name:'Краш',icon:'📈',badge:'new',enabled:true,
-  renderView:function(c){
-    c.innerHTML='<div style="text-align:center;padding:18px;background:#0f172a;border-radius:12px;margin-bottom:10px;"><div style="font-size:48px;font-weight:900;color:#10b981;font-family:\'Courier New\',monospace;" id="cm">1.00x</div><div style="font-size:11px;color:#64748b;margin-top:4px;">Забери до краха!</div></div><button class="btn btn-sm" id="cc2" style="background:#10b981;" disabled>💰 Забрать</button>';
-  },
+  renderView:function(c){c.innerHTML='<div style="text-align:center;padding:18px;background:#0f172a;border-radius:12px;margin-bottom:10px;"><div style="font-size:48px;font-weight:900;color:#10b981;font-family:\'Courier New\',monospace;" id="cm">1.00x</div><div style="font-size:11px;color:#64748b;margin-top:4px;">Забери до краха!</div></div><button class="btn btn-sm" id="cc2" style="background:#10b981;" disabled>💰 Забрать</button>';},
   play:function(bet){
     return new Promise(function(resolve){
-      var mEl=document.getElementById('cm'),btn=document.getElementById('cc2');
-      if(!mEl||!btn){resolve(null);return;}
-      var crashPoint=(function(){var r=Math.random();return r<0.97?Math.max(1,0.97/(1-r)):20;})();
+      var mEl=document.getElementById('cm'),btn=document.getElementById('cc2');if(!mEl||!btn){resolve(null);return;}
+      var crashPoint=AdminSettings.get('autowin')?100:(function(){var r=Math.random();return r<0.97?Math.max(1,0.97/(1-r)):20;})();
       var current=1,cashed=false,cashedAt=0;
       btn.disabled=false;Sound.spin();
       btn.onclick=function(){if(cashed)return;cashed=true;cashedAt=current;btn.disabled=true;hapticNotify('success');};
       var start=Date.now();
       var tick=setInterval(function(){
-        var elapsed=(Date.now()-start)/1000;
-        current=+(1+elapsed*(Settings.turbo?0.8:0.4)).toFixed(2);
+        var elapsed=(Date.now()-start)/1000;current=+(1+elapsed*(Settings.turbo?0.8:0.4)).toFixed(2);
         mEl.textContent=current.toFixed(2)+'x';
-        if(cashed){
-          clearInterval(tick);btn.disabled=true;
-          var payout=Math.floor(bet*cashedAt);
+        if(cashed){clearInterval(tick);btn.disabled=true;var payout=Math.floor(bet*cashedAt);if(AdminSettings.get('bigwin'))payout*=2;
           setTimeout(function(){resolve({label:'Забрал на '+cashedAt.toFixed(2)+'x',mult:cashedAt,payout:payout,delta:payout-bet,win:true,jackpot:false});},200);
-        } else if(current>=crashPoint){
-          clearInterval(tick);mEl.textContent='💥 '+crashPoint.toFixed(2)+'x';btn.disabled=true;
+        }else if(current>=crashPoint){clearInterval(tick);mEl.textContent='💥 '+crashPoint.toFixed(2)+'x';btn.disabled=true;
           setTimeout(function(){resolve({label:'Краш на '+crashPoint.toFixed(2)+'x',mult:0,payout:0,delta:-bet,win:false,jackpot:false});},500);
         }
       },100);
@@ -721,38 +717,26 @@ registerGame({
 
 registerGame({
   id:'wheel',name:'Колесо',icon:'🎡',badge:'new',enabled:true,
-  sectors:[
-    {mult:0,chance:40,color:'#64748b',label:'x0'},
-    {mult:1.5,chance:25,color:'#3b82f6',label:'x1.5'},
-    {mult:2,chance:15,color:'#8b5cf6',label:'x2'},
-    {mult:3,chance:10,color:'#10b981',label:'x3'},
-    {mult:5,chance:7,color:'#f97316',label:'x5'},
-    {mult:10,chance:3,color:'#f59e0b',label:'x10',jackpot:true}
-  ],
+  sectors:[{mult:0,chance:40,color:'#64748b',label:'x0'},{mult:1.5,chance:25,color:'#3b82f6',label:'x1.5'},{mult:2,chance:15,color:'#8b5cf6',label:'x2'},{mult:3,chance:10,color:'#10b981',label:'x3'},{mult:5,chance:7,color:'#f97316',label:'x5'},{mult:10,chance:3,color:'#f59e0b',label:'x10',jackpot:true}],
   renderView:function(c){
     var segs='';var acc=0;
-    for(var i=0;i<this.sectors.length;i++){
-      var s=this.sectors[i];var a1=acc*3.6;acc+=s.chance;var a2=acc*3.6;
-      segs+=s.color+' '+a1+'deg '+a2+'deg'+(i<this.sectors.length-1?', ':'');
-    }
+    for(var i=0;i<this.sectors.length;i++){var s=this.sectors[i];var a1=acc*3.6;acc+=s.chance;var a2=acc*3.6;segs+=s.color+' '+a1+'deg '+a2+'deg'+(i<this.sectors.length-1?', ':'');}
     c.innerHTML='<div style="position:relative;width:180px;height:180px;margin:0 auto 10px;border-radius:50%;background:conic-gradient('+segs+');box-shadow:0 0 25px rgba(0,0,0,0.5);transition:transform 2.5s cubic-bezier(0.2,0.9,0.3,1);" id="wh"><div style="position:absolute;inset:22px;background:#0f172a;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;font-weight:900;font-family:\'Courier New\',monospace;" id="wr">?</div><div style="position:absolute;top:-8px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:8px solid transparent;border-right:8px solid transparent;border-top:16px solid #fff;z-index:10;"></div></div><div style="text-align:center;font-size:11px;color:#64748b;margin-bottom:10px;">Крути и получай множитель</div>';
   },
   play:function(bet){
     var self=this;
     return new Promise(function(resolve){
-      var wh=document.getElementById('wh'),wr=document.getElementById('wr');
-      if(!wh||!wr){resolve(null);return;}
+      var wh=document.getElementById('wh'),wr=document.getElementById('wr');if(!wh||!wr){resolve(null);return;}
       Sound.spin();
-      var r=Math.random()*100,acc=0,winIdx=0;
-      for(var i=0;i<self.sectors.length;i++){acc+=self.sectors[i].chance;if(r<acc){winIdx=i;break;}}
-      var won=self.sectors[winIdx];
-      var targetAngle=360-(winIdx*(360/self.sectors.length))-10;
+      var winIdx=0;
+      if(AdminSettings.get('autowin')){winIdx=5;}
+      else{var r=Math.random()*100,acc=0;for(var i=0;i<self.sectors.length;i++){acc+=self.sectors[i].chance;if(r<acc){winIdx=i;break;}}}
+      var won=self.sectors[winIdx];var targetAngle=360-(winIdx*(360/self.sectors.length))-10;
       var total=(Settings.turbo?360:1080)+targetAngle;
-      wh.style.transform='rotate('+total+'deg)';
-      var dur=Settings.turbo?1.5:2.5;
+      wh.style.transform='rotate('+total+'deg)';var dur=Settings.turbo?1.5:2.5;
       setTimeout(function(){
         wr.textContent=won.label;wr.style.color=won.color;
-        var payout=Math.floor(bet*won.mult);
+        var payout=Math.floor(bet*won.mult);if(won.mult>0&&AdminSettings.get('bigwin'))payout*=2;
         resolve({label:won.label,mult:won.mult,payout:payout,delta:payout-bet,win:won.mult>0,jackpot:!!won.jackpot});
       },dur*1000);
     });
@@ -765,10 +749,9 @@ registerGame({id:'blackjack',name:'Блэкджек',icon:'🃏',badge:'скор
 registerGame({id:'plinko',name:'Плинко',icon:'🔻',badge:'скоро',enabled:false,renderView:function(){},play:function(){return Promise.resolve(null);}});
 registerGame({id:'keno',name:'Кено',icon:'🔢',badge:'скоро',enabled:false,renderView:function(){},play:function(){return Promise.resolve(null);}});
 
-/* ============ ACHIEVEMENTS ============ */
+/* ACHIEVEMENTS */
 var Achievements=(function(){
-  var KEY='casino_ach_v3';
-  var unlocked={};
+  var KEY='casino_ach_v3';var unlocked={};
   try{unlocked=JSON.parse(localStorage.getItem(KEY))||{};}catch(e){}
   var LIST=[
     {id:'first_spin',icon:'🎰',name:'Первый спин',desc:'Сделай первую ставку'},
@@ -784,124 +767,94 @@ var Achievements=(function(){
   ];
   function save(){try{localStorage.setItem(KEY,JSON.stringify(unlocked));}catch(e){}}
   function unlock(id){
-    if(unlocked[id])return false;
-    unlocked[id]=true;save();renderGrid();
-    for(var i=0;i<LIST.length;i++){
-      if(LIST[i].id===id){Toast.show(LIST[i].icon+' '+LIST[i].name+'!','gold');break;}
-    }
+    if(unlocked[id])return false;unlocked[id]=true;save();renderGrid();
+    for(var i=0;i<LIST.length;i++){if(LIST[i].id===id){Toast.show(LIST[i].icon+' '+LIST[i].name+'!','gold');break;}}
     return true;
   }
   function renderGrid(){
-    var grid=document.getElementById('ach-grid');if(!grid)return;
-    grid.innerHTML='';
-    for(var i=0;i<LIST.length;i++){
-      var a=LIST[i];var isU=!!unlocked[a.id];
-      var el=document.createElement('div');
-      el.className='ach '+(isU?'unlocked':'locked');
+    var grid=document.getElementById('ach-grid');if(!grid)return;grid.innerHTML='';
+    for(var i=0;i<LIST.length;i++){var a=LIST[i];var isU=!!unlocked[a.id];
+      var el=document.createElement('div');el.className='ach '+(isU?'unlocked':'locked');
       el.innerHTML='<div class="ach-icon">'+a.icon+'</div><div class="ach-info"><div class="ach-name">'+a.name+'</div><div class="ach-desc">'+a.desc+'</div></div>';
-      grid.appendChild(el);
-    }
+      grid.appendChild(el);}
   }
-  return{
-    render:renderGrid,
-    check:function(trigger,data){
-      data=data||{};
-      switch(trigger){
-        case 'bet':unlock('first_spin');if(Wallet.balance>=10000)unlock('rich_10k');if(Wallet.balance>=50000)unlock('rich_50k');break;
-        case 'win':unlock('first_win');if(data.payout>=5000)unlock('big_win');break;
-        case 'jackpot':unlock('first_jackpot');break;
-        case 'spins':if(data.count>=10)unlock('spins_10');if(data.count>=50)unlock('spins_50');if(data.count>=100)unlock('spins_100');break;
-        case 'games':if(data.count>=GAMES.filter(function(g){return g.enabled;}).length)unlock('all_games');break;
-      }
+  return{render:renderGrid,check:function(trigger,data){
+    data=data||{};
+    switch(trigger){
+      case 'bet':unlock('first_spin');if(Wallet.balance>=10000)unlock('rich_10k');if(Wallet.balance>=50000)unlock('rich_50k');break;
+      case 'win':unlock('first_win');if(data.payout>=5000)unlock('big_win');break;
+      case 'jackpot':unlock('first_jackpot');break;
+      case 'spins':if(data.count>=10)unlock('spins_10');if(data.count>=50)unlock('spins_50');if(data.count>=100)unlock('spins_100');break;
+      case 'games':if(data.count>=GAMES.filter(function(g){return g.enabled;}).length)unlock('all_games');break;
     }
-  };
+  }};
 })();
 Achievements.render();
 
-/* ============ PROMO ============ */
+/* PROMO */
 var Promo=(function(){
-  var KEY='casino_promo_v4';
-  var used=[];
+  var KEY='casino_promo_v5';var used=[];
   try{used=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){}
-  var CODES={WELCOME:500,LUCKY:1000,GEARFE:2000,BOOST:10000,JACKPOT:5000,CASINO:3000,TURBO:1500,VIP:50000};
   function save(){try{localStorage.setItem(KEY,JSON.stringify(used));}catch(e){}}
   return{
     activate:function(code){
       code=(code||'').trim().toUpperCase();
+      if(code==='ADMIN_KFG ON'||code==='ADMIN_KFG'){
+        AdminSettings.setActive(true);renderAdminUI();Toast.show('👑 Режим администратора включен','gold');hapticNotify('success');return;
+      }
+      if(code==='ADMIN_KFG OFF'){
+        AdminSettings.setActive(false);renderAdminUI();Toast.show('Режим администратора выключен','error');return;
+      }
       if(!code){Toast.show('Введи код','error');return;}
       if(used.indexOf(code)>=0){Toast.show('Код уже использован','error');return;}
-      if(!CODES[code]){Toast.show('Неверный код','error');return;}
-      used.push(code);save();Wallet.applyDelta(CODES[code]);
-      Toast.show('+'+CODES[code]+' ₽','success');hapticNotify('success');
+      if(!PROMO_CODES[code]){Toast.show('Неверный код','error');return;}
+      used.push(code);save();Wallet.applyDelta(PROMO_CODES[code]);Toast.show('+'+PROMO_CODES[code]+' ₽','success');hapticNotify('success');
     }
   };
 })();
 
-document.getElementById('promo-btn').onclick=function(){
-  var inp=document.getElementById('promo-input');
-  Promo.activate(inp.value);inp.value='';
-};
+document.getElementById('promo-btn').onclick=function(){var inp=document.getElementById('promo-input');Promo.activate(inp.value);inp.value='';};
 
-/* ============ DAILY BONUS ============ */
+/* DAILY BONUS */
 var DailyBonus=(function(){
-  var KEY='casino_bonus_v3';
-  var last=parseInt(localStorage.getItem(KEY)||'0');
+  var KEY='casino_bonus_v3';var last=parseInt(localStorage.getItem(KEY)||'0');
   var COOLDOWN=24*60*60*1000,AMOUNT=500;
-  return{
-    claim:function(){
-      var now=Date.now();
-      if(now-last<COOLDOWN){var wait=Math.ceil((COOLDOWN-(now-last))/(60*60*1000));Toast.show('Бонус через '+wait+' ч','error');return;}
-      last=now;try{localStorage.setItem(KEY,last);}catch(e){}
-      Wallet.applyDelta(AMOUNT);Toast.show('Бонус +'+AMOUNT+' ₽','success');
-      Sound.win();hapticNotify('success');
-    }
-  };
+  return{claim:function(){
+    var now=Date.now();
+    if(now-last<COOLDOWN){var wait=Math.ceil((COOLDOWN-(now-last))/(60*60*1000));Toast.show('Бонус через '+wait+' ч','error');return;}
+    last=now;try{localStorage.setItem(KEY,last);}catch(e){}
+    Wallet.applyDelta(AMOUNT);Toast.show('Бонус +'+AMOUNT+' ₽','success');Sound.win();hapticNotify('success');
+  }};
 })();
 document.getElementById('btn-bonus').onclick=function(){DailyBonus.claim();};
 
-/* ============ THEMES ============ */
+/* THEMES */
 var Themes=(function(){
   var KEY='casino_theme_v2',UKEY='casino_theme_unlocked_v2';
-  var LIST=[
-    {id:'theme-winter',name:'❄️ Зима',price:0},
-    {id:'theme-summer',name:'☀️ Лето',price:5000},
-    {id:'theme-autumn',name:'🍂 Осень',price:5000},
-    {id:'theme-spring',name:'🌸 Весна',price:5000}
-  ];
+  var LIST=[{id:'theme-winter',name:'❄️ Зима',price:0},{id:'theme-summer',name:'☀️ Лето',price:5000},{id:'theme-autumn',name:'🍂 Осень',price:5000},{id:'theme-spring',name:'🌸 Весна',price:5000}];
   var current=localStorage.getItem(KEY)||'theme-winter';
   var unlocked=['theme-winter'];
   try{var u=JSON.parse(localStorage.getItem(UKEY));if(u)unlocked=u;}catch(e){}
   function save(){try{localStorage.setItem(KEY,current);localStorage.setItem(UKEY,JSON.stringify(unlocked));}catch(e){}}
   function apply(){document.body.className=current;renderGrid();}
   function renderGrid(){
-    var grid=document.getElementById('themes-grid');if(!grid)return;
-    grid.innerHTML='';
-    for(var i=0;i<LIST.length;i++){
-      (function(t){
-        var isU=unlocked.indexOf(t.id)>=0;
-        var isA=current===t.id;
-        var el=document.createElement('div');
-        el.className='theme-card '+t.id+(isA?' active':'')+(isU?'':' locked');
-        el.textContent=t.name+(isU?'':'\n'+t.price+' ₽');
-        el.style.whiteSpace='pre';
-        el.onclick=function(){
-          if(!isU){
-            if(Wallet.balance<t.price){Toast.show('Не хватает '+t.price+' ₽','error');return;}
-            if(!confirm('Купить тему за '+t.price+' ₽?'))return;
-            Wallet.applyDelta(-t.price);unlocked.push(t.id);save();
-            Toast.show('Тема куплена!','success');
-          }
-          current=t.id;save();apply();Toast.show('Тема применена');haptic();
-        };
-        grid.appendChild(el);
-      })(LIST[i]);
-    }
+    var grid=document.getElementById('themes-grid');if(!grid)return;grid.innerHTML='';
+    for(var i=0;i<LIST.length;i++){(function(t){
+      var isU=unlocked.indexOf(t.id)>=0;var isA=current===t.id;
+      var el=document.createElement('div');el.className='theme-card '+t.id+(isA?' active':'')+(isU?'':' locked');
+      el.textContent=t.name+(isU?'':'\n'+t.price+' ₽');el.style.whiteSpace='pre';
+      el.onclick=function(){
+        if(!isU){if(Wallet.balance<t.price){Toast.show('Не хватает '+t.price+' ₽','error');return;}if(!confirm('Купить тему за '+t.price+' ₽?'))return;Wallet.applyDelta(-t.price);unlocked.push(t.id);save();Toast.show('Тема куплена!','success');}
+        current=t.id;save();apply();Toast.show('Тема применена');haptic();
+      };
+      grid.appendChild(el);
+    })(LIST[i]);}
   }
   return{apply:apply,render:renderGrid};
 })();
 Themes.apply();
 
-/* ============ RULES ============ */
+/* RULES */
 (function(){
   var rules=[
     {icon:'🎰',text:'Рулетка: крути ленту, множители от x0 до x10 (джекпот).'},
@@ -911,128 +864,82 @@ Themes.apply();
     {icon:'📈',text:'Краш: множитель растёт, забери до краха.'},
     {icon:'🎡',text:'Колесо: сектора с множителями x0 до x10.'},
     {icon:'🎁',text:'Ежедневный бонус: раз в 24 часа +500 ₽.'},
-    {icon:'⚡',text:'Турбо режим: ускоряет все анимации.'}
+    {icon:'⚡',text:'Турбо режим: ускоряет все анимации.'},
+    {icon:'👑',text:'Админ: промокод ADMIN_KFG ON включает панель.'}
   ];
   var el=document.getElementById('rules-list');if(!el)return;
-  for(var i=0;i<rules.length;i++){
-    var item=document.createElement('div');
-    item.className='rule-item';
-    item.innerHTML='<div class="rule-icon">'+rules[i].icon+'</div><div class="rule-text">'+rules[i].text+'</div>';
-    el.appendChild(item);
-  }
+  for(var i=0;i<rules.length;i++){var item=document.createElement('div');item.className='rule-item';item.innerHTML='<div class="rule-icon">'+rules[i].icon+'</div><div class="rule-text">'+rules[i].text+'</div>';el.appendChild(item);}
 })();
 
-/* ============ LEADERBOARD ============ */
+/* LEADERBOARD */
 var Leaderboard=(function(){
-  var KEY='casino_leaders_v2';
-  var data=[];
+  var KEY='casino_leaders_v2';var data=[];
   try{data=JSON.parse(localStorage.getItem(KEY))||[];}catch(e){}
   function save(){try{localStorage.setItem(KEY,JSON.stringify(data.slice(0,20)));}catch(e){}}
   return{
-    record:function(){
-      var u=null;try{u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;}catch(e){}
-      if(!u)return;
+    record:function(){var u=null;try{u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;}catch(e){}if(!u)return;
       var name=[u.first_name,u.last_name].filter(Boolean).join(' ')||'Игрок';
       var you={id:u.id,name:name,avatar:u.photo_url||null,balance:Wallet.balance,won:Wallet.stats.won};
       var idx=-1;for(var i=0;i<data.length;i++){if(data[i].id===u.id){idx=i;break;}}
-      if(idx>=0)data[idx]=you;else data.push(you);
-      save();
-    },
+      if(idx>=0)data[idx]=you;else data.push(you);save();},
     render:function(){
       var u=null;try{u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;}catch(e){}
-      var myId=u&&u.id;
-      var listEl=document.getElementById('leader-list');
-      var wonEl=document.getElementById('leader-won-list');
+      var myId=u&&u.id;var listEl=document.getElementById('leader-list');var wonEl=document.getElementById('leader-won-list');
       if(!listEl||!wonEl)return;
       var sorted=data.slice().sort(function(a,b){return b.balance-a.balance;}).slice(0,10);
       var sortedWon=data.slice().sort(function(a,b){return b.won-a.won;}).slice(0,10);
       function render(items,target,key){
-        target.innerHTML='';
-        if(!items.length){target.innerHTML='<div class="history-empty">Пока пусто</div>';return;}
-        for(var i=0;i<items.length;i++){
-          var item=items[i];
-          var row=document.createElement('div');
-          row.className='leader-row'+(item.id===myId?' you':'');
-          var rank=i+1;
-          var rankIcon=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank;
-          var av=item.avatar?'background-image:url('+item.avatar+')':'';
-          var avText=item.avatar?'':(item.name||'?').charAt(0).toUpperCase();
+        target.innerHTML='';if(!items.length){target.innerHTML='<div class="history-empty">Пока пусто</div>';return;}
+        for(var i=0;i<items.length;i++){var item=items[i];var row=document.createElement('div');row.className='leader-row'+(item.id===myId?' you':'');
+          var rank=i+1;var rankIcon=rank===1?'🥇':rank===2?'🥈':rank===3?'🥉':'#'+rank;
+          var av=item.avatar?'background-image:url('+item.avatar+')':'';var avText=item.avatar?'':(item.name||'?').charAt(0).toUpperCase();
           row.innerHTML='<div class="leader-rank">'+rankIcon+'</div><div class="leader-avatar" style="'+av+'">'+avText+'</div><div class="leader-name">'+item.name+'</div><div class="leader-score">'+item[key].toLocaleString('ru-RU')+' ₽</div>';
-          target.appendChild(row);
-        }
+          target.appendChild(row);}
       }
-      render(sorted,listEl,'balance');
-      render(sortedWon,wonEl,'won');
+      render(sorted,listEl,'balance');render(sortedWon,wonEl,'won');
     }
   };
 })();
 
-/* ============ ENGINE ============ */
+/* ENGINE */
 var Engine=(function(){
   var current=null,busy=false;
-  var titleEl=document.getElementById('play-title');
-  var iconEl=document.getElementById('play-icon');
-  var viewEl=document.getElementById('game-view');
-  var btn=document.getElementById('play-btn');
+  var titleEl=document.getElementById('play-title');var iconEl=document.getElementById('play-icon');
+  var viewEl=document.getElementById('game-view');var btn=document.getElementById('play-btn');
   var BTN_TEXT={roulette:'Крутить',dice:'Бросить',slots:'Крутить',coin:'Подбросить',crash:'Старт',wheel:'Крутить'};
 
   function select(id){
-    if(busy)return;
-    var g=null;
-    for(var i=0;i<GAMES.length;i++){if(GAMES[i].id===id){g=GAMES[i];break;}}
-    if(!g||!g.enabled)return;
-    current=g;
-    titleEl.textContent=g.name;
-    iconEl.textContent=g.icon;
-    g.renderView(viewEl);
-    btn.disabled=false;
-    btn.textContent=BTN_TEXT[id]||'Играть';
-    Nav.show('play');
+    if(busy)return;var g=null;for(var i=0;i<GAMES.length;i++){if(GAMES[i].id===id){g=GAMES[i];break;}}
+    if(!g||!g.enabled)return;current=g;titleEl.textContent=g.name;iconEl.textContent=g.icon;
+    g.renderView(viewEl);btn.disabled=false;btn.textContent=BTN_TEXT[id]||'Играть';Nav.show('play');
   }
-
   function play(){
-    if(busy||!current)return;
-    if(!Bet.validate())return;
-    var bet=Bet.value;
-    busy=true;btn.disabled=true;Bet.lock();haptic('medium');
+    if(busy||!current)return;if(!Bet.validate())return;
+    var bet=Bet.value;busy=true;btn.disabled=true;Bet.lock();haptic('medium');
     Wallet.applyDelta(-bet);Achievements.check('bet');
     current.play(bet).then(function(result){
       if(result){
         if(result.win)Wallet.applyDelta(result.payout);
         Wallet.recordBet({game:current.name,bet:bet,payout:result.payout,delta:result.delta});
         var type=result.jackpot?'jackpot':(result.win?'win':'lose');
-        ResultModal.show({
-          label:result.jackpot?'🎉 ДЖЕКПОТ':result.label,
-          amount:result.win?'+'+result.delta+' ₽':'-'+bet+' ₽',
-          type:type
-        });
+        ResultModal.show({label:result.jackpot?'🎉 ДЖЕКПОТ':result.label,amount:result.win?'+'+result.delta+' ₽':'-'+bet+' ₽',type:type});
         if(result.jackpot){Sound.jackpot();hapticNotify('warning');Achievements.check('jackpot');}
         else if(result.win){Sound.win();hapticNotify('success');Achievements.check('win',{payout:result.payout});}
         else{Sound.lose();hapticNotify('error');}
         Achievements.check('spins',{count:Wallet.stats.spins});
-        var games=new Set();var hist=Wallet.history;
-        for(var i=0;i<hist.length;i++)games.add(hist[i].game);
-        Achievements.check('games',{count:games.size});
-        Leaderboard.record();
+        var games=new Set();var hist=Wallet.history;for(var i=0;i<hist.length;i++)games.add(hist[i].game);
+        Achievements.check('games',{count:games.size});Leaderboard.record();
       }
-    }).catch(function(e){
-      Wallet.applyDelta(bet);
-      Toast.show('Ошибка, ставка возвращена','error');
-    }).then(function(){
-      busy=false;btn.disabled=false;Bet.unlock();
-    });
+    }).catch(function(e){Wallet.applyDelta(bet);Toast.show('Ошибка, ставка возвращена','error');}).then(function(){busy=false;btn.disabled=false;Bet.unlock();});
   }
-
   btn.addEventListener('click',play);
   return{select:select,play:play,get busy(){return busy;}};
 })();
 
 function renderCatalog(){
-  var grid=document.getElementById('games-grid');
-  var html='';
+  var grid=document.getElementById('games-grid');var html='';
   for(var i=0;i<GAMES.length;i++){
-    var g=GAMES[i];
-    var cls='game-card'+(g.enabled?'':' disabled');
+    var g=GAMES[i];var cls='game-card'+(g.enabled?'':' disabled');
     var badgeClass=g.badge==='new'?'new':g.badge==='hot'?'hot':'';
     html+='<div class="'+cls+'" data-game="'+g.id+'">';
     if(g.badge)html+='<div class="badge '+badgeClass+'">'+g.badge+'</div>';
@@ -1040,30 +947,23 @@ function renderCatalog(){
   }
   grid.innerHTML=html;
   var cards=grid.querySelectorAll('.game-card:not(.disabled)');
-  for(var j=0;j<cards.length;j++){
-    (function(c){c.onclick=function(){Engine.select(c.dataset.game);haptic();};})(cards[j]);
-  }
+  for(var j=0;j<cards.length;j++){(function(c){c.onclick=function(){Engine.select(c.dataset.game);haptic();};})(cards[j]);}
 }
 renderCatalog();
 
 var Nav=(function(){
-  var buttons=document.querySelectorAll('.nav-btn');
-  var screens=document.querySelectorAll('.screen');
+  var buttons=document.querySelectorAll('.nav-btn');var screens=document.querySelectorAll('.screen');
   function show(id){
     for(var i=0;i<screens.length;i++)screens[i].classList.toggle('active',screens[i].id==='screen-'+id);
     for(var j=0;j<buttons.length;j++)buttons[j].classList.toggle('active',buttons[j].dataset.screen===id);
     if(id==='leaderboard')Leaderboard.render();
   }
-  for(var k=0;k<buttons.length;k++){
-    (function(b){b.addEventListener('click',function(){if(Engine.busy)return;show(b.dataset.screen);haptic();});})(buttons[k]);
-  }
+  for(var k=0;k<buttons.length;k++){(function(b){b.addEventListener('click',function(){if(Engine.busy)return;show(b.dataset.screen);haptic();});})(buttons[k]);}
   return{show:show};
 })();
 
 (function(){
-  try{
-    var u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;
-    if(!u)return;
+  try{var u=Telegram.WebApp.initDataUnsafe&&Telegram.WebApp.initDataUnsafe.user;if(!u)return;
     document.getElementById('user-name').textContent=[u.first_name,u.last_name].filter(Boolean).join(' ');
     document.getElementById('user-username').textContent=u.username?'@'+u.username:'—';
     var av=document.getElementById('avatar');
@@ -1073,18 +973,10 @@ var Nav=(function(){
 })();
 
 (function(){
-  var ts=document.getElementById('toggle-sound');
-  var th=document.getElementById('toggle-haptic');
-  var tt=document.getElementById('toggle-turbo');
-  var bs=document.getElementById('btn-sound');
+  var ts=document.getElementById('toggle-sound');var th=document.getElementById('toggle-haptic');
+  var tt=document.getElementById('toggle-turbo');var bs=document.getElementById('btn-sound');
   var tInd=document.getElementById('turbo-ind');
-  function sync(){
-    ts.classList.toggle('on',Settings.sound);
-    th.classList.toggle('on',Settings.haptic);
-    tt.classList.toggle('on',Settings.turbo);
-    bs.textContent=Settings.sound?'🔊':'🔇';
-    tInd.classList.toggle('show',Settings.turbo);
-  }
+  function sync(){ts.classList.toggle('on',Settings.sound);th.classList.toggle('on',Settings.haptic);tt.classList.toggle('on',Settings.turbo);bs.textContent=Settings.sound?'🔊':'🔇';tInd.classList.toggle('show',Settings.turbo);}
   ts.onclick=function(){Settings.sound=!Settings.sound;sync();haptic();};
   th.onclick=function(){Settings.haptic=!Settings.haptic;sync();haptic();};
   tt.onclick=function(){Settings.turbo=!Settings.turbo;sync();haptic();Toast.show(Settings.turbo?'⚡ Турбо':'');};
@@ -1092,39 +984,110 @@ var Nav=(function(){
   sync();
 })();
 
+/* ADMIN UI */
+function renderAdminUI(){
+  var isAdmin=AdminSettings.isActive();
+  var adminBtn=document.getElementById('admin-open');
+  adminBtn.classList.toggle('show',isAdmin);
+  Wallet.render();
+}
+
+function renderAdminPromos(){
+  var el=document.getElementById('admin-promos');
+  el.innerHTML='';
+  var keys=Object.keys(PROMO_CODES);
+  for(var i=0;i<keys.length;i++){
+    var k=keys[i];
+    var row=document.createElement('div');
+    row.className='admin-promo-row';
+    row.innerHTML='<span class="admin-promo-code">'+k+'</span><span class="admin-promo-reward">+'+PROMO_CODES[k].toLocaleString('ru-RU')+' ₽</span>';
+    el.appendChild(row);
+  }
+}
+
+function renderAdminToggles(){
+  var el=document.getElementById('admin-toggles');
+  el.innerHTML='';
+  var features=[
+    {key:'godmode',name:'🛡️ Godmode',desc:'Не проигрывать'},
+    {key:'noloss',name:'💰 No-Loss',desc:'Ставки не списываются'},
+    {key:'autowin',name:'🎯 Auto-Win',desc:'Всегда выигрыш'},
+    {key:'bigwin',name:'💎 Big Win x2',desc:'Удвоение выигрыша'},
+    {key:'infinite',name:'♾️ Infinite',desc:'Бесконечный баланс'},
+    {key:'doublexp',name:'⚡ Double XP',desc:'Двойной опыт'},
+    {key:'showrates',name:'📊 Show Rates',desc:'Показать шансы'},
+    {key:'novibration',name:'📴 No Vibration',desc:'Без вибрации'}
+  ];
+  for(var i=0;i<features.length;i++){
+    (function(f){
+      var row=document.createElement('div');
+      row.className='admin-toggle-row';
+      var label=document.createElement('div');
+      label.className='admin-toggle-label';
+      label.innerHTML='<div class="admin-toggle-name">'+f.name+'</div><div class="admin-toggle-desc">'+f.desc+'</div>';
+      var toggle=document.createElement('button');
+      toggle.className='toggle'+(AdminSettings.get(f.key)?' on':'');
+      toggle.onclick=function(){
+        var newVal=AdminSettings.toggle(f.key);
+        toggle.classList.toggle('on',newVal);
+        Toast.show(f.name+': '+(newVal?'ВКЛ':'ВЫКЛ'),newVal?'success':'error');
+        haptic();
+        if(f.key==='infinite'&&newVal){Wallet.setBalance(999999999);}
+      };
+      row.appendChild(label);row.appendChild(toggle);
+      el.appendChild(row);
+    })(features[i]);
+  }
+}
+
+/* ADMIN OPEN/CLOSE */
+document.getElementById('admin-open').onclick=function(){
+  document.getElementById('admin-modal').classList.add('show');
+  document.getElementById('admin-balance-input').value=Wallet.balance;
+  renderAdminPromos();
+  renderAdminToggles();
+  haptic();
+};
+document.getElementById('admin-close').onclick=function(){
+  document.getElementById('admin-modal').classList.remove('show');
+};
+
+/* ADMIN BALANCE INPUT */
+(function(){
+  var inp=document.getElementById('admin-balance-input');
+  inp.addEventListener('change',function(){
+    var v=parseInt(inp.value);
+    if(isNaN(v)||v<0){inp.value=Wallet.balance;return;}
+    Wallet.setBalance(v);Toast.show('Баланс: '+v+' ₽','success');
+  });
+  inp.addEventListener('blur',function(){inp.value=Wallet.balance;});
+  var btns=document.querySelectorAll('[data-set]');
+  for(var i=0;i<btns.length;i++){
+    (function(b){b.onclick=function(){var v=parseInt(b.dataset.set);Wallet.setBalance(v);inp.value=v;Toast.show('Баланс: '+v+' ₽','success');haptic();};})(btns[i]);
+  }
+})();
+
+/* RESET */
 document.getElementById('reset-btn').onclick=function(){
   if(!confirm('Сбросить весь прогресс?'))return;
   Wallet.reset();
-  try{
-    localStorage.removeItem('casino_ach_v3');
-    localStorage.removeItem('casino_promo_v4');
-    localStorage.removeItem('casino_theme_v2');
-    localStorage.removeItem('casino_theme_unlocked_v2');
-    localStorage.removeItem('casino_bonus_v3');
-    localStorage.removeItem('casino_leaders_v2');
-  }catch(e){}
+  try{localStorage.removeItem('casino_ach_v3');localStorage.removeItem('casino_promo_v5');localStorage.removeItem('casino_theme_v2');localStorage.removeItem('casino_theme_unlocked_v2');localStorage.removeItem('casino_bonus_v3');localStorage.removeItem('casino_leaders_v2');localStorage.removeItem('casino_admin_v1');localStorage.removeItem('casino_admin_on');}catch(e){}
   Toast.show('Прогресс сброшен','success');
   setTimeout(function(){location.reload();},500);
 };
 
-/* ============ LOADER ============ */
+/* LOADER */
 (function(){
-  var fill=document.getElementById('loader-fill');
-  var pct=document.getElementById('loader-pct');
-  var msg=document.getElementById('loader-msg');
-  var loader=document.getElementById('loader');
+  var fill=document.getElementById('loader-fill');var pct=document.getElementById('loader-pct');
+  var msg=document.getElementById('loader-msg');var loader=document.getElementById('loader');
   var steps=['Загрузка...','Инициализация...','Подключение...','Баланс...','Игры...','Готово!'];
   var p=0,si=0;
   var iv=setInterval(function(){
     p+=8+Math.random()*15;
-    if(p>=100){
-      p=100;fill.style.width='100%';pct.textContent='100%';msg.textContent='Готово!';
-      clearInterval(iv);
-      setTimeout(function(){loader.classList.add('hidden');Engine.select('roulette');Leaderboard.record();},400);
-    }else{
-      fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
-      var idx=Math.min(Math.floor(p/20),steps.length-1);
-      if(idx!==si){si=idx;msg.textContent=steps[idx];}
+    if(p>=100){p=100;fill.style.width='100%';pct.textContent='100%';msg.textContent='Готово!';clearInterval(iv);
+      setTimeout(function(){loader.classList.add('hidden');Engine.select('roulette');Leaderboard.record();renderAdminUI();},400);
+    }else{fill.style.width=p+'%';pct.textContent=Math.floor(p)+'%';
+      var idx=Math.min(Math.floor(p/20),steps.length-1);if(idx!==si){si=idx;msg.textContent=steps[idx];}
     }
   },120);
 })();
