@@ -4,102 +4,120 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Monolith</title>
+    <title>Gearfe Casino: Themes</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
-        :root { --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b; --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444; --radius: 20px; }
         
-        body.theme-winter { --bg: #030712; --surface: #0f172a; --text: #f8fafc; --primary: #0ea5e9; --money: #10b981; --radius: 4px; }
-        body.theme-summer { --bg: #0b1a05; --surface: #142e0d; --text: #f0fdf4; --primary: #22c55e; --money: #fde047; --radius: 24px; }
-        body.theme-autumn { --bg: #0a0502; --surface: #1c0a02; --text: #fef2f2; --primary: #f97316; --money: #eab308; --radius: 16px; }
-        body.theme-spring { --bg: #02140a; --surface: #0a2e18; --text: #f0fdf4; --primary: #34d399; --money: #a3e635; --radius: 30px; }
+        /* --- ЦВЕТОВЫЕ ТЕМЫ (МЕНЯЕТСЯ ТОЛЬКО ФОН) --- */
+        :root { --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444; }
+        
+        body.theme-winter { 
+            background: linear-gradient(to bottom, #030712, #0f172a); 
+            --primary: #0ea5e9; --surface: #0f172a;
+        }
+        body.theme-summer { 
+            background: linear-gradient(to bottom, #052e16, #14532d); 
+            --primary: #22c55e; --money: #fde047; --surface: #142e0d;
+        }
+        body.theme-autumn { 
+            background: linear-gradient(to bottom, #1c0a02, #431407); 
+            --primary: #f97316; --money: #eab308; --surface: #2e1307;
+        }
+        body.theme-spring { 
+            background: linear-gradient(to bottom, #02140a, #064e3b); 
+            --primary: #34d399; --money: #a3e635; --surface: #0a2e18;
+        }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
+        body { font-family: 'Montserrat', sans-serif; color: #f8fafc; display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
-        /* --- ФОНЫ --- */
+        /* --- СЕЗОННЫЙ ДЕКОР (ПРОСТОЙ CSS) --- */
         .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
-        .snowflake, .leaf, .sun { position: absolute; top: -30px; animation: fall linear infinite; }
+        
+        /* Снежинки и Листья */
+        .snowflake, .leaf { position: absolute; top: -20px; animation: fall linear infinite; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg); } 100% { transform: translateY(110vh) rotate(360deg); } }
         
-        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 80px; display: flex; justify-content: space-around; }
-        .icicle { width: 12px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); }
-        .icicle-melting { width: 12px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.6), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
-        .icicle-melting::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 6px; height: 12px; background: rgba(52,211,153,0.9); border-radius: 50%; animation: drip 1s infinite; }
-        @keyframes drip { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(30px) scale(0.5); opacity: 0; } }
+        /* Сосульки */
+        .icicles { position: absolute; top: 0; left: 0; width: 100%; height: 60px; display: flex; justify-content: space-around; }
+        .icicle { width: 8px; background: linear-gradient(to bottom, #fff, rgba(14,165,233,0.4), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); }
+        .icicle-melting { width: 8px; background: linear-gradient(to bottom, #fff, rgba(52,211,153,0.4), transparent); clip-path: polygon(20% 0, 80% 0, 50% 100%); position: relative; }
+        .icicle-melting::after { content: ''; position: absolute; bottom: -5px; left: 50%; transform: translateX(-50%); width: 3px; height: 6px; background: #34d399; border-radius: 50%; animation: drip 1s infinite; }
+        @keyframes drip { 0% { transform: translateY(0) scale(1); opacity: 1; } 100% { transform: translateY(20px) scale(0.5); opacity: 0; } }
 
-        .grass-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 100px; display: none; border-radius: 50% 50% 0 0 / 20px 20px 0 0; }
-        .grass-summer { background: linear-gradient(to top, #15803d, transparent); display: block; }
-        .grass-spring { background: linear-gradient(to top, #22c55e, transparent); display: block; }
-        .grass-autumn { background: linear-gradient(to top, #7c2d12, transparent); display: block; }
+        /* Трава и сугробы */
+        .grass { position: absolute; bottom: 0; left: 0; width: 100%; height: 80px; display: none; border-radius: 50% 50% 0 0 / 20px 20px 0 0; }
+        .grass-summer { background: linear-gradient(to top, #15803d, transparent); }
+        .grass-spring { background: linear-gradient(to top, #22c55e, transparent); }
+        .grass-autumn { background: linear-gradient(to top, #7c2d12, transparent); }
         .snowdrifts { background: linear-gradient(to top, #fff, transparent); height: 80px; position: absolute; bottom: 0; width: 100%; display: none; border-radius: 50% 50% 0 0 / 30px 30px 0 0; }
 
+        /* Показ элементов по темам */
         body.theme-winter .icicle { display: block; } body.theme-winter .icicle-melting { display: none; }
         body.theme-winter .snowflake { display: block; } body.theme-winter .snowdrifts { display: block; }
-        body.theme-winter .grass-layer, body.theme-winter .leaf, body.theme-winter .sun { display: none; }
+        body.theme-winter .grass, body.theme-winter .leaf { display: none; }
 
         body.theme-spring .icicle { display: none; } body.theme-spring .icicle-melting { display: block; }
-        body.theme-spring .grass-spring { display: block; } body.theme-spring .sun { display: block; }
-        body.theme-spring .snowflake, body.theme-spring .snowdrifts, body.theme-spring .leaf, body.theme-spring .grass-summer, body.theme-spring .grass-autumn { display: none; }
+        body.theme-spring .grass-spring { display: block; } body.theme-spring .snowflake { display: none; } body.theme-spring .snowdrifts { display: none; }
+        body.theme-spring .leaf { display: none; } body.theme-spring .grass-summer { display: none; } body.theme-spring .grass-autumn { display: none; }
 
         body.theme-summer .icicle, body.theme-summer .icicle-melting, body.theme-summer .snowflake, body.theme-summer .snowdrifts, body.theme-summer .leaf { display: none; }
-        body.theme-summer .grass-summer { display: block; } body.theme-summer .sun { display: block; }
+        body.theme-summer .grass-summer { display: block; }
 
-        body.theme-autumn .icicle, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts, body.theme-autumn .sun { display: none; }
+        body.theme-autumn .icicle, body.theme-autumn .icicle-melting, body.theme-autumn .snowflake, body.theme-autumn .snowdrifts { display: none; }
         body.theme-autumn .grass-autumn { display: block; } body.theme-autumn .leaf { display: block; }
 
         /* --- ИНТЕРФЕЙС --- */
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: rgba(0,0,0,0.4); backdrop-filter: blur(10px); z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .balance-box { display: flex; flex-direction: column; }
-        .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
+        .balance-label { font-size: 10px; color: #64748b; text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
         .balance { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 900; color: var(--money); transition: 0.3s; }
         .admin-balance { color: var(--gold) !important; text-shadow: 0 0 20px var(--gold); }
-        .top-btn { background: var(--surface); color: var(--primary); border: 1px solid var(--primary); padding: 8px 15px; border-radius: var(--radius); font-weight: 800; font-size: 12px; cursor: pointer; transition: 0.2s; }
+        .top-btn { background: var(--surface); color: var(--primary); border: 1px solid var(--primary); padding: 8px 15px; border-radius: 20px; font-weight: 800; font-size: 12px; cursor: pointer; }
         
         .screen { display: none; flex: 1; flex-direction: column; overflow-y: auto; padding: 0 15px 100px 15px; z-index: 5; }
         .screen.active { display: flex; animation: fadeIn 0.3s ease; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
-        .btn { padding: 16px; font-size: 16px; cursor: pointer; width: 100%; background: linear-gradient(90deg, var(--primary), #3b82f6); color: #fff; border: none; border-radius: var(--radius); font-weight: 900; text-transform: uppercase; margin-top: 10px; transition: 0.2s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .btn { padding: 16px; font-size: 16px; cursor: pointer; width: 100%; background: linear-gradient(90deg, var(--primary), #3b82f6); color: #fff; border: none; border-radius: 20px; font-weight: 900; text-transform: uppercase; margin-top: 10px; transition: 0.2s; }
         .btn:active { transform: scale(0.96); }
         .btn-gold { background: linear-gradient(90deg, var(--gold), #d97706); color: #000; }
 
-        .game-card { background: var(--surface); border-radius: var(--radius); height: 130px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 900; font-size: 13px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
+        .game-card { background: var(--surface); border-radius: 20px; height: 130px; display: flex; flex-direction: column; justify-content: center; align-items: center; font-weight: 900; font-size: 13px; cursor: pointer; border: 1px solid rgba(255,255,255,0.1); transition: 0.2s; }
         .game-card:active { transform: scale(0.95); border-color: var(--primary); }
         .game-card .icon { font-size: 40px; margin-bottom: 8px; }
         .games-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 
-        .bet-box { background: var(--surface); border-radius: var(--radius); padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
-        .bet-controls { display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: calc(var(--radius) - 4px); padding: 5px; gap: 5px; }
-        .bet-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: var(--text); font-size: 18px; font-weight: 900; cursor: pointer; }
-        .bet-input { width: 80px; background: transparent; border: none; color: var(--text); font-size: 20px; font-weight: 900; text-align: center; outline: none; }
+        .bet-box { background: var(--surface); border-radius: 20px; padding: 15px; margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; border: 1px solid rgba(255,255,255,0.1); }
+        .bet-controls { display: flex; align-items: center; background: rgba(0,0,0,0.3); border-radius: 12px; padding: 5px; gap: 5px; }
+        .bet-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: #fff; font-size: 18px; font-weight: 900; cursor: pointer; }
+        .bet-input { width: 80px; background: transparent; border: none; color: #fff; font-size: 20px; font-weight: 900; text-align: center; outline: none; }
 
         .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; background: rgba(0,0,0,0.8); border-radius: 40px; padding: 10px; gap: 10px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); backdrop-filter: blur(10px); }
-        .nav-btn { display: flex; flex-direction: column; align-items: center; color: var(--hint); font-size: 10px; font-weight: 800; cursor: pointer; padding: 10px 20px; border-radius: 30px; }
+        .nav-btn { display: flex; flex-direction: column; align-items: center; color: #64748b; font-size: 10px; font-weight: 800; cursor: pointer; padding: 10px 20px; border-radius: 30px; }
         .nav-btn.active { color: var(--primary); background: rgba(255,255,255,0.1); }
 
         .profile-card { display: flex; flex-direction: column; align-items: center; margin-top: 20px; position: relative; }
         .avatar-img { width: 100px; height: 100px; border-radius: 50%; border: 3px solid var(--primary); object-fit: cover; }
         .avatar-placeholder { width: 100px; height: 100px; border-radius: 50%; background: #3b82f6; display: flex; justify-content: center; align-items: center; font-size: 40px; font-weight: 900; }
         .user-name { font-size: 24px; font-weight: 900; margin-top: 10px; }
-        .user-username { font-size: 12px; color: var(--hint); margin-bottom: 4px; }
+        .user-username { font-size: 12px; color: #64748b; margin-bottom: 4px; }
         .user-title { font-size: 14px; color: var(--gold); font-weight: 800; margin-top: 5px; cursor: pointer; }
         .help-btn { position: absolute; top: 0; right: 0; font-size: 32px; font-weight: 900; color: var(--primary); cursor: pointer; }
 
-        .pass-card { background: #000; border-radius: var(--radius); padding: 20px; border: 2px solid var(--gold); margin: 20px auto; width: 100%; max-width: 400px; cursor: pointer; }
+        .pass-card { background: #000; border-radius: 20px; padding: 20px; border: 2px solid var(--gold); margin: 20px auto; width: 100%; max-width: 400px; cursor: pointer; }
         .pass-title { color: var(--gold); font-weight: 900; font-size: 20px; text-align: center; }
         .pass-progress { height: 14px; background: #222; border-radius: 10px; margin-top: 15px; overflow: hidden; }
         .pass-bar { height: 100%; background: var(--gold); width: 0%; }
 
-        .roulette-container { width: 100%; overflow: hidden; position: relative; padding: 25px 0; background: #000; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
+        .roulette-container { width: 100%; overflow: hidden; position: relative; padding: 25px 0; background: #000; border-radius: 20px; border: 1px solid rgba(255,255,255,0.1); margin-bottom: 15px; }
         .roulette-strip { display: flex; gap: 8px; }
         .r-item { min-width: 85px; height: 85px; display: flex; flex-direction: column; justify-content: center; align-items: center; border-radius: 8px; font-weight: 900; font-size: 12px; border: 2px solid; background: var(--surface); flex-shrink: 0; }
         .r-common { border-color: #475569; color: #475569; } .r-uncommon { border-color: #10b981; color: #10b981; } .r-rare { border-color: #0ea5e9; color: #0ea5e9; } .r-epic { border-color: #8b5cf6; color: #8b5cf6; } .r-legendary { border-color: #f59e0b; color: #f59e0b; }
         .pointer { position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; background: #fff; transform: translateX(-50%); box-shadow: 0 0 20px #fff; }
 
         .coin-choice { display: flex; justify-content: center; gap: 20px; margin: 20px 0; }
-        .choice-btn { padding: 15px 30px; border-radius: var(--radius); border: 2px solid var(--primary); background: var(--surface); font-size: 20px; font-weight: 900; cursor: pointer; color: var(--text); }
+        .choice-btn { padding: 15px 30px; border-radius: 20px; border: 2px solid var(--primary); background: var(--surface); font-size: 20px; font-weight: 900; cursor: pointer; color: #fff; }
         .choice-btn.active { background: var(--primary); color: #000; }
         .coin-visual { width: 140px; height: 140px; margin: 30px auto; background: radial-gradient(circle, #fbbf24, #d97706); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 60px; font-weight: 900; color: #000; border: 4px solid #fff; transition: transform 2s ease-out; }
         .coin-visual.spinning { animation: spinCoin 2s ease-out forwards; }
@@ -117,8 +135,8 @@
         .pass-lv-num { font-size: 12px; font-weight: 900; color: #fff; margin-bottom: 2px; }
         .pass-lv-reward { font-size: 16px; font-weight: 900; color: var(--gold); }
 
-        .promo-container { background: var(--surface); border-radius: var(--radius); padding: 20px; margin-top: 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
-        .promo-input { width: 100%; padding: 15px; border-radius: var(--radius); background: #000; border: 2px solid rgba(255,255,255,0.1); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; }
+        .promo-container { background: var(--surface); border-radius: 20px; padding: 20px; margin-top: 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
+        .promo-input { width: 100%; padding: 15px; border-radius: 12px; background: #000; border: 2px solid rgba(255,255,255,0.1); color: #fff; font-size: 16px; text-align: center; margin-bottom: 10px; }
 
         canvas { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 9999; }
     </style>
@@ -127,9 +145,9 @@
     <div class="season-bg">
         <div class="icicles" id="icicles"></div>
         <div class="snowdrifts"></div>
-        <div class="grass-layer grass-summer" style="display:none;"></div>
-        <div class="grass-layer grass-spring" style="display:none;"></div>
-        <div class="grass-layer grass-autumn" style="display:none;"></div>
+        <div class="grass grass-summer" style="display:none;"></div>
+        <div class="grass grass-spring" style="display:none;"></div>
+        <div class="grass grass-autumn" style="display:none;"></div>
         <div id="snow-container"></div>
         <div id="falling-container"></div>
     </div>
@@ -155,12 +173,12 @@
             <button class="btn" id="spinBtn" onclick="spin()">Крутить</button>
         </div>
         <div id="view-dice" style="display:none; text-align:center;">
-            <div style="display:flex; justify-content:center; gap:20px; margin:30px 0;"><div class="dice" id="dice1" style="width:80px;height:80px;background:#fff;border-radius:var(--radius);display:flex;justify-content:center;align-items:center;font-size:40px;color:#000;font-weight:900;">🎲</div><div class="dice" id="dice2" style="width:80px;height:80px;background:#fff;border-radius:var(--radius);display:flex;justify-content:center;align-items:center;font-size:40px;color:#000;font-weight:900;">🎲</div></div>
+            <div style="display:flex; justify-content:center; gap:20px; margin:30px 0;"><div class="dice" id="dice1" style="width:80px;height:80px;background:#fff;border-radius:20px;display:flex;justify-content:center;align-items:center;font-size:40px;color:#000;font-weight:900;">🎲</div><div class="dice" id="dice2" style="width:80px;height:80px;background:#fff;border-radius:20px;display:flex;justify-content:center;align-items:center;font-size:40px;color:#000;font-weight:900;">🎲</div></div>
             <p id="dice-result" style="font-weight:900; height:30px;"></p>
             <button class="btn" id="diceBtn" onclick="rollDice()">Бросить</button>
         </div>
         <div id="view-slots" style="display:none; text-align:center;">
-            <div style="display:flex; justify-content:center; gap:10px; background:var(--surface); padding:20px; border-radius:var(--radius); margin:20px 0;"><div class="slot" id="slot1" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div><div class="slot" id="slot2" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div><div class="slot" id="slot3" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div></div>
+            <div style="display:flex; justify-content:center; gap:10px; background:var(--surface); padding:20px; border-radius:20px; margin:20px 0;"><div class="slot" id="slot1" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div><div class="slot" id="slot2" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div><div class="slot" id="slot3" style="width:70px;height:90px;background:#000;border-radius:8px;display:flex;justify-content:center;align-items:center;font-size:40px;">🍒</div></div>
             <p id="slots-result" style="font-weight:900; height:30px;"></p>
             <button class="btn" id="slotsBtn" onclick="spinSlots()">Крутить</button>
         </div>
@@ -221,8 +239,8 @@
             <div class="pass-progress"><div class="pass-bar" id="pass-bar"></div></div>
         </div>
 
-        <!-- БЛОК СМЕНЫ ТЕМ -->
-        <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--hint); text-align: center;">Темы оформления</h3>
+        <!-- КНОПКИ ТЕМ -->
+        <h3 style="margin-top: 15px; margin-bottom: 10px; color: #64748b; text-align: center;">Темы оформления</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 0 auto;">
             <div class="btn" style="background:var(--surface); border:1px solid #fff; color:#fff; padding:10px; font-size:12px;" onclick="changeTheme('theme-winter')">❄️ Зима</div>
             <div class="btn" style="background:var(--surface); border:1px solid #22c55e; color:#22c55e; padding:10px; font-size:12px;" onclick="changeTheme('theme-summer')">☀️ Лето</div>
@@ -309,9 +327,6 @@
                     snowContainer.appendChild(el);
                 } else if (savedTheme === 'theme-autumn') {
                     el.className = 'leaf'; el.style.background = '#ea580c'; el.style.borderRadius = '50% 0 50% 50%'; el.style.width = '20px'; el.style.height = '20px';
-                    fallingContainer.appendChild(el);
-                } else if (savedTheme === 'theme-summer' || savedTheme === 'theme-spring') {
-                    el.className = 'sun'; el.style.background = (savedTheme === 'theme-summer' ? '#fde047' : '#fff'); el.style.borderRadius = '50%'; el.style.width = '25px'; el.style.height = '25px'; el.style.opacity = '0.6';
                     fallingContainer.appendChild(el);
                 }
             }
@@ -441,11 +456,11 @@
         }
 
         let secretNumber = 0; let guessActive = false; let guessBetAmount = 0;
-        function initGuessGame() { const grid = document.getElementById('guess-grid'); grid.innerHTML = ''; document.getElementById('guess-result').innerText = ''; guessActive = false; document.getElementById('guess-text').innerText = 'Загадал от 1 до 10'; for (let i = 1; i <= 10; i++) { const btn = document.createElement('button'); btn.className = 'guess-btn'; btn.style.aspectRatio = '1'; btn.style.borderRadius = 'var(--radius)'; btn.style.border = 'none'; btn.style.background = 'var(--surface)'; btn.style.color = 'var(--text)'; btn.style.fontSize = '16px'; btn.style.fontWeight = '900'; btn.style.cursor = 'pointer'; btn.innerText = i; btn.onclick = () => playGuess(i, btn); grid.appendChild(btn); } }
+        function initGuessGame() { const grid = document.getElementById('guess-grid'); grid.innerHTML = ''; document.getElementById('guess-result').innerText = ''; guessActive = false; document.getElementById('guess-text').innerText = 'Загадал от 1 до 10'; for (let i = 1; i <= 10; i++) { const btn = document.createElement('button'); btn.className = 'guess-btn'; btn.style.aspectRatio = '1'; btn.style.borderRadius = '20px'; btn.style.border = 'none'; btn.style.background = 'var(--surface)'; btn.style.color = 'var(--text)'; btn.style.fontSize = '16px'; btn.style.fontWeight = '900'; btn.style.cursor = 'pointer'; btn.innerText = i; btn.onclick = () => playGuess(i, btn); grid.appendChild(btn); } }
         function playGuess(num, btn) { if (!guessActive) { const bet = placeBet(); if (!bet) return; guessBetAmount = bet; guessActive = true; secretNumber = Math.floor(Math.random() * 10) + 1; document.getElementById('guess-text').innerText = 'Угадывай!'; } if (num === secretNumber) { updateBalance(guessBetAmount * 5); btn.style.background = 'var(--money)'; btn.style.color = '#000'; document.getElementById('guess-result').innerHTML = `<span style="color:var(--money)">УГАДАЛ! +${guessBetAmount * 5} ₽</span>`; guessActive = false; } else { btn.style.background = 'var(--error)'; btn.disabled = true; document.getElementById('guess-result').innerHTML = `<span style="color:var(--error)">Мимо! Это было ${secretNumber}.</span>`; guessActive = false; setTimeout(() => initGuessGame(), 2000); } }
 
         let mineGameActive = false; let bombs = []; let safeCells = 0; let currentMineBet = 0; const multipliers = [1.0, 1.5, 2.2, 3.5, 6.0, 12.0];
-        function initMines() { const grid = document.getElementById('mine-grid'); grid.innerHTML = ''; for (let i = 0; i < 9; i++) { const cell = document.createElement('div'); cell.className = 'mine-cell'; cell.style.aspectRatio = '1'; cell.style.background = 'var(--surface)'; cell.style.borderRadius = 'var(--radius)'; cell.style.display = 'flex'; cell.style.justifyContent = 'center'; cell.style.alignItems = 'center'; cell.style.fontSize = '24px'; cell.style.cursor = 'pointer'; cell.innerText = '❓'; cell.onclick = () => clickMine(i, cell); grid.appendChild(cell); } document.getElementById('mine-mult').style.display = 'none'; document.getElementById('mineBtn').innerText = 'Играть'; }
+        function initMines() { const grid = document.getElementById('mine-grid'); grid.innerHTML = ''; for (let i = 0; i < 9; i++) { const cell = document.createElement('div'); cell.className = 'mine-cell'; cell.style.aspectRatio = '1'; cell.style.background = 'var(--surface)'; cell.style.borderRadius = '20px'; cell.style.display = 'flex'; cell.style.justifyContent = 'center'; cell.style.alignItems = 'center'; cell.style.fontSize = '24px'; cell.style.cursor = 'pointer'; cell.innerText = '❓'; cell.onclick = () => clickMine(i, cell); grid.appendChild(cell); } document.getElementById('mine-mult').style.display = 'none'; document.getElementById('mineBtn').innerText = 'Играть'; }
         function startMines() { if (mineGameActive) return; const bet = placeBet(); if (!bet) return; currentMineBet = bet; mineGameActive = true; safeCells = 0; document.getElementById('mine-mult').style.display = 'block'; document.getElementById('mine-mult').innerHTML = 'x<span>1.0</span>'; document.getElementById('mineBtn').innerText = 'Забрать'; bombs = []; while(bombs.length < 3) { const r = Math.floor(Math.random() * 9); if(!bombs.includes(r)) bombs.push(r); } initMines(); document.querySelectorAll('.mine-cell').forEach(c => { c.classList.remove('safe', 'bomb'); c.innerText = '❓'; }); }
         function clickMine(index, cell) { if (!mineGameActive) return; if (bombs.includes(index)) { cell.classList.add('bomb'); cell.style.background = 'var(--error)'; cell.innerText = '💥'; mineGameActive = false; document.getElementById('mineBtn').innerText = 'Играть'; document.querySelectorAll('.mine-cell').forEach((c, i) => { if(bombs.includes(i)) { c.innerText = '💣'; c.style.background = 'var(--error)'; } }); } else { cell.classList.add('safe'); cell.style.background = 'var(--money)'; cell.innerText = '💎'; safeCells++; document.getElementById('mine-mult').innerHTML = `x<span>${multipliers[safeCells].toFixed(1)}</span>`; if (safeCells === 6) cashoutMines(); } }
         function cashoutMines() { if (!mineGameActive || safeCells === 0) return; mineGameActive = false; document.getElementById('mineBtn').innerText = 'Играть'; updateBalance(Math.floor(currentMineBet * multipliers[safeCells])); initMines(); }
