@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Real Textures</title>
+    <title>Gearfe Casino: Monolith</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
         :root { --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b; --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444; --radius: 20px; }
@@ -18,42 +18,48 @@
         body { font-family: 'Montserrat', sans-serif; background-color: var(--bg); color: var(--text); display: flex; flex-direction: column; height: 100vh; overflow: hidden; user-select: none; transition: background 0.5s; }
         h2 { font-family: 'Oswald', sans-serif; font-size: 24px; text-transform: uppercase; text-align: center; margin: 20px 0; }
 
-        /* --- ФОН С РЕАЛИСТИЧНЫМИ ТЕКСТУРАМИ --- */
+        /* --- РЕАЛИСТИЧНЫЙ ФОН --- */
         .season-bg { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; overflow: hidden; }
         
-        /* Падающие объекты */
         .falling-obj { position: absolute; top: -100px; animation: fall linear infinite; z-index: 2; background-size: contain; background-repeat: no-repeat; background-position: center; }
         @keyframes fall { 0% { transform: translateY(0) rotate(0deg) translateX(0); } 50% { transform: translateY(50vh) rotate(180deg) translateX(20px); } 100% { transform: translateY(110vh) rotate(360deg) translateX(0); } }
 
-        /* Сосульки (Реалистичные PNG) */
+        /* Сосульки */
         .icicles-container { position: absolute; top: 60px; left: 0; width: 100%; height: 150px; display: flex; justify-content: space-around; z-index: 3; }
-        .icicle-img { width: 25px; height: 100%; background-image: url('https://i.ibb.co/3s6GzKj/icicle.png'); background-size: contain; background-repeat: no-repeat; background-position: top center; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
+        .icicle-img { width: 30px; height: 100%; background-size: contain; background-repeat: no-repeat; background-position: top center; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.3)); }
 
-        /* Земля (Реалистичные текстуры) */
+        /* Земля */
         .ground-layer { position: absolute; bottom: 0; left: 0; width: 100%; height: 120px; z-index: 2; background-size: cover; background-position: bottom; background-repeat: no-repeat; }
-        
-        /* Текстуры */
-        .bg-grass { background-image: url('https://i.ibb.co/6PZ9Z9b/grass.png'); } /* Сочная трава */
-        .bg-leaves { background-image: url('https://i.ibb.co/3s6GzKj/leaves.png'); } /* Ковер из листьев */
-        
-        /* Видимость элементов */
-        body.theme-winter .icicle-img { display: block; } body.theme-winter .falling-obj { background-image: url('https://i.ibb.co/6PZ9Z9b/snowflake.png'); width: 25px; height: 25px; opacity: 0.8; }
-        body.theme-winter .snowdrifts { display: block; background-image: url('https://i.ibb.co/3s6GzKj/snowdrifts.png'); height: 80px; position: absolute; bottom: 0; width: 100%; background-size: cover; background-position: bottom; }
+
+        /* ПРАВИЛЬНЫЕ ССЫЛКИ НА ТВОИ КАРТИНКИ */
+        .img-grass { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
+        .img-leaves { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaves.jpg'); }
+        .img-icicle { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/icicle.png'); }
+        .img-snowflake { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); }
+
+        /* Видимость */
+        body.theme-winter .icicle-img { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/icicle.png'); }
+        body.theme-winter .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); width: 25px; height: 25px; opacity: 0.8; }
+        body.theme-winter .snowdrifts { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowdrifts.jpg'); height: 80px; position: absolute; bottom: 0; width: 100%; background-size: cover; background-position: bottom; z-index: 2; }
         body.theme-winter .ground-layer { display: none; }
 
         body.theme-autumn .icicle-img { display: none; } 
-        body.theme-autumn .falling-obj { background-image: url('https://i.ibb.co/6PZ9Z9b/leaf.png'); width: 30px; height: 30px; opacity: 0.9; }
-        body.theme-autumn .ground-layer { display: block; background-image: url('https://i.ibb.co/3s6GzKj/leaves.png'); }
+        body.theme-autumn .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaf.png'); width: 30px; height: 30px; opacity: 0.9; }
+        body.theme-autumn .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/leaves.jpg'); }
 
         body.theme-summer .icicle-img { display: none; } 
-        body.theme-summer .falling-obj { background-image: url('https://i.ibb.co/6PZ9Z9b/sun.png'); width: 30px; height: 30px; opacity: 0.4; }
-        body.theme-summer .ground-layer { display: block; background-image: url('https://i.ibb.co/6PZ9Z9b/grass.png'); }
+        body.theme-summer .falling-obj { display: none; }
+        body.theme-summer .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
 
         body.theme-spring .icicle-img { display: block; filter: hue-rotate(90deg) drop-shadow(0 5px 5px rgba(0,0,0,0.3)); } 
-        body.theme-spring .falling-obj { background-image: url('https://i.ibb.co/6PZ9Z9b/snowflake.png'); width: 20px; height: 20px; opacity: 0.5; }
-        body.theme-spring .ground-layer { display: block; background-image: url('https://i.ibb.co/6PZ9Z9b/grass.png'); }
+        body.theme-spring .falling-obj { background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/snowflake.png'); width: 20px; height: 20px; opacity: 0.5; }
+        body.theme-spring .ground-layer { display: block; background-image: url('https://raw.githubusercontent.com/KfgJap/telegram-app/main/grass.jpg'); }
+
 
         /* --- ИНТЕРФЕЙС --- */
+        /* Сдвинул кнопку "Крутить" выше, чтобы не перекрывала меню */
+        #view-roulette { padding-bottom: 20px; }
+
         .header { padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; background: #0f172a; z-index: 10; border-bottom: 1px solid rgba(255,255,255,0.1); }
         .balance-box { display: flex; flex-direction: column; }
         .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; letter-spacing: 2px; font-weight: 800; }
@@ -79,7 +85,7 @@
         .bet-btn { width: 36px; height: 36px; border-radius: 50%; border: none; background: rgba(255,255,255,0.1); color: var(--text); font-size: 18px; font-weight: 900; cursor: pointer; }
         .bet-input { width: 80px; background: transparent; border: none; color: var(--text); font-size: 20px; font-weight: 900; text-align: center; outline: none; }
 
-        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; background: #0f172a; border-radius: 40px; padding: 10px; gap: 10px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); }
+        .bottom-nav { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); display: flex; background: #0f172a; border-radius: 40px; padding: 10px; gap: 10px; z-index: 1000; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 5px 20px rgba(0,0,0,0.5); }
         .nav-btn { display: flex; flex-direction: column; align-items: center; color: var(--hint); font-size: 10px; font-weight: 800; cursor: pointer; padding: 10px 20px; border-radius: 30px; }
         .nav-btn.active { color: var(--primary); background: rgba(255,255,255,0.1); }
 
@@ -222,7 +228,6 @@
             <div class="pass-progress"><div class="pass-bar" id="pass-bar"></div></div>
         </div>
 
-        <!-- БЛОК СМЕНЫ ТЕМ -->
         <h3 style="margin-top: 15px; margin-bottom: 10px; color: var(--hint); text-align: center;">Темы оформления</h3>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px; max-width: 400px; margin: 0 auto;">
             <div class="btn" style="background:var(--surface); border:1px solid #fff; color:#fff; padding:10px; font-size:12px;" onclick="changeTheme('theme-winter')">❄️ Зима</div>
@@ -284,6 +289,7 @@
         const savedTheme = localStorage.getItem('theme') || 'theme-winter';
         document.getElementById('body-theme').className = savedTheme;
 
+        // --- ГЕНЕРАЦИЯ КРАСИВОГО ФОНА ---
         function renderSeasonBg() {
             const currentTheme = localStorage.getItem('theme') || 'theme-winter';
             
