@@ -4,10 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <title>Gearfe Casino: Clean Roulette</title>
+    <title>Gearfe Casino: Roulette</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;800;900&family=Oswald:wght@500;700&display=swap');
-        
+
         :root {
             --bg: #030712; --surface: #0f172a; --text: #f8fafc; --hint: #64748b;
             --primary: #0ea5e9; --money: #10b981; --gold: #f59e0b; --error: #ef4444;
@@ -15,43 +15,43 @@
         }
 
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-        body { 
-            font-family: 'Montserrat', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--text); 
-            display: flex; 
-            flex-direction: column; 
-            height: 100vh; 
-            overflow: hidden; 
-            user-select: none; 
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
         }
 
         /* Шапка */
-        .header { 
-            padding: 15px 20px; 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            background: var(--surface); 
-            border-bottom: 1px solid rgba(255,255,255,0.1); 
+        .header {
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--surface);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
             z-index: 10;
         }
         .balance-label { font-size: 10px; color: var(--hint); text-transform: uppercase; font-weight: 800; }
-        .balance { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 900; color: var(--money); }
+        .balance { font-family: 'Oswald', sans-serif; font-size: 32px; font-weight: 900; color: var(--money); transition: color 0.3s; }
 
         /* Главный блок */
-        .main-content { 
-            flex: 1; 
-            display: flex; 
-            flex-direction: column; 
-            justify-content: center; 
-            padding: 15px; 
-            max-width: 500px; 
-            margin: 0 auto; 
+        .main-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 15px;
+            max-width: 500px;
+            margin: 0 auto;
             width: 100%;
         }
 
-        /* --- СИСТЕМА СТАВОК --- */
+        /* --- СТАВКА --- */
         .bet-section {
             background: var(--surface);
             border-radius: var(--radius);
@@ -60,16 +60,9 @@
             position: relative;
             z-index: 20;
         }
-
-        .bet-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 10px;
-        }
-
+        .bet-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
         .bet-title { font-size: 12px; color: var(--hint); text-transform: uppercase; font-weight: 800; }
-        
+
         .bet-controls {
             display: flex;
             align-items: center;
@@ -79,7 +72,6 @@
             padding: 5px;
             border: 1px solid rgba(255,255,255,0.1);
         }
-
         .bet-btn {
             width: 40px; height: 40px;
             background: rgba(255,255,255,0.1);
@@ -99,9 +91,11 @@
             text-align: center;
             outline: none;
             width: 100%;
+            -moz-appearance: textfield;
         }
+        .bet-input::-webkit-outer-spin-button,
+        .bet-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
 
-        /* Кнопка вызова быстрых ставок */
         .quick-bet-toggle {
             width: 100%;
             background: rgba(255,255,255,0.05);
@@ -121,7 +115,6 @@
         }
         .quick-bet-toggle:active { background: rgba(255,255,255,0.1); }
 
-        /* Выдвижная панель быстрых ставок */
         .quick-bet-panel {
             max-height: 0;
             overflow: hidden;
@@ -130,9 +123,7 @@
             border-radius: 8px;
             margin-top: 5px;
         }
-        .quick-bet-panel.open {
-            max-height: 200px;
-        }
+        .quick-bet-panel.open { max-height: 250px; }
 
         .quick-bet-grid {
             display: grid;
@@ -140,7 +131,6 @@
             gap: 5px;
             padding: 10px;
         }
-
         .quick-bet-btn {
             background: var(--surface);
             border: 1px solid rgba(255,255,255,0.1);
@@ -169,61 +159,79 @@
         }
 
         /* --- РУЛЕТКА --- */
-        .roulette-container { 
-            width: 100%; 
-            height: 120px; 
-            background: #000; 
-            border-radius: var(--radius); 
-            position: relative; 
-            overflow: hidden; 
-            border: 1px solid rgba(255,255,255,0.1); 
+        .roulette-container {
+            width: 100%;
+            height: 120px;
+            background: #000;
+            border-radius: var(--radius);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.1);
             margin-bottom: 20px;
         }
-        .roulette-strip { display: flex; height: 100%; align-items: center; }
-        .pointer { 
-            position: absolute; top: 0; bottom: 0; left: 50%; width: 4px; 
-            background: #fff; transform: translateX(-50%); z-index: 10; 
+        .pointer {
+            position: absolute; top: 0; bottom: 0; left: 50%; width: 4px;
+            background: #fff; transform: translateX(-50%); z-index: 10;
             box-shadow: 0 0 15px #fff; border-radius: 2px;
         }
+        .roulette-strip { display: flex; height: 100%; align-items: center; will-change: transform; }
 
-        .result-text { 
-            text-align: center; 
-            font-weight: 900; 
-            height: 40px; 
-            color: var(--primary); 
-            font-size: 24px;
+        .roulette-item {
+            min-width: 100px;
+            height: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            border-right: 1px solid rgba(255,255,255,0.1);
+            font-weight: 900;
+            font-size: 14px;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+        .roulette-item .mult { font-size: 16px; }
+        .roulette-item .name { font-size: 10px; opacity: 0.7; text-transform: uppercase; }
+
+        .result-text {
+            text-align: center;
+            font-weight: 900;
+            height: 40px;
+            color: var(--primary);
+            font-size: 20px;
             margin-bottom: 10px;
+            transition: 0.3s;
         }
 
-        .spin-btn { 
-            padding: 18px; 
-            font-size: 18px; 
-            cursor: pointer; 
-            width: 100%; 
-            background: linear-gradient(180deg, var(--primary), #0284c7); 
-            color: #fff; 
-            border: none; 
-            border-radius: var(--radius); 
-            font-weight: 900; 
-            text-transform: uppercase; 
+        .spin-btn {
+            padding: 18px;
+            font-size: 18px;
+            cursor: pointer;
+            width: 100%;
+            background: linear-gradient(180deg, var(--primary), #0284c7);
+            color: #fff;
+            border: none;
+            border-radius: var(--radius);
+            font-weight: 900;
+            text-transform: uppercase;
             box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: transform 0.1s;
         }
         .spin-btn:active { transform: scale(0.98); }
         .spin-btn:disabled { opacity: 0.5; pointer-events: none; }
 
         /* --- ТОСТЫ --- */
-        .toast { 
-            position: fixed; top: 20px; left: 50%; transform: translateX(-50%); 
-            background: var(--surface); color: #fff; padding: 10px 20px; border-radius: 30px; 
-            font-weight: 800; font-size: 14px; z-index: 3000; opacity: 0; 
-            transition: 0.3s; pointer-events: none; border: 1px solid var(--primary); 
+        .toast {
+            position: fixed; top: 20px; left: 50%; transform: translateX(-50%);
+            background: var(--surface); color: #fff; padding: 10px 20px; border-radius: 30px;
+            font-weight: 800; font-size: 14px; z-index: 3000; opacity: 0;
+            transition: 0.3s; pointer-events: none; border: 1px solid var(--primary);
+            white-space: nowrap;
         }
         .toast.show { opacity: 1; top: 30px; }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
     <header class="header">
         <div>
             <span class="balance-label">Баланс</span><br>
@@ -231,47 +239,39 @@
         </div>
     </header>
 
-    <!-- Основной контент -->
     <main class="main-content">
-        
-        <!-- Блок ставок -->
+
         <div class="bet-section">
             <div class="bet-header">
                 <span class="bet-title">Ваша ставка</span>
             </div>
-            
+
             <div class="bet-controls">
-                <button class="bet-btn" onclick="changeBet(-50)">-</button>
+                <button class="bet-btn" id="bet-minus">-</button>
                 <input type="number" class="bet-input" id="bet-input" value="10" min="10">
-                <button class="bet-btn" onclick="changeBet(50)">+</button>
+                <button class="bet-btn" id="bet-plus">+</button>
             </div>
 
-            <!-- Кнопка вызова панели -->
-            <button class="quick-bet-toggle" onclick="toggleQuickBet()">
+            <button class="quick-bet-toggle" id="quick-toggle">
                 ⬇️ Быстрые ставки
             </button>
 
-            <!-- Выдвижная панель -->
             <div class="quick-bet-panel" id="quick-bet-panel">
-                <div class="quick-bet-grid" id="quick-bet-grid">
-                    <!-- Кнопки генерируются через JS -->
-                </div>
+                <div class="quick-bet-grid" id="quick-bet-grid"></div>
                 <div class="quick-bet-bottom">
-                    <button class="quick-bet-control" onclick="changeQuickStep(-100)">-</button>
-                    <button class="quick-bet-control" onclick="changeQuickStep(100)">+</button>
+                    <button class="quick-bet-control" id="step-minus">-</button>
+                    <button class="quick-bet-control" id="step-plus">+</button>
                 </div>
             </div>
         </div>
 
-        <!-- Рулетка -->
-        <div class="roulette-container">
+        <div class="roulette-container" id="roulette-container">
             <div class="pointer"></div>
             <div class="roulette-strip" id="strip"></div>
         </div>
 
         <p class="result-text" id="result"></p>
 
-        <!-- Кнопка кручения -->
         <button class="spin-btn" id="spin-btn">Крутить</button>
 
     </main>
@@ -280,189 +280,240 @@
     <audio id="spin-sound" src="https://assets.mixkit.co/active_storage/sfx/2003/2003-preview.mp3" preload="auto"></audio>
 
     <script>
-        // --- 1. ИНИЦИАЛИЗАЦИЯ TELEGRAM ---
+        // ============================================================
+        // 1. TELEGRAM
+        // ============================================================
         Telegram.WebApp.ready();
         Telegram.WebApp.expand();
         Telegram.WebApp.disableVerticalSwipes();
 
-        // --- 2. БАЗОВАЯ ЛОГИКА БАЛАНСА ---
-        let balance = parseInt(localStorage.getItem('casino_balance')) || 1000;
+        // ============================================================
+        // 2. БАЛАНС
+        // TODO: заменить на сервер (GET /api/me, POST /api/roulette)
+        // Сейчас — localStorage, только для теста визуала/механики.
+        // ============================================================
+        const START_BALANCE = 1000;
+        let balance = parseInt(localStorage.getItem('casino_balance'));
+        if (isNaN(balance)) balance = START_BALANCE;
+
         const balanceEl = document.getElementById('balance');
         balanceEl.innerText = balance;
 
-        function updateBalance(amount) {
-            balance += amount;
+        function setBalance(v) {
+            balance = v;
             if (balance < 0) balance = 0;
             localStorage.setItem('casino_balance', balance);
             balanceEl.innerText = balance;
-            
-            balanceEl.style.color = amount > 0 ? 'var(--money)' : 'var(--error)';
-            setTimeout(() => { balanceEl.style.color = 'var(--money)'; }, 300);
         }
 
+        function flashBalance(positive) {
+            balanceEl.style.color = positive ? 'var(--money)' : 'var(--error)';
+            setTimeout(() => { balanceEl.style.color = 'var(--money)'; }, 400);
+        }
+
+        // ============================================================
+        // 3. ТОСТ
+        // ============================================================
+        const toastEl = document.getElementById('toast');
+        let toastTimer = null;
         function showToast(text) {
-            const t = document.getElementById('toast');
-            t.innerText = text;
-            t.classList.add('show');
-            setTimeout(() => t.classList.remove('show'), 2000);
+            toastEl.innerText = text;
+            toastEl.classList.add('show');
+            clearTimeout(toastTimer);
+            toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2000);
             Telegram.WebApp.HapticFeedback.impactOccurred('light');
         }
 
-        // --- 3. СИСТЕМА СТАВОК ---
+        // ============================================================
+        // 4. СТАВКА
+        // ============================================================
+        const MIN_BET = 10;
         const betInput = document.getElementById('bet-input');
-        let quickStep = 100; // Шаг изменения для быстрых ставок (100, 1000 и т.д.)
-        
-        // Функция для кнопок +/-
-        function changeBet(amount) {
-            let val = parseInt(betInput.value) + amount;
-            if (val < 10) val = 10;
-            if (val > balance) val = balance;
-            betInput.value = val;
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        let quickStep = 100;
+
+        function clampBet(v) {
+            v = parseInt(v) || 0;
+            if (v < MIN_BET) v = MIN_BET;
+            if (v > balance) v = balance;
+            return v;
         }
 
-        // Включение/выключение панели быстрых ставок
-        function toggleQuickBet() {
-            const panel = document.getElementById('quick-bet-panel');
-            panel.classList.toggle('open');
-            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        function setBet(v) {
+            betInput.value = clampBet(v);
         }
 
-        // Генерация кнопок быстрых ставок
+        document.getElementById('bet-minus').onclick = () => {
+            setBet(parseInt(betInput.value) - 50);
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        };
+        document.getElementById('bet-plus').onclick = () => {
+            setBet(parseInt(betInput.value) + 50);
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        };
+
+        betInput.addEventListener('input', () => {
+            let v = parseInt(betInput.value) || 0;
+            if (v > balance) { betInput.value = balance; showToast('Максимум: ' + balance); }
+            if (v < MIN_BET && betInput.value !== '') { betInput.value = MIN_BET; }
+        });
+        betInput.addEventListener('blur', () => { setBet(betInput.value); });
+
+        // Панель быстрых ставок
+        const quickPanel = document.getElementById('quick-bet-panel');
+        document.getElementById('quick-toggle').onclick = () => {
+            quickPanel.classList.toggle('open');
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        };
+
         function renderQuickBets() {
             const grid = document.getElementById('quick-bet-grid');
             grid.innerHTML = '';
             const values = [quickStep, quickStep * 2, quickStep * 5, quickStep * 10, quickStep * 50, quickStep * 100];
-            
             values.forEach(val => {
                 const btn = document.createElement('button');
                 btn.className = 'quick-bet-btn';
                 btn.innerText = val;
                 btn.onclick = () => {
-                    if (val > balance) {
-                        betInput.value = balance;
-                        showToast('Ставка равна балансу');
-                    } else {
-                        betInput.value = val;
-                    }
+                    if (val > balance) { setBet(balance); showToast('Ставка равна балансу'); }
+                    else setBet(val);
                     Telegram.WebApp.HapticFeedback.impactOccurred('light');
                 };
                 grid.appendChild(btn);
             });
         }
 
-        // Изменение шага быстрых ставок
-        function changeQuickStep(amount) {
-            quickStep += amount;
-            if (quickStep < 10) quickStep = 10;
+        document.getElementById('step-minus').onclick = () => {
+            quickStep = Math.max(10, quickStep - 100);
             renderQuickBets();
             Telegram.WebApp.HapticFeedback.impactOccurred('light');
-        }
+        };
+        document.getElementById('step-plus').onclick = () => {
+            quickStep += 100;
+            renderQuickBets();
+            Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        };
 
-        renderQuickBets(); // Отрисовываем при загрузке
+        renderQuickBets();
 
-        // --- 4. РУЛЕТКА ---
+        // ============================================================
+        // 5. РУЛЕТКА — математика (вариант Б)
+        // Матожидание ≈ 1.0075, казино в лёгком плюсе (~0.75%)
+        // TODO: перенести выбор сектора на сервер
+        // ============================================================
+        const items = [
+            { name: 'Пусто',  color: '#64748b', mult: 0,    chance: 42 },
+            { name: 'x1.25',  color: '#3b82f6', mult: 1.25, chance: 27 },
+            { name: 'x1.5',   color: '#8b5cf6', mult: 1.5,  chance: 16 },
+            { name: 'x2',     color: '#10b981', mult: 2,    chance: 9  },
+            { name: 'x3',     color: '#f97316', mult: 3,    chance: 5  },
+            { name: 'ДЖЕКПОТ',color: '#f59e0b', mult: 10,   chance: 1  },
+        ];
+
+        const ITEM_WIDTH = 100;   // ширина квадрата (border-right 1px → 101, компенсируем округлением)
+        const TOTAL_ITEMS = 60;   // лента длиннее, чтобы targetIndex не улетал в пустоту
+
         const strip = document.getElementById('strip');
         const spinBtn = document.getElementById('spin-btn');
         const resultText = document.getElementById('result');
         const spinSound = document.getElementById('spin-sound');
-        
-        // Данные рулетки
-        const items = [
-            { name: 'Хлам', class: 'color: #64748b', mult: 1, chance: 50 },
-            { name: 'Монета', class: 'color: #10b981', mult: 2, chance: 25 },
-            { name: 'Кристалл', class: 'color: #0ea5e9', mult: 3, chance: 15 },
-            { name: 'Артефакт', class: 'color: #8b5cf6', mult: 5, chance: 8 },
-            { name: 'ДЖЕКПОТ', class: 'color: #f59e0b', mult: 10, chance: 2 }
-        ];
+        const rouletteContainer = document.getElementById('roulette-container');
 
-        // Ширина одного квадратика рулетки (100px + 8px gap = 108px)
-        const ITEM_WIDTH = 108; 
-
-        // Генерация ленты
         function renderItems() {
             strip.innerHTML = '';
-            for (let i = 0; i < 40; i++) {
+            for (let i = 0; i < TOTAL_ITEMS; i++) {
                 const item = items[i % items.length];
                 const div = document.createElement('div');
                 div.className = 'roulette-item';
-                div.style.minWidth = '100px';
-                div.style.height = '100px';
-                div.style.display = 'flex';
-                div.style.justifyContent = 'center';
-                div.style.alignItems = 'center';
-                div.style.borderRight = '1px solid rgba(255,255,255,0.1)';
-                div.style.fontWeight = '900';
-                div.style.fontSize = '14px';
-                div.style.cssText += item.class; // Применяем цвет
-                div.innerText = item.name;
+                div.style.color = item.color;
+                div.innerHTML = `<span class="mult">${item.name}</span>`;
                 strip.appendChild(div);
             }
         }
         renderItems();
 
-        // Механика кручения
-        spinBtn.addEventListener('click', () => {
+        function pickWinner() {
+            const rand = Math.random() * 100;
+            let acc = 0;
+            for (let i = 0; i < items.length; i++) {
+                acc += items[i].chance;
+                if (rand < acc) return i;
+            }
+            return items.length - 1;
+        }
+
+        function spin() {
             const bet = parseInt(betInput.value);
-            
-            // Защита от нуля и дурака
-            if (bet < 10) { showToast('Мин. ставка 10 ₽'); return; }
+            if (isNaN(bet) || bet < MIN_BET) { showToast('Мин. ставка ' + MIN_BET + ' ₽'); return; }
             if (bet > balance) { showToast('Недостаточно средств!'); return; }
 
             spinBtn.disabled = true;
-            updateBalance(-bet); // Списываем ставку
+            resultText.innerText = '';
+            setBalance(balance - bet);            // списываем ставку
+            flashBalance(false);
             Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-            
-            // Включаем звук
-            spinSound.currentTime = 0;
-            spinSound.play().catch(e => {}); 
 
-            // 1. Выбираем победителя по шансам
-            const rand = Math.random() * 100;
-            let acc = 0;
-            let winIndex = 0;
-            for (let i = 0; i < items.length; i++) {
-                acc += items[i].chance;
-                if (rand <= acc) { winIndex = i; break; }
-            }
+            // звук (не критично если не заиграет)
+            try { spinSound.currentTime = 0; spinSound.play().catch(() => {}); } catch (e) {}
 
-            // 2. Рассчитываем точную остановку
-            //); Мы крутим на 5-6 // полных кругов вперед, чтобы а Снимация была долгой
-            constере loops = 5 + Math.floor(Mathдина.random() * 2);
-            // Индекс эк в ленте, нарана котором должна остановиться рулетка
-            const мину targetIndex = (loops * itemsс.length) + winIndex;
-            
-            // Цент половирируем квадратик под стрелкой
-на            const centerOffset = (window.innerWidth / 2) квадра - (100 / 2тика
+            const winIndex = pickWinner();
+
+            // сколько полных кругов проехать (минимум чтобы дойти до нужного индекса)
+            const baseRounds = 5;
+            const loopCount = baseRounds + Math.floor(Math.random() * 2);  // 5 или 6
+            let targetIndex = loopCount * items.length + winIndex;
+            // страховка: если лента короче — увеличиваем total
+            if (targetIndex >= TOTAL_ITEMS) targetIndex = (TOTAL_ITEMS - items.length) + winIndex;
+
+            // центрирование: центр контейнера минус половина квадрата
+            const centerOffset = (rouletteContainer.clientWidth / 2) - (ITEM_WIDTH / 2);
             const shift = (targetIndex * ITEM_WIDTH) - centerOffset;
 
-            // 3. Запускаем анимацию
-            strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.2, 1)'; // 4 секунды плавного замедления
+            // сброс позиции без анимации — чтобы каждый спин стартовал слева
+            strip.style.transition = 'none';
+            strip.style.transform = 'translateX(0)';
+            // force reflow
+            void strip.offsetWidth;
+
+            strip.style.transition = 'transform 4s cubic-bezier(0.1, 0.9, 0.2, 1)';
             strip.style.transform = `translateX(-${shift}px)`;
 
-            // 4. Ждем окончания и показываем результат
             setTimeout(() => {
-                const wonItem = items[winIndex];
-                const winAmount = bet * wonItem.mult;
-                
-                if (wonItem.mult > 1) {
-                    updateBalance(winAmount);
-                    resultText.innerHTML = `<span style="color:var(--money)">${wonItem.name} (+${winAmount} ₽)</span>`;
-                    Telegram.WebApp.HapticFeedback.notificationOccurred('success');
-                } else {
-                    resultText.innerHTML = `<span style="color:var(--error)">${wonItem.name} (Проигрыш)</span>`;
-                    Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+                try {
+                    const won = items[winIndex];
+                    if (won.mult === 0) {
+                        resultText.innerHTML = `<span style="color:var(--error)">${won.name} — проигрыш −${bet} ₽</span>`;
+                        Telegram.WebApp.HapticFeedback.notificationOccurred('error');
+                    } else if (won.mult === 1) {
+                        // возврат ставки (у нас такого нет, но на будущее)
+                        setBalance(balance + bet);
+                        resultText.innerHTML = `<span style="color:var(--hint)">${won.name} — возврат</span>`;
+                    } else {
+                        const payout = Math.floor(bet * won.mult);
+                        setBalance(balance + payout);
+                        flashBalance(true);
+                        resultText.innerHTML = `<span style="color:var(--money)">${won.name} — +${payout} ₽</span>`;
+                        Telegram.WebApp.HapticFeedback.notificationOccurred('success');
+                    }
+                } finally {
+                    spinBtn.disabled = false;
                 }
-                
-                spinBtn.disabled = false;
 
-                // Возвращаем ленту в исходное состояние через секунду
+                // через секунду возвращаем ленту в начало (без анимации)
                 setTimeout(() => {
                     strip.style.transition = 'none';
                     strip.style.transform = 'translateX(0)';
-                }, 1000);
+                }, 1200);
+            }, 4100);
+        }
 
-            }, 4100); // Ждем 4 секунды + 100мс запаса
+        spinBtn.addEventListener('click', spin);
+
+        // Пересчитать ленту при изменении размера (поворот экрана)
+        window.addEventListener('resize', () => {
+            if (!spinBtn.disabled) {
+                strip.style.transition = 'none';
+                strip.style.transform = 'translateX(0)';
+            }
         });
     </script>
 </body>
